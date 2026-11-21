@@ -88,6 +88,32 @@
             <Character name="F" resource="weather_temp_cold_f" width="15" height="18" />
             <Character name="C" resource="weather_temp_cold_c" width="17" height="18" />
         </BitmapFont>
+        <BitmapFont name="battery_percent">
+            <Character name="0" resource="weather_temp_0" width="16" height="18" />
+            <Character name="1" resource="weather_temp_1" width="4" height="18" />
+            <Character name="2" resource="weather_temp_2" width="16" height="18" />
+            <Character name="3" resource="weather_temp_3" width="16" height="18" />
+            <Character name="4" resource="weather_temp_4" width="16" height="18" />
+            <Character name="5" resource="weather_temp_5" width="16" height="18" />
+            <Character name="6" resource="weather_temp_6" width="16" height="18" />
+            <Character name="7" resource="weather_temp_7" width="16" height="18" />
+            <Character name="8" resource="weather_temp_8" width="16" height="18" />
+            <Character name="9" resource="weather_temp_9" width="16" height="18" />
+            <Character name="%" resource="battery_percent" width="18" height="18" />
+        </BitmapFont>
+        <BitmapFont name="battery_percent_low">
+            <Character name="0" resource="weather_temp_hot_0" width="16" height="18" />
+            <Character name="1" resource="weather_temp_hot_1" width="4" height="18" />
+            <Character name="2" resource="weather_temp_hot_2" width="16" height="18" />
+            <Character name="3" resource="weather_temp_hot_3" width="16" height="18" />
+            <Character name="4" resource="weather_temp_hot_4" width="16" height="18" />
+            <Character name="5" resource="weather_temp_hot_5" width="16" height="18" />
+            <Character name="6" resource="weather_temp_hot_6" width="16" height="18" />
+            <Character name="7" resource="weather_temp_hot_7" width="16" height="18" />
+            <Character name="8" resource="weather_temp_hot_8" width="16" height="18" />
+            <Character name="9" resource="weather_temp_hot_9" width="16" height="18" />
+            <Character name="%" resource="battery_percent_low" width="18" height="18" />
+        </BitmapFont>
     </BitmapFonts>
     <Scene backgroundColor="#000000">
         <Group name="dial" x="0" y="0" width="450" height="450">
@@ -279,7 +305,7 @@
             </PartImage>
         </Group>
         <Group name="weather" x="12" y="178" width="160" height="95">
-            <Variant mode="AMBIENT" target="alpha" value="154" />
+            <Variant mode="AMBIENT" target="alpha" value="0" />
             <Condition>
                 <Expressions>
                     <Expression name="available">[WEATHER.IS_AVAILABLE]</Expression>
@@ -373,6 +399,84 @@
                             </Text>
                         </PartText>
                     </Group>
+                </Default>
+            </Condition>
+        </Group>
+        <Group name="battery" x="314" y="201" width="88" height="44">
+            <Variant mode="AMBIENT" target="alpha" value="0" />
+            <Condition>
+                <Expressions>
+                    <Expression name="low">[BATTERY_PERCENT] &lt; 20</Expression>
+                </Expressions>
+                <Compare expression="low">
+                    <Condition>
+                        <Expressions>
+                            <Expression name="lit1">[BATTERY_PERCENT] &gt; 0</Expression>
+                        </Expressions>
+                        <Compare expression="lit1">
+                            <PartImage x="22" y="0" width="44" height="20">
+                                <Image resource="battery_low_1" />
+                            </PartImage>
+                        </Compare>
+                        <Default>
+                            <PartImage x="22" y="0" width="44" height="20">
+                                <Image resource="battery_low_0" />
+                            </PartImage>
+                        </Default>
+                    </Condition>
+                    <PartText x="0" y="25" width="88" height="19">
+                        <Text align="CENTER">
+                            <BitmapFont family="battery_percent_low" size="18">
+                                <Template>%s%s<Parameter expression="[BATTERY_PERCENT]" />
+                                    <Parameter expression="&quot;%&quot;" />
+                                </Template>
+                            </BitmapFont>
+                        </Text>
+                    </PartText>
+                </Compare>
+                <Default>
+                    <Condition>
+                        <Expressions>
+                            <Expression name="lit5">[BATTERY_PERCENT] &gt; 80</Expression>
+                            <Expression name="lit4">[BATTERY_PERCENT] &gt; 60 &amp;&amp; [BATTERY_PERCENT] &lt;= 80</Expression>
+                            <Expression name="lit3">[BATTERY_PERCENT] &gt; 40 &amp;&amp; [BATTERY_PERCENT] &lt;= 60</Expression>
+                            <Expression name="lit2">[BATTERY_PERCENT] &gt; 20 &amp;&amp; [BATTERY_PERCENT] &lt;= 40</Expression>
+                        </Expressions>
+                        <Compare expression="lit5">
+                            <PartImage x="22" y="0" width="44" height="20">
+                                <Image resource="battery_5" />
+                            </PartImage>
+                        </Compare>
+                        <Compare expression="lit4">
+                            <PartImage x="22" y="0" width="44" height="20">
+                                <Image resource="battery_4" />
+                            </PartImage>
+                        </Compare>
+                        <Compare expression="lit3">
+                            <PartImage x="22" y="0" width="44" height="20">
+                                <Image resource="battery_3" />
+                            </PartImage>
+                        </Compare>
+                        <Compare expression="lit2">
+                            <PartImage x="22" y="0" width="44" height="20">
+                                <Image resource="battery_2" />
+                            </PartImage>
+                        </Compare>
+                        <Default>
+                            <PartImage x="22" y="0" width="44" height="20">
+                                <Image resource="battery_1" />
+                            </PartImage>
+                        </Default>
+                    </Condition>
+                    <PartText x="0" y="25" width="88" height="19">
+                        <Text align="CENTER">
+                            <BitmapFont family="battery_percent" size="18">
+                                <Template>%s%s<Parameter expression="[BATTERY_PERCENT]" />
+                                    <Parameter expression="&quot;%&quot;" />
+                                </Template>
+                            </BitmapFont>
+                        </Text>
+                    </PartText>
                 </Default>
             </Condition>
         </Group>

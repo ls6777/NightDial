@@ -120,8 +120,6 @@ HAND_BODY = "#050505"
 HAND_EDGE_COLOR = "#363636"
 #: The seconds hand.
 SECOND_GRAY = "#BCBCBC"
-#: The hands' edge in always-on mode, brighter so the outline reads alone.
-AMBIENT_EDGE = "#9A9A9A"
 
 
 def polar(degrees, distance):
@@ -221,8 +219,8 @@ def hub(parent):
 
 
 def analog_clock(parent, frozen=None):
-    """The hour, minute and seconds hands while awake; outlined hour and
-    minute hands and no seconds in always-on mode. frozen is an (hour,
+    """The hour, minute and seconds hands while awake; the hour and minute
+    hands with their orange hollowed out, and no seconds, in always-on mode. frozen is an (hour,
     minute, second) to draw the awake hands at instead of the time, for the
     test build."""
     if frozen is None:
@@ -263,6 +261,16 @@ def bitmap_fonts(face):
             w, h = TEMPERATURE_GLYPHS[name]
             el(font, "Character", name=ch, resource=f"weather_temp{temperature_set(key)}_{name}",
                width=w, height=h)
+    # The battery percentage: the orange temperature digits and a "%", and
+    # for a low battery the red (hot) ones.
+    for low, digits in (("", ""), ("_low", "_hot")):
+        font = el(fonts, "BitmapFont", name=f"battery_percent{low}")
+        for d in range(10):
+            w, h = TEMPERATURE_GLYPHS[str(d)]
+            el(font, "Character", name=str(d), resource=f"weather_temp{digits}_{d}",
+               width=w, height=h)
+        w, h = BATTERY_IMAGES["percent"]
+        el(font, "Character", name="%", resource=f"battery_percent{low}", width=w, height=h)
 
 
 def text_part(parent, y, width, height, align="CENTER", **text):
@@ -279,11 +287,71 @@ def template(parent, fmt, *expressions):
         el(t, "Parameter", expression=e)
 
 
+def weather_height():
+    """The weather display's height: the icon, the temperature and the
+    condition's name, and the gaps between them."""
+    gap1, gap2 = WEATHER["gaps"]
+    return (WEATHER_ICON["size"] + gap1 + WEATHER["temperature"] + gap2
+            + WEATHER["text"] * 1.4)
+
+
+def battery(scene, sample=None):
+    """The battery level (see BATTERY): the battery with a segment lit per
+    20% (rounded up), and the percentage below it, level with the
+    temperature; both red below BATTERY_LOW's limit. Hidden in always-on
+    mode. sample is a fixed percentage to show instead (see TEST_BATTERY),
+    for the test build."""
+    level = str(sample) if sample is not None else "[BATTERY_PERCENT]"
+    (iw, ih), temp = BATTERY_IMAGES["icon"], WEATHER["temperature"]
+    # The percentage's row: the weather's temperature row (see weather).
+    cx, cy = SIZE - WEATHER["center"][0], WEATHER["center"][1]
+    text_y = round(cy - weather_height() / 2) + WEATHER_ICON["size"] + WEATHER["gaps"][0]
+    top = round(text_y - BATTERY["gap"] - ih)
+    width = 2 * iw
+    group = el(scene, "Group", name="battery", x=round(cx - width / 2), y=top,
+               width=width, height=math.ceil(text_y + temp + 1 - top))
+    ambient_hide(group)
+
+    # Red below the low limit, orange from it up: the battery images and the
+    # percentage's font for each.
+    n, limit = BATTERY["segments"], BATTERY_LOW["limit"]
+    step = 100 / n
+    low = el(group, "Condition")
+    el(el(low, "Expressions"), "Expression", name="low").text = f"{level} < {limit}"
+    for branch, (lowest, highest), suffix in (
+            (el(low, "Compare", expression="low"), (0, battery_segments(limit - 1)), "_low"),
+            (el(low, "Default"), (battery_segments(limit), n), "")):
+        # The battery: the image with as many segments lit as the level
+        # calls for, the fewest by default. Each image's range excludes the
+        # others: when the level changes, the runtime moves off a Compare
+        # that turns false only to one that turns true, or else to the
+        # Default, so overlapping ranges (> 60 still true when > 80 turns
+        # false) would leave the Default showing.
+        lit = el(branch, "Condition")
+        exprs = el(lit, "Expressions")
+        images = []
+        for k in range(highest, lowest, -1):
+            expression = f"{level} > {fmt((k - 1) * step)}"
+            if k < highest:
+                expression += f" && {level} <= {fmt(k * step)}"
+            el(exprs, "Expression", name=f"lit{k}").text = expression
+            images.append((el(lit, "Compare", expression=f"lit{k}"), k))
+        for b, k in images + [(el(lit, "Default"), lowest)]:
+            part = el(b, "PartImage", x=(width - iw) // 2, y=0, width=iw, height=ih)
+            el(part, "Image", resource=f"battery{suffix}_{k}")
+
+        # The percentage ("%" as a parameter: a literal one would be a
+        # format code).
+        t = text_part(branch, text_y - top, width, temp + 1)
+        template(el(t, "BitmapFont", family=f"battery_percent{suffix}", size=temp), "%s%s",
+                 level, '"%"')
+
+
 def weather(scene, sample=None):
     """The weather display (see WEATHER): the condition's icon, the
     temperature and the condition's name. Without weather data, the sun
-    and "--°" in their place, and no name. sample is fixed weather to show
-    instead (see TEST_WEATHER), for the test build."""
+    and "--°" in their place, and no name. Hidden in always-on mode. sample
+    is fixed weather to show instead (see TEST_WEATHER), for the test build."""
     def w(source):
         """The expression for a weather data source, or its sample value."""
         return str(sample[source]) if sample else f"[WEATHER.{source}]"
@@ -292,11 +360,11 @@ def weather(scene, sample=None):
     icon, temp, text = WEATHER_ICON["size"], WEATHER["temperature"], WEATHER["text"]
     gap1, gap2 = WEATHER["gaps"]
     line = text * 1.4  # the name's line height
-    height = icon + gap1 + temp + gap2 + line
+    height = weather_height()
     width = WEATHER["text_width"]
     group = el(scene, "Group", name="weather", x=round(cx - width / 2),
                y=round(cy - height / 2), width=round(width), height=math.ceil(height))
-    el(group, "Variant", mode="AMBIENT", target="alpha", value=AMBIENT_ALPHA)
+    ambient_hide(group)
     shown = el(group, "Condition")
     el(el(shown, "Expressions"), "Expression", name="available").text = w("IS_AVAILABLE")
     content = el(el(shown, "Compare", expression="available"), "Group", name="weatherShown",
@@ -348,6 +416,7 @@ def watch_face(test=False):
     scene = el(face, "Scene", backgroundColor="#000000")
     dial(scene)
     weather(scene, sample=TEST_WEATHER if test else None)
+    battery(scene, sample=TEST_BATTERY if test else None)
     analog_clock(scene, frozen=TEST_TIME if test else None)
     return face
 
@@ -458,8 +527,8 @@ def clip_below(points, y0):
 
 def render_hand(name, hand, ambient=False):
     """An hour or minute hand (see HOUR_HAND), every edge a straight line.
-    In always-on mode the body is black and only the lines are drawn, the
-    insert outlined in orange."""
+    In always-on mode the same hand with the orange hollowed out, leaving
+    an orange line as wide as the insert's border around the black."""
     c = HandCanvas(name, hand)
     k, ln = c.k, c.ln
     (d0, hw0), (ds, hws), (dt, _) = hand["outline"]
@@ -496,19 +565,12 @@ def render_hand(name, hand, ambient=False):
         ImageDraw.Draw(mask).polygon(c.pixels(outline), fill=255)
         c.img.paste(layer, mask=Image.composite(layer.getchannel("A"), mask, mask))
 
-    if ambient:
-        c.draw.polygon(c.pixels(outline), fill=rgb("#000000"))
-        center_bar(AMBIENT_EDGE, "#000000")
-        c.draw.polygon(c.pixels(border), fill=rgb("#000000"), outline=rgb(ORANGE),
-                       width=width("border"))
-        c.draw.polygon(c.pixels(outline), outline=rgb(AMBIENT_EDGE), width=width("outline"))
-        c.save()
-        return
-
     c.draw.polygon(c.pixels(outline), fill=rgb(HAND_BODY))
     center_bar(HAND_LINE_COLORS["center"], HAND_LINE_COLORS["seam"])
     c.draw.polygon(c.pixels(border), fill=rgb(HAND_LINE_COLORS["border"]))
     c.draw.polygon(c.pixels(insert), fill=rgb(ORANGE))
+    if ambient:
+        c.draw.polygon(c.pixels(inset(insert, lines["border"])), fill=rgb(HAND_BODY))
     c.draw.polygon(c.pixels(outline), outline=rgb(HAND_LINE_COLORS["outline"]),
                    width=width("outline"))
     c.save()
@@ -578,6 +640,16 @@ def render_glyphs(text, height, color=ORANGE):
             y = flat[1] - top
             ImageDraw.Draw(g).ellipse([0, y, ring - 1, y + ring - 1], outline=color,
                                       width=round(0.75 * stroke))
+        elif ch == "%":
+            # A little taller than the digits: drawn whole, then shrunk to
+            # their height.
+            b = font.getbbox(ch, stroke_width=grow)
+            g = Image.new("RGBA", (b[2] - b[0], b[3] - b[1]), (0, 0, 0, 0))
+            ImageDraw.Draw(g).text((-b[0], -b[1]), ch, font=font, fill=color,
+                                   stroke_width=grow, stroke_fill=color)
+            k = (bottom - top) / g.height
+            g = g.resize((round(g.width * k * NUMERALS["condense"]), bottom - top),
+                         Image.LANCZOS)
         else:
             b = font.getbbox(ch, stroke_width=grow)
             g = Image.new("RGBA", (b[2] - b[0], bottom - top), (0, 0, 0, 0))
@@ -635,7 +707,7 @@ WEATHER_ICON = dict(size=44.0, line=0.075)
 #: centered on `center`. The temperature's digit height (in the hour
 #: numerals' style), the name's font size (the watch's own font), the gaps
 #: between the three, and the name's box width, in watch face units. Hidden
-#: when the watch has no weather; dimmed in always-on mode.
+#: when the watch has no weather; hidden in always-on mode.
 WEATHER = dict(center=(92.0, 225.0), temperature=18.0, text=17.0, gaps=(4.0, 5.0),
                text_width=160.0)
 #: The icon for each [WEATHER.CONDITION] value, 0 to 15, by day and by night.
@@ -874,12 +946,136 @@ def render_temperature_glyphs():
             TEMPERATURE_GLYPHS[name] = size
 
 
+# ------------------------------------------------------------------- battery
+
+#: The battery level: an orange battery outline with a terminal nub on the
+#: right and a row of segments inside, one per 20%, and the percentage
+#: below it in the temperature's digits and size. In watch face units: the
+#: body's width and height, its outline's width and corner radius, the nub's
+#: width and height, the space between the outline and the segments, the
+#: gaps between segments, and the percentage's gap below the battery.
+#:
+#: On the face it mirrors the weather, right of the center, the percentage
+#: level with the temperature. Hidden in always-on mode.
+BATTERY = dict(body=(38.0, 18.0), line=2.2, radius=4.0, nub=(3.2, 7.0), pad=1.8,
+               segments=5, segment_gap=1.6, gap=5.0)
+#: Below this percentage the battery and its percentage are red (the hot
+#: temperature's red): the "_low" images and the hot temperature digits.
+BATTERY_LOW = dict(limit=20, color=TEMPERATURE_COLORS["hot"])
+#: The battery image's size and the "%" image's, in pixels (set by
+#: render_battery).
+BATTERY_IMAGES = {}
+
+
+def render_battery_icon(filled, low=False):
+    """The battery with `filled` of its segments lit (left first), drawn
+    large, as a master image and at screen size: battery_<filled>.png, or
+    battery_low_<filled>.png in the low battery's red."""
+    k = DRAW_SCALE
+    (bw, bh), line, (nw, nh) = BATTERY["body"], BATTERY["line"], BATTERY["nub"]
+    margin = 1.0
+    w, h = math.ceil(bw + nw + 2 * margin), math.ceil(bh + 2 * margin)
+    img = Image.new("RGBA", (w * k, h * k), (0, 0, 0, 0))
+    draw = ImageDraw.Draw(img)
+    color = rgb(BATTERY_LOW["color"] if low else ORANGE)
+    name = f"battery{'_low' if low else ''}_{filled}"
+    x0, y0 = (w - bw - nw) / 2, (h - bh) / 2
+    draw.rounded_rectangle([x0 * k, y0 * k, (x0 + bw) * k, (y0 + bh) * k],
+                           radius=BATTERY["radius"] * k, outline=color, width=round(line * k))
+    # The nub, from under the outline's right side out, its outer corners round.
+    ny = y0 + (bh - nh) / 2
+    draw.rounded_rectangle([(x0 + bw - line) * k, ny * k, (x0 + bw + nw) * k, (ny + nh) * k],
+                           radius=nw * 0.55 * k, fill=color, corners=(False, True, True, False))
+    # The segments, evenly across the inside.
+    n, gap, pad = BATTERY["segments"], BATTERY["segment_gap"], BATTERY["pad"]
+    ix, iy = x0 + line + pad, y0 + line + pad
+    iw, ih = bw - 2 * (line + pad), bh - 2 * (line + pad)
+    sw = (iw - gap * (n - 1)) / n
+    for i in range(filled):
+        sx = ix + i * (sw + gap)
+        draw.rounded_rectangle([sx * k, iy * k, (sx + sw) * k, (iy + ih) * k],
+                               radius=0.8 * k, fill=color)
+    master = img.resize((w * MASTER_SCALE, h * MASTER_SCALE), Image.LANCZOS)
+    MASTERS.mkdir(parents=True, exist_ok=True)
+    master.save(MASTERS / f"{name}.png")
+    master.resize((w * SCALE, h * SCALE), Image.LANCZOS).save(DRAWABLE / f"{name}.png")
+    BATTERY_IMAGES["icon"] = (w * SCALE, h * SCALE)
+    return master
+
+
+def render_battery_percent(low=False):
+    """The percentage's "%" in the temperature digits' style and size:
+    battery_percent.png, or battery_percent_low.png in the low battery's
+    red. Returns the master. Unlike the digits it has no spacing after it:
+    it always comes last, and the spacing would shift the centered
+    percentage left of the battery above it."""
+    height = WEATHER["temperature"] * DRAW_SCALE
+    name = f"battery_percent{'_low' if low else ''}"
+    img = render_glyphs("%", height, BATTERY_LOW["color"] if low else ORANGE)[0]
+    w, h = img.width / DRAW_SCALE, img.height / DRAW_SCALE
+    master = img.resize((round(w * MASTER_SCALE), round(h * MASTER_SCALE)), Image.LANCZOS)
+    master.save(MASTERS / f"{name}.png")
+    size = (round(w * SCALE), round(h * SCALE))
+    master.resize(size, Image.LANCZOS).save(DRAWABLE / f"{name}.png")
+    BATTERY_IMAGES["percent"] = size
+    return master
+
+
+def battery_segments(level):
+    """How many segments are lit at a percentage: one per step, rounded up."""
+    return math.ceil(level * BATTERY["segments"] / 100)
+
+
+def render_battery():
+    """The battery icons and the "%", in orange and in the low battery's
+    red, each icon for as many segments as a level in its color can light,
+    and a review sheet of the battery at several levels with its
+    percentage (build/masters/battery.png)."""
+    limit = BATTERY_LOW["limit"]
+    icons = {n: render_battery_icon(n)
+             for n in range(battery_segments(limit), BATTERY["segments"] + 1)}
+    low_icons = {n: render_battery_icon(n, low=True)
+                 for n in range(battery_segments(limit - 1) + 1)}
+    percent, low_percent = render_battery_percent(), render_battery_percent(low=True)
+    # The review sheet: the battery over its percentage, at sample levels,
+    # built from the master images, on black.
+    digits = {str(d): Image.open(MASTERS / f"weather_temp_{d}.png") for d in range(10)}
+    digits["%"] = percent
+    low_digits = {str(d): Image.open(MASTERS / f"weather_temp_hot_{d}.png") for d in range(10)}
+    low_digits["%"] = low_percent
+    gap = round(BATTERY["gap"] * MASTER_SCALE)
+    samples = (100, 80, 55, 38, 20, 12, 5)
+    cells = []
+    for level in samples:
+        low = level < BATTERY_LOW["limit"]
+        icon = (low_icons if low else icons)[battery_segments(level)]
+        glyphs = [(low_digits if low else digits)[c] for c in f"{level}%"]
+        text_w = sum(g.width for g in glyphs)
+        cell = Image.new("RGBA", (max(icon.width, text_w), icon.height + gap + glyphs[0].height),
+                         (0, 0, 0, 0))
+        cell.alpha_composite(icon, ((cell.width - icon.width) // 2, 0))
+        x = (cell.width - text_w) // 2
+        for g in glyphs:
+            cell.alpha_composite(g, (x, icon.height + gap))
+            x += g.width
+        cells.append(cell)
+    pad = 60
+    sheet = Image.new("RGBA", (sum(c.width for c in cells) + pad * (len(cells) + 1),
+                               max(c.height for c in cells) + 2 * pad), (0, 0, 0, 255))
+    x = pad
+    for c in cells:
+        sheet.alpha_composite(c, (x, pad))
+        x += c.width + pad
+    sheet.convert("RGB").save(MASTERS / "battery.png")
+
+
 def render_images():
     DRAWABLE.mkdir(parents=True, exist_ok=True)
     render_triangle()
     render_numerals()
     render_weather_icons()
     render_temperature_glyphs()
+    render_battery()
     render_hand("hand_hour", HOUR_HAND)
     render_hand("hand_hour_ambient", HOUR_HAND, ambient=True)
     render_hand("hand_minute", MINUTE_HAND)
@@ -893,6 +1089,8 @@ TEST_TIME = (10, 9, 36)
 #: has none): the WEATHER data sources' values, unit 1 being Celsius.
 TEST_WEATHER = dict(IS_AVAILABLE=1, IS_DAY=1, CONDITION=1, TEMPERATURE=72,
                     TEMPERATURE_UNIT=0, CONDITION_NAME='"Clear Sky"')
+#: The test build's battery percentage, in place of the watch's.
+TEST_BATTERY = 80
 
 
 def write_xml(test=False):

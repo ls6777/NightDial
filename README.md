@@ -23,8 +23,11 @@ It is built with the [Watch Face Format](https://developer.android.com/training/
 - **Weather:** left of the center, from the watch's weather data: an orange icon for the
   condition (night versions after dark), the temperature (red above 90°F, blue below 40°F,
   orange between) and the condition's name. Without weather data, the sun and "--°".
-- **Always-on mode:** the dimmed ring, numerals and weather, and outlined hour and minute
-  hands, without the seconds hand.
+- **Battery:** right of the center, mirroring the weather: an orange battery with a segment
+  lit for every 20% (rounded up), and the percentage below it, level with the temperature.
+  Both turn red below 20%.
+- **Always-on mode:** the dimmed ring and numerals, and the hour and minute hands with
+  their orange hollowed out to an outline; no seconds hand, weather or battery.
 
 ## How it's built
 
@@ -52,7 +55,7 @@ Python 3 with Pillow.
 ```sh
 ./build.sh          # generate and build the debug APK
 ./build.sh run      # also install it on the watch or emulator and make it the active face
-./build.sh test     # the same with the hands frozen and sample weather, to check the layout
+./build.sh test     # the same with the hands frozen and sample weather and battery, to check the layout
 ./build.sh release  # release bundle (.aab) for Google Play (set up release signing first)
 ./build.sh log      # the watch face runtime's log: XML and expression errors show up here
 ```
