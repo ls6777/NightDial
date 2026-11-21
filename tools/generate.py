@@ -386,7 +386,7 @@ def date_gauge(scene, sample=None):
     # The day of the month, centered below the hub. Each digit image ends
     # in the digits' spacing, so the box moves right by half of it.
     height = DATE_GAUGE["date"]["height"]
-    trailing = NUMERALS["tracking"] * height
+    trailing = GAUGE_FONT["tracking"] * height
     top_y = cy + DATE_GAUGE["hub"][0][0] + DATE_GAUGE["date"]["gap"]
     part = el(group, "PartText", x=round(trailing / 2), y=round(top_y), width=size,
               height=math.ceil(height + 1))
@@ -1144,7 +1144,7 @@ def render_battery():
 DATE_GAUGE = dict(
     distance=110.0,
     ticks=(50.0, 4.4, 1.8),
-    labels=dict(height=8.0, gap=3.0),
+    labels=dict(height=10.0, gap=3.0),
     arc=240.0,
     pointer=dict(gap=2.0, outline=((-0.10, 2.35), (0.0, 2.47), (0.71, 3.33), (1.0, 0.0))),
     hub=((6.0, "#DCDCDC"), (4.5, "#161616"), (3.5, "#BEBEBE"), (2.4, "#8E8E8E"),
@@ -1154,6 +1154,47 @@ DATE_GAUGE = dict(
 #: The gauge's gray, for its tick marks, day names and date, as measured
 #: from the reference.
 GAUGE_GRAY = "#A4A4A4"
+#: The gauge's font, for its day names and date: Oswald (SIL Open Font
+#: License, tools/fonts/), tall, narrow and crisp, unlike the numerals'
+#: rounded one. The font file, its weight for a variable font (None for a
+#: static one), and the space between characters as a fraction of the cap
+#: height.
+GAUGE_FONT = dict(file=ROOT / "tools" / "fonts" / "Oswald-Variable.ttf",
+                  weight=400, tracking=0.08)
+
+
+def gauge_font(height):
+    """GAUGE_FONT at the size that makes its capitals `height` pixels tall,
+    and the top and bottom of its capitals and digits, with their curves'
+    overshoot, from the baseline."""
+    def load(size):
+        font = ImageFont.truetype(str(GAUGE_FONT["file"]), size)
+        if GAUGE_FONT["weight"] is not None:
+            font.set_variation_by_axes([GAUGE_FONT["weight"]])
+        return font
+    probe = load(1000)
+    top, bottom = probe.getbbox("H", anchor="ls")[1::2]
+    font = load(round(1000 * height / (bottom - top)))
+    box = font.getbbox("HOS0123456789", anchor="ls")
+    return font, box[1], box[3]
+
+
+def render_gauge_text(text, height, color=GAUGE_GRAY, trailing=False):
+    """Text in GAUGE_FONT, its capitals `height` pixels tall, as an image
+    from the capitals' top to the baseline (and the curves' overshoot past
+    them). Characters are spaced by their advance and GAUGE_FONT's
+    tracking, which also follows the last one when `trailing`."""
+    font, top, bottom = gauge_font(height)
+    gap = GAUGE_FONT["tracking"] * height
+    widths = [font.getlength(ch) for ch in text]
+    width = sum(widths) + gap * (len(text) - (0 if trailing else 1))
+    img = Image.new("RGBA", (math.ceil(width), bottom - top), (0, 0, 0, 0))
+    draw = ImageDraw.Draw(img)
+    x = 0.0
+    for ch, w in zip(text, widths):
+        draw.text((x, -top), ch, font=font, fill=rgb(color), anchor="ls")
+        x += w + gap
+    return img
 DAY_NAMES = ("SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT")
 #: The date gauge's image sizes and the pointer's length (set by
 #: render_date_gauge): "dial" and "hub" (pixels square), "digits" (each
@@ -1195,7 +1236,7 @@ def render_date_dial():
     # The day names, each with its outer edge `gap` inside the ticks.
     limit = inner - g["labels"]["gap"]
     for day, name in enumerate(DAY_NAMES):
-        label = render_label(name, k, g["labels"]["height"], GAUGE_GRAY)
+        label = render_gauge_text(name, g["labels"]["height"] * k)
         w, h = label.width / k, label.height / k
         a = math.radians(day_angle(day))
         reach = abs(w / 2 * math.sin(a)) + abs(h / 2 * math.cos(a))
@@ -1238,15 +1279,13 @@ def render_date_hub():
 
 
 def render_date_digits():
-    """The date's digits in the hour numerals' style, gray, each with the
-    numerals' spacing after it: date_digit_<n>.png. Returns the masters."""
+    """The date's digits in the gauge's font, each with its spacing after
+    it: date_digit_<n>.png. Returns the masters."""
     height = DATE_GAUGE["date"]["height"] * DRAW_SCALE
-    gap = round(NUMERALS["tracking"] * height)
     masters = []
     DATE_IMAGES["digits"] = {}
-    for d, g in enumerate(render_glyphs("0123456789", height, GAUGE_GRAY)):
-        img = Image.new("RGBA", (g.width + gap, g.height), (0, 0, 0, 0))
-        img.alpha_composite(g)
+    for d in range(10):
+        img = render_gauge_text(str(d), height, trailing=True)
         w, h = img.width / DRAW_SCALE, img.height / DRAW_SCALE
         master = img.resize((round(w * MASTER_SCALE), round(h * MASTER_SCALE)), Image.LANCZOS)
         master.save(MASTERS / f"date_digit_{d}.png")
@@ -1278,7 +1317,7 @@ def render_date_gauge():
     sheet.alpha_composite(layer.rotate(-day_angle(5), resample=Image.BICUBIC, center=(cx, cy)))
     sheet.alpha_composite(hub, (round(cx - hub.width / 2), round(cy - hub.height / 2)))
     shown = [digits[2], digits[0]]
-    trailing = NUMERALS["tracking"] * DATE_GAUGE["date"]["height"] * k
+    trailing = GAUGE_FONT["tracking"] * DATE_GAUGE["date"]["height"] * k
     x = round(cx - (sum(d.width for d in shown) - trailing) / 2)
     y = round(cy + (DATE_GAUGE["hub"][0][0] + DATE_GAUGE["date"]["gap"]) * k)
     for d in shown:

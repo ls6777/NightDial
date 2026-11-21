@@ -42,7 +42,7 @@ size. Edit the script, not the generated files.
 | File | Purpose |
 |---|---|
 | `tools/generate.py` | Writes `res/raw/watchface.xml` and the images in `res/drawable/` |
-| `tools/fonts/` | Varela Round (SIL Open Font License) for the numerals, temperature, battery percentage and date |
+| `tools/fonts/` | Varela Round for the numerals, temperature and battery percentage, and Oswald for the date gauge (both SIL Open Font License) |
 | `build.sh` | Generate, build, install, test build, runtime log |
 | `watchface/src/main/AndroidManifest.xml` | Package, Watch Face Format version 4, no code |
 | `watchface/src/main/res/raw/watchface.xml` | The watch face (generated) |
