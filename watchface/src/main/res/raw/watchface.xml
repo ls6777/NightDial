@@ -188,6 +188,9 @@
             <PartImage angle="270" pivotX="0.5" pivotY="0.5" x="4" y="220" width="11" height="10">
                 <Image resource="marker_triangle" />
             </PartImage>
+            <PartImage x="0" y="0" width="450" height="450">
+                <Image resource="numerals" />
+            </PartImage>
         </Group>
         <AnalogClock x="0" y="0" width="450" height="450" name="hands">
             <Variant mode="AMBIENT" target="alpha" value="0" />

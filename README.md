@@ -14,7 +14,8 @@ It is built with the [Watch Face Format](https://developer.android.com/training/
 ## The face
 
 - **Dial:** an orange ring at the edge of the face: a dot for every minute, larger at the
-  hours, and a triangle pointing inward at 12, 3, 6 and 9.
+  hours, and a triangle pointing inward at 12, 3, 6 and 9. Small orange hour numerals 1 to
+  12 sit just inside it.
 - **Hands:** dark hour and minute hands with straight sides that widen out from the hub to a
   point, a gray outline, a bordered orange insert and a gray center bar; a light gray seconds
   hand with a counterweight, ending just inside the ring; and a black hub with three gray

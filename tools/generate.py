@@ -21,7 +21,7 @@ import pathlib
 import sys
 import xml.etree.ElementTree as ET
 
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageFont
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 RES = ROOT / "watchface" / "src" / "main" / "res"
@@ -43,6 +43,16 @@ RING = 0.96
 MINUTE_DOT = 1.8
 HOUR_DOT = 3.2
 TRIANGLE = (11.0, 10.0)
+
+#: Hour numerals 1 to 12, orange and upright, inside the ring. Drawn with
+#: Varela Round (SIL Open Font License, tools/fonts/), thickened to the
+#: reference's stroke weight, with each "1" a plain bar with round ends.
+#: Their digit height, the gap between each numeral's outer edge and the
+#: ring's hour dots, in watch face units; the stroke width and the space
+#: between digits as fractions of the digit height; and how much the font's
+#: digits are narrowed, to the reference's proportions.
+NUMERALS = dict(height=20.0, gap=9.0, stroke=0.17, tracking=0.08, condense=0.9)
+NUMERAL_FONT = ROOT / "tools" / "fonts" / "VarelaRound-Regular.ttf"
 
 #: Hands. Each is a length (a fraction of the radius) and outlines given as
 #: (distance, half-width) points down one side, from the tail to the tip,
@@ -178,6 +188,8 @@ def dial(scene):
         tri = el(group, "PartImage", angle=float(i * 90), pivotX=0.5, pivotY=0.5,
                  **box(x, y, w, h))
         el(tri, "Image", resource="marker_triangle")
+    numerals = el(group, "PartImage", x=0, y=0, width=SIZE, height=SIZE)
+    el(numerals, "Image", resource="numerals")
 
 
 def hand_parts(clock, kind, resource, angle=None):
@@ -425,9 +437,80 @@ def render_triangle():
     img.resize((w * SCALE, h * SCALE), Image.LANCZOS).save(DRAWABLE / "marker_triangle.png")
 
 
+def render_label(text, k):
+    """An hour numeral's image at k pixels per unit, NUMERALS["height"]
+    tall: Varela Round digits thickened to the stroke weight, each "1" a
+    bar with round ends."""
+    height = NUMERALS["height"] * k
+    stroke = NUMERALS["stroke"] * height
+    color = rgb(ORANGE)
+    # The font's own stem width, from a lowercase l, to thicken by.
+    probe = ImageFont.truetype(str(NUMERAL_FONT), 1000)
+    box = probe.getbbox("0")
+    size = 1000 * height / (box[3] - box[1])
+    font = ImageFont.truetype(str(NUMERAL_FONT), round(size))
+    lb = font.getbbox("l")
+    stem_img = Image.new("L", (lb[2] + 4, lb[3] + 4), 0)
+    ImageDraw.Draw(stem_img).text((0, 0), "l", font=font, fill=255)
+    row = [stem_img.getpixel((x, (lb[1] + lb[3]) // 2)) for x in range(stem_img.width)]
+    stem = sum(row) / 255
+    # Thick enough that the upright strokes keep the stroke width once the
+    # digits are narrowed.
+    grow = max(0, round((stroke / NUMERALS["condense"] - stem) / 2))
+    # Smaller so the thickened digits still come out `height` tall.
+    font = ImageFont.truetype(str(NUMERAL_FONT), round(size * height / (height + 2 * grow)))
+
+    # Every digit on the same baseline, the label as tall as a "0"; a "1"
+    # as tall as a flat-topped "7".
+    top, bottom = font.getbbox("0", stroke_width=grow)[1::2]
+    flat = font.getbbox("7", stroke_width=grow)
+    glyphs = []
+    for ch in text:
+        if ch == "1":
+            g = Image.new("RGBA", (math.ceil(stroke), bottom - top), (0, 0, 0, 0))
+            ImageDraw.Draw(g).rounded_rectangle(
+                [0, flat[1] - top, g.width - 1, flat[3] - top - 1], radius=stroke / 2,
+                fill=color)
+        else:
+            b = font.getbbox(ch, stroke_width=grow)
+            g = Image.new("RGBA", (b[2] - b[0], bottom - top), (0, 0, 0, 0))
+            ImageDraw.Draw(g).text((-b[0], -top), ch, font=font, fill=color,
+                                   stroke_width=grow, stroke_fill=color)
+            g = g.resize((round(g.width * NUMERALS["condense"]), g.height), Image.LANCZOS)
+        glyphs.append(g)
+    gap = round(NUMERALS["tracking"] * height)
+    out = Image.new("RGBA", (sum(g.width for g in glyphs) + gap * (len(glyphs) - 1),
+                             bottom - top), (0, 0, 0, 0))
+    x = 0
+    for g in glyphs:
+        out.alpha_composite(g, (x, 0))
+        x += g.width + gap
+    return out
+
+
+def render_numerals():
+    """The hour numerals, upright, each placed so its outer edge keeps the
+    same gap from the ring's hour dots. One face-size image."""
+    master = Image.new("RGBA", (SIZE * MASTER_SCALE,) * 2, (0, 0, 0, 0))
+    limit = R * RING - HOUR_DOT - NUMERALS["gap"]
+    for hour in range(1, 13):
+        label = render_label(str(hour), DRAW_SCALE)
+        w, h = label.width / DRAW_SCALE, label.height / DRAW_SCALE
+        label = label.resize((round(w * MASTER_SCALE), round(h * MASTER_SCALE)), Image.LANCZOS)
+        a = math.radians(hour * 30)
+        reach = abs(w / 2 * math.sin(a)) + abs(h / 2 * math.cos(a))
+        x, y = polar(hour * 30, limit - reach)
+        master.alpha_composite(label, (round(x * MASTER_SCALE - label.width / 2),
+                                       round(y * MASTER_SCALE - label.height / 2)))
+    MASTERS.mkdir(parents=True, exist_ok=True)
+    master.save(MASTERS / "numerals.png")
+    master.resize((SIZE * SCALE,) * 2, Image.LANCZOS).save(DRAWABLE / "numerals.png")
+
+
 def render_images():
     DRAWABLE.mkdir(parents=True, exist_ok=True)
     render_triangle()
+    render_numerals()
     render_hand("hand_hour", HOUR_HAND)
     render_hand("hand_hour_ambient", HOUR_HAND, ambient=True)
     render_hand("hand_minute", MINUTE_HAND)
