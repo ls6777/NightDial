@@ -3,6 +3,92 @@
 <WatchFace width="450" height="450">
     <Metadata key="CLOCK_TYPE" value="ANALOG" />
     <Metadata key="PREVIEW_TIME" value="10:09:36" />
+    <BitmapFonts>
+        <BitmapFont name="weather_icons_day">
+            <Character name="0" resource="weather_unknown" width="44" height="44" />
+            <Character name="1" resource="weather_clear_day" width="44" height="44" />
+            <Character name="2" resource="weather_cloudy" width="44" height="44" />
+            <Character name="3" resource="weather_fog" width="44" height="44" />
+            <Character name="4" resource="weather_heavy_rain" width="44" height="44" />
+            <Character name="5" resource="weather_heavy_snow" width="44" height="44" />
+            <Character name="6" resource="weather_rain" width="44" height="44" />
+            <Character name="7" resource="weather_snow" width="44" height="44" />
+            <Character name="8" resource="weather_clear_day" width="44" height="44" />
+            <Character name="9" resource="weather_thunderstorm" width="44" height="44" />
+            <Word name="10" resource="weather_sleet" width="44" height="44" />
+            <Word name="11" resource="weather_light_snow" width="44" height="44" />
+            <Word name="12" resource="weather_light_rain" width="44" height="44" />
+            <Word name="13" resource="weather_mist" width="44" height="44" />
+            <Word name="14" resource="weather_partly_cloudy_day" width="44" height="44" />
+            <Word name="15" resource="weather_windy" width="44" height="44" />
+        </BitmapFont>
+        <BitmapFont name="weather_icons_night">
+            <Character name="0" resource="weather_unknown" width="44" height="44" />
+            <Character name="1" resource="weather_clear_night" width="44" height="44" />
+            <Character name="2" resource="weather_cloudy" width="44" height="44" />
+            <Character name="3" resource="weather_fog" width="44" height="44" />
+            <Character name="4" resource="weather_heavy_rain" width="44" height="44" />
+            <Character name="5" resource="weather_heavy_snow" width="44" height="44" />
+            <Character name="6" resource="weather_rain" width="44" height="44" />
+            <Character name="7" resource="weather_snow" width="44" height="44" />
+            <Character name="8" resource="weather_clear_night" width="44" height="44" />
+            <Character name="9" resource="weather_thunderstorm" width="44" height="44" />
+            <Word name="10" resource="weather_sleet" width="44" height="44" />
+            <Word name="11" resource="weather_light_snow" width="44" height="44" />
+            <Word name="12" resource="weather_light_rain" width="44" height="44" />
+            <Word name="13" resource="weather_mist" width="44" height="44" />
+            <Word name="14" resource="weather_partly_cloudy_night" width="44" height="44" />
+            <Word name="15" resource="weather_windy" width="44" height="44" />
+        </BitmapFont>
+        <BitmapFont name="weather_temperature">
+            <Character name="0" resource="weather_temp_0" width="16" height="18" />
+            <Character name="1" resource="weather_temp_1" width="4" height="18" />
+            <Character name="2" resource="weather_temp_2" width="16" height="18" />
+            <Character name="3" resource="weather_temp_3" width="16" height="18" />
+            <Character name="4" resource="weather_temp_4" width="16" height="18" />
+            <Character name="5" resource="weather_temp_5" width="16" height="18" />
+            <Character name="6" resource="weather_temp_6" width="16" height="18" />
+            <Character name="7" resource="weather_temp_7" width="16" height="18" />
+            <Character name="8" resource="weather_temp_8" width="16" height="18" />
+            <Character name="9" resource="weather_temp_9" width="16" height="18" />
+            <Character name="-" resource="weather_temp_minus" width="10" height="18" />
+            <Character name="°" resource="weather_temp_degree" width="9" height="18" />
+            <Character name="F" resource="weather_temp_f" width="15" height="18" />
+            <Character name="C" resource="weather_temp_c" width="17" height="18" />
+        </BitmapFont>
+        <BitmapFont name="weather_temperature_hot">
+            <Character name="0" resource="weather_temp_hot_0" width="16" height="18" />
+            <Character name="1" resource="weather_temp_hot_1" width="4" height="18" />
+            <Character name="2" resource="weather_temp_hot_2" width="16" height="18" />
+            <Character name="3" resource="weather_temp_hot_3" width="16" height="18" />
+            <Character name="4" resource="weather_temp_hot_4" width="16" height="18" />
+            <Character name="5" resource="weather_temp_hot_5" width="16" height="18" />
+            <Character name="6" resource="weather_temp_hot_6" width="16" height="18" />
+            <Character name="7" resource="weather_temp_hot_7" width="16" height="18" />
+            <Character name="8" resource="weather_temp_hot_8" width="16" height="18" />
+            <Character name="9" resource="weather_temp_hot_9" width="16" height="18" />
+            <Character name="-" resource="weather_temp_hot_minus" width="10" height="18" />
+            <Character name="°" resource="weather_temp_hot_degree" width="9" height="18" />
+            <Character name="F" resource="weather_temp_hot_f" width="15" height="18" />
+            <Character name="C" resource="weather_temp_hot_c" width="17" height="18" />
+        </BitmapFont>
+        <BitmapFont name="weather_temperature_cold">
+            <Character name="0" resource="weather_temp_cold_0" width="16" height="18" />
+            <Character name="1" resource="weather_temp_cold_1" width="4" height="18" />
+            <Character name="2" resource="weather_temp_cold_2" width="16" height="18" />
+            <Character name="3" resource="weather_temp_cold_3" width="16" height="18" />
+            <Character name="4" resource="weather_temp_cold_4" width="16" height="18" />
+            <Character name="5" resource="weather_temp_cold_5" width="16" height="18" />
+            <Character name="6" resource="weather_temp_cold_6" width="16" height="18" />
+            <Character name="7" resource="weather_temp_cold_7" width="16" height="18" />
+            <Character name="8" resource="weather_temp_cold_8" width="16" height="18" />
+            <Character name="9" resource="weather_temp_cold_9" width="16" height="18" />
+            <Character name="-" resource="weather_temp_cold_minus" width="10" height="18" />
+            <Character name="°" resource="weather_temp_cold_degree" width="9" height="18" />
+            <Character name="F" resource="weather_temp_cold_f" width="15" height="18" />
+            <Character name="C" resource="weather_temp_cold_c" width="17" height="18" />
+        </BitmapFont>
+    </BitmapFonts>
     <Scene backgroundColor="#000000">
         <Group name="dial" x="0" y="0" width="450" height="450">
             <Variant mode="AMBIENT" target="alpha" value="154" />
@@ -191,6 +277,104 @@
             <PartImage x="0" y="0" width="450" height="450">
                 <Image resource="numerals" />
             </PartImage>
+        </Group>
+        <Group name="weather" x="12" y="178" width="160" height="95">
+            <Variant mode="AMBIENT" target="alpha" value="154" />
+            <Condition>
+                <Expressions>
+                    <Expression name="available">[WEATHER.IS_AVAILABLE]</Expression>
+                </Expressions>
+                <Compare expression="available">
+                    <Group name="weatherShown" x="0" y="0" width="160" height="95">
+                        <Condition>
+                            <Expressions>
+                                <Expression name="isDay">[WEATHER.IS_DAY]</Expression>
+                            </Expressions>
+                            <Compare expression="isDay">
+                                <PartText x="0" y="0" width="160" height="44">
+                                    <Text align="CENTER">
+                                        <BitmapFont family="weather_icons_day" size="44">
+                                            <Template>%s<Parameter expression="[WEATHER.CONDITION] &lt;= 15 ? [WEATHER.CONDITION] : 0" />
+                                            </Template>
+                                        </BitmapFont>
+                                    </Text>
+                                </PartText>
+                            </Compare>
+                            <Default>
+                                <PartText x="0" y="0" width="160" height="44">
+                                    <Text align="CENTER">
+                                        <BitmapFont family="weather_icons_night" size="44">
+                                            <Template>%s<Parameter expression="[WEATHER.CONDITION] &lt;= 15 ? [WEATHER.CONDITION] : 0" />
+                                            </Template>
+                                        </BitmapFont>
+                                    </Text>
+                                </PartText>
+                            </Default>
+                        </Condition>
+                        <Condition>
+                            <Expressions>
+                                <Expression name="hot">([WEATHER.TEMPERATURE_UNIT] == 1 ? [WEATHER.TEMPERATURE] * 9 / 5 + 32 : [WEATHER.TEMPERATURE]) &gt; 90</Expression>
+                                <Expression name="cold">([WEATHER.TEMPERATURE_UNIT] == 1 ? [WEATHER.TEMPERATURE] * 9 / 5 + 32 : [WEATHER.TEMPERATURE]) &lt; 40</Expression>
+                            </Expressions>
+                            <Compare expression="hot">
+                                <PartText x="0" y="48" width="160" height="19">
+                                    <Text align="CENTER">
+                                        <BitmapFont family="weather_temperature_hot" size="18">
+                                            <Template>%s°%s<Parameter expression="[WEATHER.TEMPERATURE]" />
+                                                <Parameter expression="[WEATHER.TEMPERATURE_UNIT] == 1 ? &quot;C&quot; : &quot;F&quot;" />
+                                            </Template>
+                                        </BitmapFont>
+                                    </Text>
+                                </PartText>
+                            </Compare>
+                            <Compare expression="cold">
+                                <PartText x="0" y="48" width="160" height="19">
+                                    <Text align="CENTER">
+                                        <BitmapFont family="weather_temperature_cold" size="18">
+                                            <Template>%s°%s<Parameter expression="[WEATHER.TEMPERATURE]" />
+                                                <Parameter expression="[WEATHER.TEMPERATURE_UNIT] == 1 ? &quot;C&quot; : &quot;F&quot;" />
+                                            </Template>
+                                        </BitmapFont>
+                                    </Text>
+                                </PartText>
+                            </Compare>
+                            <Default>
+                                <PartText x="0" y="48" width="160" height="19">
+                                    <Text align="CENTER">
+                                        <BitmapFont family="weather_temperature" size="18">
+                                            <Template>%s°%s<Parameter expression="[WEATHER.TEMPERATURE]" />
+                                                <Parameter expression="[WEATHER.TEMPERATURE_UNIT] == 1 ? &quot;C&quot; : &quot;F&quot;" />
+                                            </Template>
+                                        </BitmapFont>
+                                    </Text>
+                                </PartText>
+                            </Default>
+                        </Condition>
+                        <PartText x="0" y="71" width="160" height="24">
+                            <Text align="CENTER" ellipsis="TRUE" maxLines="1">
+                                <Font family="SYNC_TO_DEVICE" size="17" color="#FF8000" weight="MEDIUM">
+                                    <Template>%s<Parameter expression="[WEATHER.CONDITION_NAME]" />
+                                    </Template>
+                                </Font>
+                            </Text>
+                        </PartText>
+                    </Group>
+                </Compare>
+                <Default>
+                    <Group name="weatherNone" x="0" y="0" width="160" height="95">
+                        <PartImage x="58" y="0" width="44" height="44">
+                            <Image resource="weather_clear_day" />
+                        </PartImage>
+                        <PartText x="0" y="48" width="160" height="19">
+                            <Text align="CENTER">
+                                <BitmapFont family="weather_temperature" size="18">
+                                    <Template>--°</Template>
+                                </BitmapFont>
+                            </Text>
+                        </PartText>
+                    </Group>
+                </Default>
+            </Condition>
         </Group>
         <AnalogClock x="0" y="0" width="450" height="450" name="hands">
             <Variant mode="AMBIENT" target="alpha" value="0" />

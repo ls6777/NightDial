@@ -20,18 +20,23 @@ It is built with the [Watch Face Format](https://developer.android.com/training/
   point, a gray outline, a bordered orange insert and a gray center bar; a light gray seconds
   hand with a counterweight, ending just inside the ring; and a black hub with three gray
   rings.
-- **Always-on mode:** the dimmed ring and outlined hour and minute hands, without the
-  seconds hand.
+- **Weather:** left of the center, from the watch's weather data: an orange icon for the
+  condition (night versions after dark), the temperature (red above 90°F, blue below 40°F,
+  orange between) and the condition's name. Without weather data, the sun and "--°".
+- **Always-on mode:** the dimmed ring, numerals and weather, and outlined hour and minute
+  hands, without the seconds hand.
 
 ## How it's built
 
 Watch Face Format is declarative XML with no code. The layout is computed from the screen
-radius, so `tools/generate.py` writes the XML and renders the hand images with Pillow. Edit
-the script, not the generated files.
+radius, so `tools/generate.py` writes the XML and renders the images with Pillow: each is
+drawn large, saved as a master in `build/masters/` for review, and scaled down to screen
+size. Edit the script, not the generated files.
 
 | File | Purpose |
 |---|---|
-| `tools/generate.py` | Writes `res/raw/watchface.xml` and the hand images in `res/drawable/` |
+| `tools/generate.py` | Writes `res/raw/watchface.xml` and the images in `res/drawable/` |
+| `tools/fonts/` | Varela Round (SIL Open Font License) for the numerals and temperature |
 | `build.sh` | Generate, build, install, test build, runtime log |
 | `watchface/src/main/AndroidManifest.xml` | Package, Watch Face Format version 4, no code |
 | `watchface/src/main/res/raw/watchface.xml` | The watch face (generated) |
@@ -47,7 +52,7 @@ Python 3 with Pillow.
 ```sh
 ./build.sh          # generate and build the debug APK
 ./build.sh run      # also install it on the watch or emulator and make it the active face
-./build.sh test     # the same with the hands frozen at a fixed time, to check the layout
+./build.sh test     # the same with the hands frozen and sample weather, to check the layout
 ./build.sh release  # release bundle (.aab) for Google Play (set up release signing first)
 ./build.sh log      # the watch face runtime's log: XML and expression errors show up here
 ```
