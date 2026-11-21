@@ -660,11 +660,11 @@ def render_glyphs(text, height, color=ORANGE):
     return glyphs
 
 
-def render_label(text, k):
-    """An hour numeral's image at k pixels per unit, NUMERALS["height"]
-    tall (see render_glyphs)."""
-    height = NUMERALS["height"] * k
-    glyphs = render_glyphs(text, height)
+def render_label(text, k, height=None, color=ORANGE):
+    """An hour numeral's image at k pixels per unit, `height` units tall
+    (NUMERALS["height"] by default), in `color` (see render_glyphs)."""
+    height = (height or NUMERALS["height"]) * k
+    glyphs = render_glyphs(text, height, color)
     top, bottom = 0, glyphs[0].height
     gap = round(NUMERALS["tracking"] * height)
     out = Image.new("RGBA", (sum(g.width for g in glyphs) + gap * (len(glyphs) - 1),
@@ -1069,6 +1069,176 @@ def render_battery():
     sheet.convert("RGB").save(MASTERS / "battery.png")
 
 
+# ---------------------------------------------------------------- date gauge
+
+#: The date gauge, in the 1:30 segment, in the reference gauge's colors: a
+#: small dial with gray tick marks around its edge, the days of the
+#: week, SUN to SAT, upright in gray inside them around an arc open at the
+#: bottom, an orange pointer at today's on a light gray hub, and the day of
+#: the month in gray below the hub. In watch face units:
+#:
+#: - distance: the gauge center's distance from the dial center, at 45
+#:   degrees.
+#: - ticks: (inner radius, length, width) of the tick marks, one at each
+#:   day and one between days, from Sunday to Saturday.
+#: - labels: the day names' letter height, and the gap between each name's
+#:   outer edge and the ticks (placed like the hour numerals).
+#: - arc: the days' span in degrees, Sunday at its left end, Saturday at
+#:   its right.
+#: - pointer: its outline as in SECOND_HAND (distances as fractions of its
+#:   length), the reference's: straight sides widening from the hub to a
+#:   shoulder at 0.71 of its length, then straight to a sharp point, its
+#:   tail hidden under the hub. Like the seconds hand it runs over the day
+#:   names, to `gap` short of the ticks.
+#: - hub: discs as (radius, color), outermost first, each drawn over the
+#:   last: light gray rings with a dark one between, as in the reference.
+#: - date: the day of the month's digit height and its gap below the hub.
+DATE_GAUGE = dict(
+    distance=110.0,
+    ticks=(50.0, 4.4, 1.8),
+    labels=dict(height=8.0, gap=3.0),
+    arc=240.0,
+    pointer=dict(gap=2.0, outline=((-0.10, 2.35), (0.0, 2.47), (0.71, 3.33), (1.0, 0.0))),
+    hub=((6.0, "#DCDCDC"), (4.5, "#161616"), (3.5, "#BEBEBE"), (2.4, "#8E8E8E"),
+         (0.8, "#222222")),
+    date=dict(height=16.0, gap=4.0),
+)
+#: The gauge's gray, for its tick marks, day names and date, as measured
+#: from the reference.
+GAUGE_GRAY = "#A4A4A4"
+DAY_NAMES = ("SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT")
+#: The date gauge's image sizes and the pointer's length (set by
+#: render_date_gauge): "dial" and "hub" (pixels square), "digits" (each
+#: digit's (width, height) in pixels) and "pointer" (watch face units).
+DATE_IMAGES = {}
+
+
+def date_gauge_center():
+    """The date gauge's center on the face."""
+    return polar(45, DATE_GAUGE["distance"])
+
+
+def day_angle(day):
+    """The pointer's angle, clockwise from 12, for a day of the week (0 for
+    Sunday to 6 for Saturday)."""
+    arc = DATE_GAUGE["arc"]
+    return -arc / 2 + day * arc / (len(DAY_NAMES) - 1)
+
+
+def render_date_dial():
+    """The gauge's tick marks and day names: one image the size of the
+    gauge, date_dial.png. Returns the master and its size in units."""
+    g = DATE_GAUGE
+    inner, length, width = g["ticks"]
+    size = math.ceil(2 * (inner + length + 1))
+    k = DRAW_SCALE
+    img = Image.new("RGBA", (size * k,) * 2, (0, 0, 0, 0))
+    draw = ImageDraw.Draw(img)
+    c = size / 2
+    step = g["arc"] / (2 * (len(DAY_NAMES) - 1))
+    for i in range(2 * (len(DAY_NAMES) - 1) + 1):
+        # A flat-ended bar along the radius: (along, across) corners.
+        a = math.radians(-g["arc"] / 2 + i * step)
+        ux, uy = math.sin(a), -math.cos(a)
+        corners = [(r * ux - t * uy, r * uy + t * ux)
+                   for r, t in ((inner, -width / 2), (inner + length, -width / 2),
+                                (inner + length, width / 2), (inner, width / 2))]
+        draw.polygon([((c + x) * k, (c + y) * k) for x, y in corners], fill=rgb(GAUGE_GRAY))
+    # The day names, each with its outer edge `gap` inside the ticks.
+    limit = inner - g["labels"]["gap"]
+    for day, name in enumerate(DAY_NAMES):
+        label = render_label(name, k, g["labels"]["height"], GAUGE_GRAY)
+        w, h = label.width / k, label.height / k
+        a = math.radians(day_angle(day))
+        reach = abs(w / 2 * math.sin(a)) + abs(h / 2 * math.cos(a))
+        distance = limit - reach
+        x, y = c + distance * math.sin(a), c - distance * math.cos(a)
+        img.alpha_composite(label, (round((x - w / 2) * k), round((y - h / 2) * k)))
+    DATE_IMAGES["pointer"] = inner - g["pointer"]["gap"]
+    master = img.resize((size * MASTER_SCALE,) * 2, Image.LANCZOS)
+    MASTERS.mkdir(parents=True, exist_ok=True)
+    master.save(MASTERS / "date_dial.png")
+    master.resize((size * SCALE,) * 2, Image.LANCZOS).save(DRAWABLE / "date_dial.png")
+    DATE_IMAGES["dial"] = size * SCALE
+    return master, size
+
+
+def render_date_pointer():
+    """The gauge's pointer: orange, widening from the hub to a point."""
+    p = DATE_GAUGE["pointer"]
+    c = HandCanvas("date_pointer", dict(length=DATE_IMAGES["pointer"] / R,
+                                        outline=p["outline"]))
+    c.draw.polygon(c.polygon(p["outline"]), fill=rgb(ORANGE))
+    c.save()
+
+
+def render_date_hub():
+    """The gauge's hub, drawn large: date_hub.png. Returns the master."""
+    size = 2 * math.ceil(DATE_GAUGE["hub"][0][0] + 1)
+    k = DRAW_SCALE
+    img = Image.new("RGBA", (size * k,) * 2, (0, 0, 0, 0))
+    draw = ImageDraw.Draw(img)
+    c = size * k / 2
+    for radius, color in DATE_GAUGE["hub"]:
+        r = radius * k
+        draw.ellipse([c - r, c - r, c + r, c + r], fill=rgb(color))
+    master = img.resize((size * MASTER_SCALE,) * 2, Image.LANCZOS)
+    master.save(MASTERS / "date_hub.png")
+    master.resize((size * SCALE,) * 2, Image.LANCZOS).save(DRAWABLE / "date_hub.png")
+    DATE_IMAGES["hub"] = size * SCALE
+    return master
+
+
+def render_date_digits():
+    """The date's digits in the hour numerals' style, gray, each with the
+    numerals' spacing after it: date_digit_<n>.png. Returns the masters."""
+    height = DATE_GAUGE["date"]["height"] * DRAW_SCALE
+    gap = round(NUMERALS["tracking"] * height)
+    masters = []
+    DATE_IMAGES["digits"] = {}
+    for d, g in enumerate(render_glyphs("0123456789", height, GAUGE_GRAY)):
+        img = Image.new("RGBA", (g.width + gap, g.height), (0, 0, 0, 0))
+        img.alpha_composite(g)
+        w, h = img.width / DRAW_SCALE, img.height / DRAW_SCALE
+        master = img.resize((round(w * MASTER_SCALE), round(h * MASTER_SCALE)), Image.LANCZOS)
+        master.save(MASTERS / f"date_digit_{d}.png")
+        size = (round(w * SCALE), round(h * SCALE))
+        master.resize(size, Image.LANCZOS).save(DRAWABLE / f"date_digit_{d}.png")
+        DATE_IMAGES["digits"][str(d)] = size
+        masters.append(master)
+    return masters
+
+
+def render_date_gauge():
+    """The date gauge's images, and a review sheet of the gauge on Friday
+    the 20th (build/masters/date_gauge.png)."""
+    dial, size = render_date_dial()
+    render_date_pointer()
+    hub = render_date_hub()
+    digits = render_date_digits()
+    # The review sheet, from the masters: the dial, the pointer at Friday,
+    # the hub and the date, on black.
+    k = MASTER_SCALE
+    pad = 8 * k
+    sheet = Image.new("RGBA", (dial.width + 2 * pad,) * 2, (0, 0, 0, 255))
+    sheet.alpha_composite(dial, (pad, pad))
+    cx = cy = pad + size / 2 * k
+    w, top, _ = HAND_IMAGES["date_pointer"]
+    layer = Image.new("RGBA", sheet.size, (0, 0, 0, 0))
+    layer.alpha_composite(Image.open(MASTERS / "date_pointer.png"),
+                          (round(cx - w * k / 2), round(cy - top * k)))
+    sheet.alpha_composite(layer.rotate(-day_angle(5), resample=Image.BICUBIC, center=(cx, cy)))
+    sheet.alpha_composite(hub, (round(cx - hub.width / 2), round(cy - hub.height / 2)))
+    shown = [digits[2], digits[0]]
+    trailing = NUMERALS["tracking"] * DATE_GAUGE["date"]["height"] * k
+    x = round(cx - (sum(d.width for d in shown) - trailing) / 2)
+    y = round(cy + (DATE_GAUGE["hub"][0][0] + DATE_GAUGE["date"]["gap"]) * k)
+    for d in shown:
+        sheet.alpha_composite(d, (x, y))
+        x += d.width
+    sheet.convert("RGB").save(MASTERS / "date_gauge.png")
+
+
 def render_images():
     DRAWABLE.mkdir(parents=True, exist_ok=True)
     render_triangle()
@@ -1076,6 +1246,7 @@ def render_images():
     render_weather_icons()
     render_temperature_glyphs()
     render_battery()
+    render_date_gauge()
     render_hand("hand_hour", HOUR_HAND)
     render_hand("hand_hour_ambient", HOUR_HAND, ambient=True)
     render_hand("hand_minute", MINUTE_HAND)
