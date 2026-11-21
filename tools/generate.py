@@ -271,6 +271,10 @@ def bitmap_fonts(face):
                width=w, height=h)
         w, h = BATTERY_IMAGES["percent"]
         el(font, "Character", name="%", resource=f"battery_percent{low}", width=w, height=h)
+    # The date gauge's day of the month: its gray digits.
+    font = el(fonts, "BitmapFont", name="date_digits")
+    for ch, (w, h) in DATE_IMAGES["digits"].items():
+        el(font, "Character", name=ch, resource=f"date_digit_{ch}", width=w, height=h)
 
 
 def text_part(parent, y, width, height, align="CENTER", **text):
@@ -347,6 +351,49 @@ def battery(scene, sample=None):
                  level, '"%"')
 
 
+def date_gauge(scene, sample=None):
+    """The date gauge (see DATE_GAUGE): the dial, the pointer turned to the
+    day of the week, the hub over it and the day of the month below the
+    hub. Hidden in always-on mode. sample is a fixed date to show instead
+    (see TEST_DATE), for the test build."""
+    def d(source):
+        """The expression for a date source, or its sample value."""
+        return str(sample[source]) if sample else f"[{source}]"
+
+    gx, gy = date_gauge_center()
+    size = DATE_IMAGES["dial"]
+    b = box(gx, gy, size, size)
+    group = el(scene, "Group", name="dateGauge", **b)
+    ambient_hide(group)
+    cx, cy = gx - b["x"], gy - b["y"]  # the gauge center in the group
+    dial = el(group, "PartImage", **box(cx, cy, size, size))
+    el(dial, "Image", resource="date_dial")
+
+    # The pointer, its pivot at the gauge center, turned from Sunday's
+    # place by a day's step per day ([DAY_OF_WEEK] is 1 for Sunday).
+    w, top, bottom = HAND_IMAGES["date_pointer"]
+    step = DATE_GAUGE["arc"] / (len(DAY_NAMES) - 1)
+    pointer = el(group, "PartImage", x=round(cx - w / 2), y=round(cy - top), width=w,
+                 height=top + bottom, pivotX=0.5, pivotY=top / (top + bottom))
+    el(pointer, "Image", resource="date_pointer")
+    el(pointer, "Transform", target="angle",
+       value=f"{fmt(day_angle(0))} + ({d('DAY_OF_WEEK')} - 1) * {fmt(step)}")
+
+    hub_size = DATE_IMAGES["hub"]
+    hub_part = el(group, "PartImage", **box(cx, cy, hub_size, hub_size))
+    el(hub_part, "Image", resource="date_hub")
+
+    # The day of the month, centered below the hub. Each digit image ends
+    # in the digits' spacing, so the box moves right by half of it.
+    height = DATE_GAUGE["date"]["height"]
+    trailing = NUMERALS["tracking"] * height
+    top_y = cy + DATE_GAUGE["hub"][0][0] + DATE_GAUGE["date"]["gap"]
+    part = el(group, "PartText", x=round(trailing / 2), y=round(top_y), width=size,
+              height=math.ceil(height + 1))
+    t = el(part, "Text", align="CENTER")
+    template(el(t, "BitmapFont", family="date_digits", size=height), "%s", d("DAY"))
+
+
 def weather(scene, sample=None):
     """The weather display (see WEATHER): the condition's icon, the
     temperature and the condition's name. Without weather data, the sun
@@ -417,6 +464,7 @@ def watch_face(test=False):
     dial(scene)
     weather(scene, sample=TEST_WEATHER if test else None)
     battery(scene, sample=TEST_BATTERY if test else None)
+    date_gauge(scene, sample=TEST_DATE if test else None)
     analog_clock(scene, frozen=TEST_TIME if test else None)
     return face
 
@@ -1262,6 +1310,9 @@ TEST_WEATHER = dict(IS_AVAILABLE=1, IS_DAY=1, CONDITION=1, TEMPERATURE=72,
                     TEMPERATURE_UNIT=0, CONDITION_NAME='"Clear Sky"')
 #: The test build's battery percentage, in place of the watch's.
 TEST_BATTERY = 80
+#: The test build's date, in place of the watch's: Friday the 20th
+#: ([DAY_OF_WEEK] is 1 for Sunday).
+TEST_DATE = dict(DAY_OF_WEEK=6, DAY=20)
 
 
 def write_xml(test=False):

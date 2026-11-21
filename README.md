@@ -26,8 +26,11 @@ It is built with the [Watch Face Format](https://developer.android.com/training/
 - **Battery:** right of the center, mirroring the weather: an orange battery with a segment
   lit for every 20% (rounded up), and the percentage below it, level with the temperature.
   Both turn red below 20%.
+- **Date:** a gauge in the 1:30 segment: gray tick marks and day names, SUN to SAT, around
+  an arc open at the bottom, an orange pointer at today's on a light gray hub, and the day
+  of the month in gray below the hub.
 - **Always-on mode:** the dimmed ring and numerals, and the hour and minute hands with
-  their orange hollowed out to an outline; no seconds hand, weather or battery.
+  their orange hollowed out to an outline; no seconds hand, weather, battery or date.
 
 ## How it's built
 
@@ -39,7 +42,7 @@ size. Edit the script, not the generated files.
 | File | Purpose |
 |---|---|
 | `tools/generate.py` | Writes `res/raw/watchface.xml` and the images in `res/drawable/` |
-| `tools/fonts/` | Varela Round (SIL Open Font License) for the numerals, temperature and battery percentage |
+| `tools/fonts/` | Varela Round (SIL Open Font License) for the numerals, temperature, battery percentage and date |
 | `build.sh` | Generate, build, install, test build, runtime log |
 | `watchface/src/main/AndroidManifest.xml` | Package, Watch Face Format version 4, no code |
 | `watchface/src/main/res/raw/watchface.xml` | The watch face (generated) |
@@ -55,7 +58,7 @@ Python 3 with Pillow.
 ```sh
 ./build.sh          # generate and build the debug APK
 ./build.sh run      # also install it on the watch or emulator and make it the active face
-./build.sh test     # the same with the hands frozen and sample weather and battery, to check the layout
+./build.sh test     # the same with the hands frozen and sample weather, battery and date, to check the layout
 ./build.sh release  # release bundle (.aab) for Google Play (set up release signing first)
 ./build.sh log      # the watch face runtime's log: XML and expression errors show up here
 ```
