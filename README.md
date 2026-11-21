@@ -1,4 +1,4 @@
-# Classic Analog for Wear OS
+# Night Dial for Wear OS
 
 Analog watch face for the Google Pixel Watch 5 (Wear OS 7). It runs on any round Wear OS 6 or
 later watch.
@@ -6,7 +6,7 @@ later watch.
 It is built with the [Watch Face Format](https://developer.android.com/training/wearables/wff)
 (version 4), which Google requires for watch faces.
 
-![Classic Analog on the Wear OS 7 emulator](docs/screenshot.png)
+![Night Dial on the Wear OS 7 emulator](docs/screenshot.png)
 
 *Test build (`./build.sh test`) on the Wear OS 7 emulator, at the test build's fixed time of
 10:09:36.*
@@ -73,4 +73,4 @@ The project also opens in Android Studio, which checks the watch face XML as you
   the port shown on the Wireless debugging screen, and `./build.sh run`.
 
 A watch face changed with `./build.sh run` keeps its settings. To get the defaults again,
-uninstall it first (`adb uninstall io.github.ls6777.classicanalog`).
+uninstall it first (`adb uninstall io.github.ls6777.nightdial`).

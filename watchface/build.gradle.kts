@@ -5,12 +5,12 @@ plugins {
 android {
     // Watch Face Format bundles are resource-only: no Kotlin or Java code.
     enableKotlin = false
-    namespace = "io.github.ls6777.classicanalog"
+    namespace = "io.github.ls6777.nightdial"
     // Watch Face Format version 4 needs Wear OS 6 (API 36) or later.
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "io.github.ls6777.classicanalog"
+        applicationId = "io.github.ls6777.nightdial"
         minSdk = 36
         targetSdk = 36
         versionCode = 1

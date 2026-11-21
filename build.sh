@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Build Classic Analog for Wear OS.
+# Build Night Dial for Wear OS.
 #
 #   ./build.sh          generate the watch face XML and images, build the debug APK
 #   ./build.sh run      also install it on the connected watch or emulator and
@@ -14,7 +14,7 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 
-PACKAGE=io.github.ls6777.classicanalog
+PACKAGE=io.github.ls6777.nightdial
 
 : "${JAVA_HOME:=C:/Program Files/Android/Android Studio/jbr}"
 : "${ANDROID_HOME:=${LOCALAPPDATA:-$HOME/AppData/Local}/Android/Sdk}"

@@ -13,5 +13,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "ClassicAnalog"
+rootProject.name = "NightDial"
 include(":watchface")

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate the Classic Analog watch face: the Watch Face Format XML and its
+"""Generate the Night Dial watch face: the Watch Face Format XML and its
 images.
 
 The layout is computed from the screen radius, so the XML is generated
