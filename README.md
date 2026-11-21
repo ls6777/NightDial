@@ -13,11 +13,14 @@ It is built with the [Watch Face Format](https://developer.android.com/training/
 
 ## The face
 
-- **Dial:** a mark for every minute: thin gray minute marks, white hour marks, longer at 12,
-  3, 6 and 9.
-- **Hands:** white tapered hour and minute hands, a red seconds hand and a red hub.
-- **Always-on mode:** the dimmed marks and gray hour and minute hands, without the seconds
-  hand.
+- **Dial:** an orange ring at the edge of the face: a dot for every minute, larger at the
+  hours, and a triangle pointing inward at 12, 3, 6 and 9.
+- **Hands:** dark hour and minute hands with straight sides that widen out from the hub to a
+  point, a gray outline, a bordered orange insert and a gray center bar; a light gray seconds
+  hand with a counterweight, ending just inside the ring; and a black hub with three gray
+  rings.
+- **Always-on mode:** the dimmed ring and outlined hour and minute hands, without the
+  seconds hand.
 
 ## How it's built
 

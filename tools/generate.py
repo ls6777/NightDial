@@ -35,32 +35,83 @@ SIZE = 450
 C = SIZE / 2
 R = SIZE / 2
 
-#: Dial marks, as fractions of the radius: the outer end of every mark, and
-#: the length and width of the minute marks, the hour marks and the marks at
-#: 12, 3, 6 and 9.
-MARK_OUTER = 0.97
-MINUTE_MARK = (0.04, 1.5)
-HOUR_MARK = (0.10, 4.0)
-QUARTER_MARK = (0.14, 6.0)
+#: Dial ring at the edge of the face: a dot for every minute, larger at the
+#: hours, and a triangle pointing inward at 12, 3, 6 and 9. The ring's
+#: radius as a fraction of the screen's; the dot radii and the triangle's
+#: width and height in watch face units.
+RING = 0.96
+MINUTE_DOT = 1.8
+HOUR_DOT = 3.2
+TRIANGLE = (11.0, 10.0)
 
-#: Hands: (length, width at the center, width at the tip), the lengths as
-#: fractions of the radius and the widths in watch face units.
-HOUR_HAND = (0.52, 9.0, 5.0)
-MINUTE_HAND = (0.82, 7.0, 3.5)
-#: Seconds hand: tail and tip as fractions of the radius, and its width.
-SECOND_HAND = (0.18, 0.90, 2.0)
-#: Center hub radius, in watch face units.
-HUB_RADIUS = 7
+#: Hands. Each is a length (a fraction of the radius) and outlines given as
+#: (distance, half-width) points down one side, from the tail to the tip,
+#: mirrored for the other side. A distance is a fraction of the hand's
+#: length from the center (negative for a tail) and a half-width is in
+#: watch face units.
+#:
+#: The hands are measured from the reference face, scaled by 1.43 watch
+#: face units per reference pixel, which puts the minute hand's tip just
+#: inside the dial ring as in the reference.
+#:
+#: The hour and minute hands, measured from the 960 px reference and scaled
+#: by 0.547 units per pixel (the minute hand's tip sits as close to the dial
+#: ring as in the reference). Every edge is a straight line.
+#:
+#: - outline: its sides run straight from under the hub to the shoulder,
+#:   then straight to the point; (distance, half-width) at the hub end, at
+#:   the shoulder and at the tip.
+#: - insert: the orange, its sides parallel to the outline's, inside the
+#:   outline's line, a black gap and its own gray border (`lines`: their
+#:   widths). Distances of its flat hub end, its shoulder and its point.
+#: - center: a bar down the middle from the hub to the insert, and on from
+#:   the insert's point into the hand's: two bright gray lines with a dim
+#:   seam between them. Its width and the seam's; the hour hand's is the
+#:   thicker.
+HOUR_HAND = dict(
+    length=0.608,
+    outline=((-0.04, 10.1), (0.836, 17.9), (1.0, 0.0)),
+    lines=dict(outline=2.6, gap=3.4, border=2.6),
+    insert=(0.352, 0.84, 0.902),
+    center=dict(width=6.2, seam=1.2),
+)
+MINUTE_HAND = dict(
+    length=0.914,
+    outline=((-0.03, 9.25), (0.862, 15.0), (1.0, 0.0)),
+    lines=dict(outline=2.4, gap=2.5, border=2.5),
+    insert=(0.332, 0.856, 0.910),
+    center=dict(width=4.8, seam=1.0),
+)
+#: The hour and minute hands' colors: the outline, the insert's border, and
+#: the center bar's lines and seam, as measured from the reference.
+HAND_LINE_COLORS = dict(outline="#333333", border="#373737", center="#4C4C4C",
+                        seam="#1E1E1E")
+#: The seconds hand: a light gray needle with a blunt end, stopping just
+#: inside the dial ring's triangles (at 0.938 of the radius), and a
+#: counterweight that widens away from the hub.
+SECOND_HAND = dict(
+    length=0.92,
+    outline=((-0.394, 5.0), (-0.193, 3.6), (-0.096, 2.5), (-0.021, 2.2), (0.0, 1.8),
+             (1.0, 1.6)),
+)
+#: Center hub: a near-black disc with three thin gray rings, (radius, ring width)
+#: in watch face units.
+HUB_RINGS = ((17.2, 2.1), (13.6, 2.1), (8.6, 2.1))
 
 #: Alpha of the dial marks in always-on mode.
 AMBIENT_ALPHA = 154
 
 # --------------------------------------------------------------------- colors
 
-WHITE = "#FFFFFF"
-GRAY = "#9A9A9A"
-MINUTE_GRAY = "#808080"
-RED = "#FF3B30"
+ORANGE = "#FF8000"
+#: The hour and minute hands' near-black body, also the hub's fill, and
+#: the hub's rings.
+HAND_BODY = "#050505"
+HAND_EDGE_COLOR = "#363636"
+#: The seconds hand.
+SECOND_GRAY = "#BCBCBC"
+#: The hands' edge in always-on mode, brighter so the outline reads alone.
+AMBIENT_EDGE = "#9A9A9A"
 
 
 def polar(degrees, distance):
@@ -107,61 +158,61 @@ def ambient_only(parent):
 
 
 def dial(scene):
-    """A mark for every minute: thin gray minute marks, white hour marks,
-    longer at 12, 3, 6 and 9. Dimmed in always-on mode."""
+    """The orange ring at the edge of the face: a dot for every minute,
+    larger at the hours, and a triangle pointing inward at 12, 3, 6 and 9.
+    Dimmed in always-on mode."""
     group = el(scene, "Group", name="dial", x=0, y=0, width=SIZE, height=SIZE)
     el(group, "Variant", mode="AMBIENT", target="alpha", value=AMBIENT_ALPHA)
     draw = el(group, "PartDraw", x=0, y=0, width=SIZE, height=SIZE)
     for i in range(60):
         if i % 15 == 0:
-            (length, width), color = QUARTER_MARK, WHITE
-        elif i % 5 == 0:
-            (length, width), color = HOUR_MARK, WHITE
-        else:
-            (length, width), color = MINUTE_MARK, MINUTE_GRAY
-        x0, y0 = polar(i * 6, R * (MARK_OUTER - length))
-        x1, y1 = polar(i * 6, R * MARK_OUTER)
-        line = el(draw, "Line", startX=x0, startY=y0, endX=x1, endY=y1)
-        el(line, "Stroke", color=color, thickness=width)
+            continue  # a triangle, below
+        radius = HOUR_DOT if i % 5 == 0 else MINUTE_DOT
+        x, y = polar(i * 6, R * RING)
+        dot = el(draw, "Ellipse", x=x - radius, y=y - radius,
+                 width=2 * radius, height=2 * radius)
+        el(dot, "Fill", color=ORANGE)
+    w, h = TRIANGLE
+    for i in range(4):
+        x, y = polar(i * 90, R * RING)
+        tri = el(group, "PartImage", angle=float(i * 90), pivotX=0.5, pivotY=0.5,
+                 **box(x, y, w, h))
+        el(tri, "Image", resource="marker_triangle")
 
 
-def hand_parts(clock, kind, resource, tint=None, angle=None):
+def hand_parts(clock, kind, resource, angle=None):
     """One hand image, its pivot at the dial center (see render_hand). With
     an angle, a still image at that angle instead of a moving hand."""
     w, top, bottom = HAND_IMAGES[resource]
     b = dict(x=round(C - w / 2), y=round(C - top), width=w, height=top + bottom,
              pivotX=0.5, pivotY=top / (top + bottom))
     if angle is None:
-        hand = el(clock, kind, resource=resource, **b)
-    else:
-        hand = el(clock, "PartImage", angle=float(angle), **b)
-        el(hand, "Image", resource=resource)
-    if tint:
-        hand.set("tintColor", tint)
+        return el(clock, kind, resource=resource, **b)
+    hand = el(clock, "PartImage", angle=float(angle), **b)
+    el(hand, "Image", resource=resource)
     return hand
 
 
-def hub(parent, color, ambient):
-    """Center hub over the hands."""
-    side = 2 * (HUB_RADIUS + 2)
-    b = box(C, C, side, side)
-    draw = el(parent, "PartDraw", name="hubSleep" if ambient else "hub", **b)
-    if ambient:
-        draw.set("alpha", "0")
-        ambient_only(draw)
-    else:
-        ambient_hide(draw)
+def hub(parent):
+    """Center hub over the hands: a near-black disc with three thin gray rings.
+    The same in always-on mode."""
+    outer = HUB_RINGS[0][0] + HUB_RINGS[0][1]
+    b = box(C, C, 2 * outer + 2, 2 * outer + 2)
+    draw = el(parent, "PartDraw", name="hub", **b)
     hx, hy = C - b["x"], C - b["y"]
-    for radius, fill in ((HUB_RADIUS, color), (HUB_RADIUS / 3, "#000000")):
+    e = el(draw, "Ellipse", x=hx - outer, y=hy - outer, width=2 * outer, height=2 * outer)
+    el(e, "Fill", color=HAND_BODY)
+    for radius, width in HUB_RINGS:
         e = el(draw, "Ellipse", x=hx - radius, y=hy - radius,
                width=2 * radius, height=2 * radius)
-        el(e, "Fill", color=fill)
+        el(e, "Stroke", color=HAND_EDGE_COLOR, thickness=width)
 
 
 def analog_clock(parent, frozen=None):
-    """White hands and a red seconds hand while awake; gray hands and no
-    seconds in always-on mode. frozen is an (hour, minute, second) to draw
-    the awake hands at instead of the time, for the test build."""
+    """The hour, minute and seconds hands while awake; outlined hour and
+    minute hands and no seconds in always-on mode. frozen is an (hour,
+    minute, second) to draw the awake hands at instead of the time, for the
+    test build."""
     if frozen is None:
         clock = el(parent, "AnalogClock", x=0, y=0, width=SIZE, height=SIZE, name="hands")
         angles = (None, None, None)
@@ -173,14 +224,13 @@ def analog_clock(parent, frozen=None):
     for kind, resource, angle in zip(("HourHand", "MinuteHand", "SecondHand"),
                                      ("hand_hour", "hand_minute", "hand_second"), angles):
         hand_parts(clock, kind, resource, angle=angle)
-    hub(parent, RED, ambient=False)
 
     sleep = el(parent, "AnalogClock", x=0, y=0, width=SIZE, height=SIZE,
                name="sleepHands", alpha=0)
     ambient_only(sleep)
-    hand_parts(sleep, "HourHand", "hand_hour", tint=GRAY)
-    hand_parts(sleep, "MinuteHand", "hand_minute", tint=GRAY)
-    hub(parent, GRAY, ambient=True)
+    hand_parts(sleep, "HourHand", "hand_hour_ambient")
+    hand_parts(sleep, "MinuteHand", "hand_minute_ambient")
+    hub(parent)
 
 
 def watch_face(test=False):
@@ -197,65 +247,191 @@ def watch_face(test=False):
 
 # ------------------------------------------------------------------- images
 
-#: Pixels per watch face unit in the images, so they stay sharp on screens
-#: larger than the 450-unit coordinate space.
-SCALE = 4
-#: Supersampling for smooth edges.
-SS = 4
+#: Pixels per watch face unit in the images. Keep it at 1, about the
+#: screen's own size: the runtime rotates the hands with bilinear filtering
+#: and no mipmaps, so a larger image shrunk on the way skips pixels and its
+#: edges come out wavy (at 4, the insert's edge wandered by 0.8 px).
+SCALE = 1
+#: Pixels per unit the hands are drawn at, for smooth edges. Each hand is
+#: drawn once at this size, scaled down to a master image at MASTER_SCALE
+#: (written to build/masters/ for review) and from there to SCALE.
+DRAW_SCALE = 32
+MASTER_SCALE = 8
+MASTERS = ROOT / "build" / "masters"
 #: Each hand image's width, and its height above and below the dial center,
-#: in watch face units (set by render_hand and render_second_hand).
+#: in watch face units (set by render_hand).
 HAND_IMAGES = {}
 
 
-def render_hand(name, length, base, tip):
-    """A white tapered hand pointing up, with a rounded tip and a short
-    tail, and a 1-unit dark edge so it stands out over the marks. White, so
-    the always-on hands can tint it. The center of the dial is `top` units
-    below the top of the image."""
-    ln = length * R
-    tail = base
-    w = 2 * math.ceil((base + 4) / 2)  # even, so the image centers on the dial
-    top = math.ceil(ln + 2)
-    bottom = math.ceil(tail + 2)
-    HAND_IMAGES[name] = (w, top, bottom)
+def rgb(color):
+    """(r, g, b, 255) for a #RRGGBB color."""
+    return tuple(int(color[i:i + 2], 16) for i in (1, 3, 5)) + (255,)
 
-    k = SCALE * SS
-    W, H = w * k, (top + bottom) * k
-    cx = W / 2
 
-    def outline(grow):
-        m = Image.new("L", (W, H), 0)
-        d = ImageDraw.Draw(m)
-        bh, th = base / 2 + grow, tip / 2 + grow
-        tip_y = (top - ln + tip / 2) * k
-        d.polygon([(cx - bh * k, (top + tail) * k), (cx + bh * k, (top + tail) * k),
-                   (cx + th * k, tip_y), (cx - th * k, tip_y)], fill=255)
-        d.ellipse([cx - th * k, tip_y - th * k, cx + th * k, tip_y + th * k], fill=255)
-        return m
+class HandCanvas:
+    """A supersampled image of a hand pointing up, the dial center `top`
+    units below its top edge, sized to the hand's outline. Points are
+    (distance, half-width) as in HOUR_HAND."""
 
-    img = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-    img.paste((0, 0, 0, 255), mask=outline(1))
-    img.paste((255, 255, 255, 255), mask=outline(0))
-    img.resize((w * SCALE, (top + bottom) * SCALE), Image.LANCZOS).save(DRAWABLE / f"{name}.png")
+    def __init__(self, name, hand):
+        self.name = name
+        self.ln = hand["length"] * R
+        shape = hand["outline"]
+        # Even width, so the image centers on the dial.
+        self.w = 2 * math.ceil(max(hw for _, hw in shape) + 1)
+        self.top = math.ceil(max(d for d, _ in shape) * self.ln + 1)
+        self.bottom = math.ceil(max(0.0, -min(d for d, _ in shape)) * self.ln + 1)
+        HAND_IMAGES[name] = (self.w, self.top, self.bottom)
+        self.k = DRAW_SCALE
+        self.img = Image.new("RGBA", (self.w * self.k, (self.top + self.bottom) * self.k),
+                             (0, 0, 0, 0))
+        self.draw = ImageDraw.Draw(self.img)
+
+    def y(self, d):
+        """Image row of a distance along the hand."""
+        return (self.top - d * self.ln) * self.k
+
+    def polygon(self, points):
+        """The closed outline of mirrored (distance, half-width) points."""
+        cx, k = self.w * self.k / 2, self.k
+        left = [(cx - hw * k, self.y(d)) for d, hw in points]
+        right = [(cx + hw * k, self.y(d)) for d, hw in reversed(points) if hw > 0]
+        return left + right
+
+    def pixels(self, points):
+        """Image coordinates of (x, y) points in watch face units, x across
+        the hand from its center line and y along it from the dial center."""
+        cx, k = self.w * self.k / 2, self.k
+        return [(cx + x * k, (self.top - y) * k) for x, y in points]
+
+    def save(self):
+        """Scale down to the master image and from it to the watch's."""
+        h = self.top + self.bottom
+        master = self.img.resize((self.w * MASTER_SCALE, h * MASTER_SCALE), Image.LANCZOS)
+        MASTERS.mkdir(parents=True, exist_ok=True)
+        master.save(MASTERS / f"{self.name}.png")
+        master.resize((self.w * SCALE, h * SCALE), Image.LANCZOS).save(
+            DRAWABLE / f"{self.name}.png")
+
+
+def inset(points, delta):
+    """A convex polygon of (x, y) points moved inward by delta on every
+    side: each edge shifted along its normal, the corners where the shifted
+    edges meet."""
+    n = len(points)
+    area = sum(points[i][0] * points[(i + 1) % n][1] - points[(i + 1) % n][0] * points[i][1]
+               for i in range(n))
+    sign = 1 if area > 0 else -1  # inward is to the left of a counterclockwise edge
+    lines = []
+    for i in range(n):
+        (x0, y0), (x1, y1) = points[i], points[(i + 1) % n]
+        length = math.hypot(x1 - x0, y1 - y0)
+        nx, ny = -(y1 - y0) / length * sign, (x1 - x0) / length * sign
+        lines.append(((x0 + nx * delta, y0 + ny * delta), (x1 - x0, y1 - y0)))
+    out = []
+    for i in range(n):
+        (p, r), (q, s) = lines[i - 1], lines[i]
+        t = ((q[0] - p[0]) * s[1] - (q[1] - p[1]) * s[0]) / (r[0] * s[1] - r[1] * s[0])
+        out.append((p[0] + t * r[0], p[1] + t * r[1]))
+    return out
+
+
+def clip_below(points, y0):
+    """The part of a polygon at or above y0 (Sutherland-Hodgman)."""
+    out = []
+    for i in range(len(points)):
+        a, b = points[i - 1], points[i]
+        if (a[1] >= y0) != (b[1] >= y0):
+            t = (y0 - a[1]) / (b[1] - a[1])
+            out.append((a[0] + t * (b[0] - a[0]), y0))
+        if b[1] >= y0:
+            out.append(b)
+    return out
+
+
+def render_hand(name, hand, ambient=False):
+    """An hour or minute hand (see HOUR_HAND), every edge a straight line.
+    In always-on mode the body is black and only the lines are drawn, the
+    insert outlined in orange."""
+    c = HandCanvas(name, hand)
+    k, ln = c.k, c.ln
+    (d0, hw0), (ds, hws), (dt, _) = hand["outline"]
+    outline = [(-hw0, d0 * ln), (-hws, ds * ln), (0.0, dt * ln), (hws, ds * ln), (hw0, d0 * ln)]
+
+    # The orange's sides: the outline's sides moved in by the outline's
+    # line, the gap and the border, from the insert's hub end out.
+    lines = hand["lines"]
+    start, shoulder, tip = (d * ln for d in hand["insert"])
+    sides = clip_below(inset(outline, lines["outline"] + lines["gap"] + lines["border"]), start)
+    # The orange: those sides out to its own shoulder, then a point; its
+    # gray border around it, outside it.
+    right = [p for p in sides if p[0] > 1e-6]
+    (xa, ya), (xb, yb) = min(right, key=lambda p: p[1]), max(right, key=lambda p: p[0])
+    xs = xa + (xb - xa) * min(1.0, (shoulder - ya) / (yb - ya))
+    insert = [(-xa, start), (-xs, shoulder), (0.0, tip), (xs, shoulder), (xa, start)]
+    border = inset(insert, -lines["border"])
+
+    def width(key):
+        """One of the hand's line widths in image pixels."""
+        return round(lines[key] * k)
+
+    def center_bar(line, seam):
+        """The center bar: from the hub to under the insert, and from under
+        the insert's point into the hand's, trimmed to the outline."""
+        layer = Image.new("RGBA", c.img.size, (0, 0, 0, 0))
+        draw = ImageDraw.Draw(layer)
+        for half, color in ((hand["center"]["width"] / 2, line),
+                            (hand["center"]["seam"] / 2, seam)):
+            for y0, y1 in ((d0 * ln, start + 1.0), (tip - 1.0, dt * ln)):
+                draw.polygon(c.pixels([(-half, y0), (-half, y1), (half, y1), (half, y0)]),
+                             fill=rgb(color))
+        mask = Image.new("L", c.img.size, 0)
+        ImageDraw.Draw(mask).polygon(c.pixels(outline), fill=255)
+        c.img.paste(layer, mask=Image.composite(layer.getchannel("A"), mask, mask))
+
+    if ambient:
+        c.draw.polygon(c.pixels(outline), fill=rgb("#000000"))
+        center_bar(AMBIENT_EDGE, "#000000")
+        c.draw.polygon(c.pixels(border), fill=rgb("#000000"), outline=rgb(ORANGE),
+                       width=width("border"))
+        c.draw.polygon(c.pixels(outline), outline=rgb(AMBIENT_EDGE), width=width("outline"))
+        c.save()
+        return
+
+    c.draw.polygon(c.pixels(outline), fill=rgb(HAND_BODY))
+    center_bar(HAND_LINE_COLORS["center"], HAND_LINE_COLORS["seam"])
+    c.draw.polygon(c.pixels(border), fill=rgb(HAND_LINE_COLORS["border"]))
+    c.draw.polygon(c.pixels(insert), fill=rgb(ORANGE))
+    c.draw.polygon(c.pixels(outline), outline=rgb(HAND_LINE_COLORS["outline"]),
+                   width=width("outline"))
+    c.save()
 
 
 def render_second_hand():
-    """Red line through the center, from a short tail to near the edge."""
-    tail, tip, width = SECOND_HAND[0] * R, SECOND_HAND[1] * R, SECOND_HAND[2]
-    w, top, bottom = 4, math.ceil(tip), math.ceil(tail)
-    HAND_IMAGES["hand_second"] = (w, top, bottom)
-    k = SCALE * SS
-    img = Image.new("RGBA", (w * k, (top + bottom) * k), (0, 0, 0, 0))
-    ImageDraw.Draw(img).line([(w * k / 2, (top - tip) * k), (w * k / 2, (top + tail) * k)],
-                             fill=(0xFF, 0x3B, 0x30, 255), width=round(width * k))
-    img.resize((w * SCALE, (top + bottom) * SCALE), Image.LANCZOS).save(
-        DRAWABLE / "hand_second.png")
+    """The seconds hand: a light gray needle and counterweight."""
+    c = HandCanvas("hand_second", SECOND_HAND)
+    c.draw.polygon(c.polygon(SECOND_HAND["outline"]), fill=rgb(SECOND_GRAY))
+    c.save()
+
+
+def render_triangle():
+    """The dial ring's triangle marker: orange, pointing down (inward at 12),
+    with a slightly rounded look from supersampling."""
+    w, h = (math.ceil(v) for v in TRIANGLE)
+    k = DRAW_SCALE
+    img = Image.new("RGBA", (w * k, h * k), (0, 0, 0, 0))
+    ImageDraw.Draw(img).polygon([(0, 0), (w * k, 0), (w * k / 2, h * k)],
+                                fill=(0xFF, 0x80, 0x00, 255))
+    img.resize((w * SCALE, h * SCALE), Image.LANCZOS).save(DRAWABLE / "marker_triangle.png")
 
 
 def render_images():
     DRAWABLE.mkdir(parents=True, exist_ok=True)
-    render_hand("hand_hour", *HOUR_HAND)
-    render_hand("hand_minute", *MINUTE_HAND)
+    render_triangle()
+    render_hand("hand_hour", HOUR_HAND)
+    render_hand("hand_hour_ambient", HOUR_HAND, ambient=True)
+    render_hand("hand_minute", MINUTE_HAND)
+    render_hand("hand_minute_ambient", MINUTE_HAND, ambient=True)
     render_second_hand()
 
 
