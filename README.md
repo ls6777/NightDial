@@ -20,17 +20,19 @@ It is built with the [Watch Face Format](https://developer.android.com/training/
   point, a gray outline, a bordered orange insert and a gray center bar; a light gray seconds
   hand with a counterweight, ending just inside the ring; and a black hub with three gray
   rings.
-- **Weather:** left of the center, from the watch's weather data: an orange icon for the
+- **Weather:** left of the center, a little low, from the watch's weather data: an orange icon for the
   condition (night versions after dark), the temperature (red above 90°F, blue below 40°F,
   orange between) and the condition's name. Without weather data, the sun and "--°".
-- **Battery:** right of the center, mirroring the weather: an orange battery with a segment
-  lit for every 20% (rounded up), and the percentage below it, level with the temperature.
-  Both turn red below 20%.
+- **Battery:** at the top, between the gauges: an orange battery with a segment lit for
+  every 20% (rounded up), and the percentage below it. Both turn red below 20%.
 - **Date:** a gauge in the 1:30 segment: gray tick marks and day names, SUN to SAT, around
   an arc open at the bottom, an orange pointer at today's on a light gray hub, and the day
   of the month in gray below the hub.
+- **Heart rate:** a matching gauge in the 10:30 segment, from 0 to 220 bpm around a wider
+  arc: a tick every 10, a label every 40, and the rate below the hub. Without a reading,
+  "--" and the pointer at 0.
 - **Always-on mode:** the dimmed ring and numerals, and the hour and minute hands with
-  their orange hollowed out to an outline; no seconds hand, weather, battery or date.
+  their orange hollowed out to an outline; no seconds hand, weather, battery or gauges.
 
 ## How it's built
 
@@ -42,7 +44,7 @@ size. Edit the script, not the generated files.
 | File | Purpose |
 |---|---|
 | `tools/generate.py` | Writes `res/raw/watchface.xml` and the images in `res/drawable/` |
-| `tools/fonts/` | Varela Round for the numerals, temperature and battery percentage, and Oswald for the date gauge (both SIL Open Font License) |
+| `tools/fonts/` | Varela Round for the numerals, temperature and battery percentage, and Oswald for the gauges (both SIL Open Font License) |
 | `build.sh` | Generate, build, install, test build, runtime log |
 | `watchface/src/main/AndroidManifest.xml` | Package, Watch Face Format version 4, no code |
 | `watchface/src/main/res/raw/watchface.xml` | The watch face (generated) |
@@ -58,7 +60,7 @@ Python 3 with Pillow.
 ```sh
 ./build.sh          # generate and build the debug APK
 ./build.sh run      # also install it on the watch or emulator and make it the active face
-./build.sh test     # the same with the hands frozen and sample weather, battery and date, to check the layout
+./build.sh test     # the same with the hands frozen and sample weather, battery, date and heart rate, to check the layout
 ./build.sh release  # release bundle (.aab) for Google Play (set up release signing first)
 ./build.sh log      # the watch face runtime's log: XML and expression errors show up here
 ```

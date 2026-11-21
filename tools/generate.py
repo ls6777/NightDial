@@ -271,10 +271,11 @@ def bitmap_fonts(face):
                width=w, height=h)
         w, h = BATTERY_IMAGES["percent"]
         el(font, "Character", name="%", resource=f"battery_percent{low}", width=w, height=h)
-    # The date gauge's day of the month: its gray digits.
-    font = el(fonts, "BitmapFont", name="date_digits")
-    for ch, (w, h) in DATE_IMAGES["digits"].items():
-        el(font, "Character", name=ch, resource=f"date_digit_{ch}", width=w, height=h)
+    # The gauges' values: their gray digits.
+    font = el(fonts, "BitmapFont", name="gauge_digits")
+    for ch, (w, h) in GAUGE_IMAGES["digits"].items():
+        el(font, "Character", name=ch, resource=f"gauge_digit_{GAUGE_CHARS[ch]}",
+           width=w, height=h)
 
 
 def text_part(parent, y, width, height, align="CENTER", **text):
@@ -301,15 +302,13 @@ def weather_height():
 
 def battery(scene, sample=None):
     """The battery level (see BATTERY): the battery with a segment lit per
-    20% (rounded up), and the percentage below it, level with the
-    temperature; both red below BATTERY_LOW's limit. Hidden in always-on
-    mode. sample is a fixed percentage to show instead (see TEST_BATTERY),
+    20% (rounded up), and the percentage below it; both red below
+    BATTERY_LOW's limit. Hidden in always-on mode. sample is a fixed percentage to show instead (see TEST_BATTERY),
     for the test build."""
     level = str(sample) if sample is not None else "[BATTERY_PERCENT]"
     (iw, ih), temp = BATTERY_IMAGES["icon"], WEATHER["temperature"]
-    # The percentage's row: the weather's temperature row (see weather).
-    cx, cy = SIZE - WEATHER["center"][0], WEATHER["center"][1]
-    text_y = round(cy - weather_height() / 2) + WEATHER_ICON["size"] + WEATHER["gaps"][0]
+    # Centered on BATTERY's x, the percentage's top at its text_y.
+    cx, text_y = BATTERY["x"], BATTERY["text_y"]
     top = round(text_y - BATTERY["gap"] - ih)
     width = 2 * iw
     group = el(scene, "Group", name="battery", x=round(cx - width / 2), y=top,
@@ -351,47 +350,63 @@ def battery(scene, sample=None):
                  level, '"%"')
 
 
-def date_gauge(scene, sample=None):
-    """The date gauge (see DATE_GAUGE): the dial, the pointer turned to the
-    day of the week, the hub over it and the day of the month below the
-    hub. Hidden in always-on mode. sample is a fixed date to show instead
-    (see TEST_DATE), for the test build."""
-    def d(source):
-        """The expression for a date source, or its sample value."""
-        return str(sample[source]) if sample else f"[{source}]"
+def gauge(scene, spec, sample=None):
+    """A gauge (see GAUGE and GAUGES): its dial, the pointer turned to its
+    value on the scale, the hub over it and its value below the hub. Hidden
+    in always-on mode. sample maps data sources ("[DAY]") to fixed values
+    to show instead (see TEST_SOURCES), for the test build."""
+    def expression(e):
+        """An expression with the sample's values for its data sources."""
+        for source, value in (sample or {}).items():
+            e = e.replace(source, str(value))
+        return e
 
-    gx, gy = date_gauge_center()
-    size = DATE_IMAGES["dial"]
+    gx, gy = gauge_center(spec)
+    size = GAUGE_IMAGES[f"{spec['name']}_dial"]
     b = box(gx, gy, size, size)
-    group = el(scene, "Group", name="dateGauge", **b)
+    group = el(scene, "Group", name=f"{spec['name']}Gauge", **b)
     ambient_hide(group)
     cx, cy = gx - b["x"], gy - b["y"]  # the gauge center in the group
     dial = el(group, "PartImage", **box(cx, cy, size, size))
-    el(dial, "Image", resource="date_dial")
+    el(dial, "Image", resource=f"{spec['name']}_dial")
 
-    # The pointer, its pivot at the gauge center, turned from Sunday's
-    # place by a day's step per day ([DAY_OF_WEEK] is 1 for Sunday).
-    w, top, bottom = HAND_IMAGES["date_pointer"]
-    step = DATE_GAUGE["arc"] / (len(DAY_NAMES) - 1)
+    # The pointer, its pivot at the gauge center, turned from the scale's
+    # low end by its value.
+    w, top, bottom = HAND_IMAGES["gauge_pointer"]
+    lo, hi = spec["scale"]
     pointer = el(group, "PartImage", x=round(cx - w / 2), y=round(cy - top), width=w,
                  height=top + bottom, pivotX=0.5, pivotY=top / (top + bottom))
-    el(pointer, "Image", resource="date_pointer")
+    el(pointer, "Image", resource="gauge_pointer")
+    value = expression(spec["pointer"])
     el(pointer, "Transform", target="angle",
-       value=f"{fmt(day_angle(0))} + ({d('DAY_OF_WEEK')} - 1) * {fmt(step)}")
+       value=f"{fmt(gauge_angle(spec, lo))} + ({value} - {fmt(lo)}) * "
+             f"{fmt(gauge_arc(spec) / (hi - lo))}")
 
-    hub_size = DATE_IMAGES["hub"]
+    hub_size = GAUGE_IMAGES["hub"]
     hub_part = el(group, "PartImage", **box(cx, cy, hub_size, hub_size))
-    el(hub_part, "Image", resource="date_hub")
+    el(hub_part, "Image", resource="gauge_hub")
 
-    # The day of the month, centered below the hub. Each digit image ends
-    # in the digits' spacing, so the box moves right by half of it.
-    height = DATE_GAUGE["date"]["height"]
+    # The value, centered below the hub. Each digit image ends in the
+    # digits' spacing, so the box moves right by half of it.
+    height = GAUGE["value"]["height"]
     trailing = GAUGE_FONT["tracking"] * height
-    top_y = cy + DATE_GAUGE["hub"][0][0] + DATE_GAUGE["date"]["gap"]
-    part = el(group, "PartText", x=round(trailing / 2), y=round(top_y), width=size,
-              height=math.ceil(height + 1))
-    t = el(part, "Text", align="CENTER")
-    template(el(t, "BitmapFont", family="date_digits", size=height), "%s", d("DAY"))
+    top_y = cy + GAUGE["hub"][0][0] + GAUGE["value"]["gap"]
+    def value_text(parent, value):
+        """The value's text part under parent, showing `value`."""
+        part = el(parent, "PartText", x=round(trailing / 2), y=round(top_y), width=size,
+                  height=math.ceil(height + 1))
+        t = el(part, "Text", align="CENTER")
+        template(el(t, "BitmapFont", family="gauge_digits", size=height), "%s",
+                 expression(value))
+
+    if "available" not in spec:
+        value_text(group, spec["value"])
+        return
+    # Without data, "--" in the value's place.
+    shown = el(group, "Condition")
+    el(el(shown, "Expressions"), "Expression", name="available").text =         expression(spec["available"])
+    value_text(el(shown, "Compare", expression="available"), spec["value"])
+    value_text(el(shown, "Default"), '"--"')
 
 
 def weather(scene, sample=None):
@@ -464,7 +479,8 @@ def watch_face(test=False):
     dial(scene)
     weather(scene, sample=TEST_WEATHER if test else None)
     battery(scene, sample=TEST_BATTERY if test else None)
-    date_gauge(scene, sample=TEST_DATE if test else None)
+    for spec in GAUGES:
+        gauge(scene, spec, sample=TEST_SOURCES if test else None)
     analog_clock(scene, frozen=TEST_TIME if test else None)
     return face
 
@@ -756,7 +772,7 @@ WEATHER_ICON = dict(size=44.0, line=0.075)
 #: numerals' style), the name's font size (the watch's own font), the gaps
 #: between the three, and the name's box width, in watch face units. Hidden
 #: when the watch has no weather; hidden in always-on mode.
-WEATHER = dict(center=(92.0, 225.0), temperature=18.0, text=17.0, gaps=(4.0, 5.0),
+WEATHER = dict(center=(92.0, 245.0), temperature=18.0, text=17.0, gaps=(4.0, 5.0),
                text_width=160.0)
 #: The icon for each [WEATHER.CONDITION] value, 0 to 15, by day and by night.
 WEATHER_CONDITIONS = (
@@ -1001,12 +1017,13 @@ def render_temperature_glyphs():
 #: below it in the temperature's digits and size. In watch face units: the
 #: body's width and height, its outline's width and corner radius, the nub's
 #: width and height, the space between the outline and the segments, the
-#: gaps between segments, and the percentage's gap below the battery.
+#: gaps between segments, the percentage's gap below the battery, and on
+#: the face the display's center line and the percentage's top.
 #:
-#: On the face it mirrors the weather, right of the center, the percentage
-#: level with the temperature. Hidden in always-on mode.
+#: On the face it is at the top, between the two gauges. Hidden in
+#: always-on mode.
 BATTERY = dict(body=(38.0, 18.0), line=2.2, radius=4.0, nub=(3.2, 7.0), pad=1.8,
-               segments=5, segment_gap=1.6, gap=5.0)
+               segments=5, segment_gap=1.6, gap=5.0, x=225.0, text_y=83.0)
 #: Below this percentage the battery and its percentage are red (the hot
 #: temperature's red): the "_low" images and the hot temperature digits.
 BATTERY_LOW = dict(limit=20, color=TEMPERATURE_COLORS["hot"])
@@ -1117,50 +1134,85 @@ def render_battery():
     sheet.convert("RGB").save(MASTERS / "battery.png")
 
 
-# ---------------------------------------------------------------- date gauge
+# -------------------------------------------------------------------- gauges
 
-#: The date gauge, in the 1:30 segment, in the reference gauge's colors: a
-#: small dial with gray tick marks around its edge, the days of the
-#: week, SUN to SAT, upright in gray inside them around an arc open at the
-#: bottom, an orange pointer at today's on a light gray hub, and the day of
-#: the month in gray below the hub. In watch face units:
+#: The gauges' shared style, in the reference gauge's colors: a small dial
+#: with gray tick marks around an arc open at the bottom, gray labels
+#: upright inside them, an orange pointer on a light gray hub, and a gray
+#: value below the hub. In watch face units:
 #:
-#: - distance: the gauge center's distance from the dial center, at 45
-#:   degrees.
-#: - ticks: (inner radius, length, width) of the tick marks, one at each
-#:   day and one between days, from Sunday to Saturday.
-#: - labels: the day names' letter height, and the gap between each name's
+#: - distance: each gauge center's distance from the dial center.
+#: - ticks: (inner radius, length, width) of the tick marks.
+#: - labels: the labels' capital height, and the gap between each label's
 #:   outer edge and the ticks (placed like the hour numerals).
-#: - arc: the days' span in degrees, Sunday at its left end, Saturday at
-#:   its right.
+#: - arc: the scale's span in degrees, its low end at the left, unless a
+#:   gauge sets its own.
 #: - pointer: its outline as in SECOND_HAND (distances as fractions of its
 #:   length), the reference's: straight sides widening from the hub to a
 #:   shoulder at 0.71 of its length, then straight to a sharp point, its
-#:   tail hidden under the hub. Like the seconds hand it runs over the day
-#:   names, to `gap` short of the ticks.
+#:   tail hidden under the hub. Like the seconds hand it runs over the
+#:   labels, to `gap` short of the ticks.
 #: - hub: discs as (radius, color), outermost first, each drawn over the
 #:   last: light gray rings with a dark one between, as in the reference.
-#: - date: the day of the month's digit height and its gap below the hub.
-DATE_GAUGE = dict(
-    distance=110.0,
+#: - value: the value's digit height and its gap below the hub.
+GAUGE = dict(
+    distance=118.0,
     ticks=(50.0, 4.4, 1.8),
     labels=dict(height=10.0, gap=3.0),
     arc=240.0,
     pointer=dict(gap=2.0, outline=((-0.10, 2.35), (0.0, 2.47), (0.71, 3.33), (1.0, 0.0))),
     hub=((6.0, "#DCDCDC"), (4.5, "#161616"), (3.5, "#BEBEBE"), (2.4, "#8E8E8E"),
          (0.8, "#222222")),
-    date=dict(height=16.0, gap=4.0),
+    value=dict(height=16.0, gap=4.0),
 )
-#: The gauge's gray, for its tick marks, day names and date, as measured
+#: The gauges' gray, for their tick marks, labels and values, as measured
 #: from the reference.
 GAUGE_GRAY = "#A4A4A4"
-#: The gauge's font, for its day names and date: Oswald (SIL Open Font
+#: The gauges' font, for their labels and values: Oswald (SIL Open Font
 #: License, tools/fonts/), tall, narrow and crisp, unlike the numerals'
 #: rounded one. The font file, its weight for a variable font (None for a
 #: static one), and the space between characters as a fraction of the cap
 #: height.
 GAUGE_FONT = dict(file=ROOT / "tools" / "fonts" / "Oswald-Variable.ttf",
                   weight=400, tracking=0.08)
+
+DAY_NAMES = ("SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT")
+#: The gauges. Each has a name (its dial image is <name>_dial.png), its
+#: angle on the face (clockwise from 12), its scale's low and high values
+#: (and its own arc, if not GAUGE's),
+#: the values with tick marks and with labels (value, text), the pointer's
+#: expression on that scale, the value's expression shown below the hub
+#: (and, optionally, an expression that is false when there is no data, to
+#: show "--" instead), and the pointer and value shown on its review sheet.
+#:
+#: - date, in the 1:30 segment: the days of the week, SUN to SAT, a tick at
+#:   each and one between each, the pointer at today's ([DAY_OF_WEEK] is 1
+#:   for Sunday), and the day of the month.
+#: - heart, in the 10:30 segment: the heart rate from 0 to 220 bpm over the
+#:   pulse reference's wider arc (its ends at 144 degrees either side of
+#:   12), a tick every 10, a label every 40, and the rate, rounded. With
+#:   no reading the watch gives an empty value, which counts as 0: the
+#:   pointer rests at 0 and "--" shows in place of the rate.
+DATE_GAUGE = dict(
+    name="date", angle=45.0, scale=(0, 6),
+    ticks=[i / 2 for i in range(13)], labels=list(enumerate(DAY_NAMES)),
+    pointer="[DAY_OF_WEEK] - 1", value="[DAY]",
+    review=dict(pointer=5, value="20"),
+)
+HEART_GAUGE = dict(
+    name="heart", angle=-45.0, scale=(0, 220), arc=288.0,
+    ticks=list(range(0, 221, 10)), labels=[(v, str(v)) for v in range(0, 201, 40)],
+    pointer="clamp([HEART_RATE], 0, 220)", value="round([HEART_RATE])",
+    available="[HEART_RATE] > 0",
+    review=dict(pointer=72, value="72"),
+)
+GAUGES = (DATE_GAUGE, HEART_GAUGE)
+#: The gauges' value characters and their image names.
+GAUGE_CHARS = {**{str(n): str(n) for n in range(10)}, "-": "minus"}
+#: The gauges' image sizes and the pointer's length (set by
+#: render_gauges): "<name>_dial" and "hub" (pixels square), "digits" (each
+#: digit's (width, height) in pixels) and "pointer" (watch face units).
+GAUGE_IMAGES = {}
 
 
 def gauge_font(height):
@@ -1195,135 +1247,137 @@ def render_gauge_text(text, height, color=GAUGE_GRAY, trailing=False):
         draw.text((x, -top), ch, font=font, fill=rgb(color), anchor="ls")
         x += w + gap
     return img
-DAY_NAMES = ("SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT")
-#: The date gauge's image sizes and the pointer's length (set by
-#: render_date_gauge): "dial" and "hub" (pixels square), "digits" (each
-#: digit's (width, height) in pixels) and "pointer" (watch face units).
-DATE_IMAGES = {}
 
 
-def date_gauge_center():
-    """The date gauge's center on the face."""
-    return polar(45, DATE_GAUGE["distance"])
+def gauge_center(gauge):
+    """A gauge's center on the face."""
+    return polar(gauge["angle"], GAUGE["distance"])
 
 
-def day_angle(day):
-    """The pointer's angle, clockwise from 12, for a day of the week (0 for
-    Sunday to 6 for Saturday)."""
-    arc = DATE_GAUGE["arc"]
-    return -arc / 2 + day * arc / (len(DAY_NAMES) - 1)
+def gauge_arc(gauge):
+    """A gauge's scale's span in degrees."""
+    return gauge.get("arc", GAUGE["arc"])
 
 
-def render_date_dial():
-    """The gauge's tick marks and day names: one image the size of the
-    gauge, date_dial.png. Returns the master and its size in units."""
-    g = DATE_GAUGE
-    inner, length, width = g["ticks"]
+def gauge_angle(gauge, value):
+    """The angle, clockwise from 12, of a value on a gauge's scale."""
+    lo, hi = gauge["scale"]
+    return -gauge_arc(gauge) / 2 + (value - lo) * gauge_arc(gauge) / (hi - lo)
+
+
+def render_gauge_dial(gauge):
+    """A gauge's tick marks and labels: one image the size of the gauge,
+    <name>_dial.png. Returns the master and its size in units."""
+    inner, length, width = GAUGE["ticks"]
     size = math.ceil(2 * (inner + length + 1))
     k = DRAW_SCALE
     img = Image.new("RGBA", (size * k,) * 2, (0, 0, 0, 0))
     draw = ImageDraw.Draw(img)
     c = size / 2
-    step = g["arc"] / (2 * (len(DAY_NAMES) - 1))
-    for i in range(2 * (len(DAY_NAMES) - 1) + 1):
+    for value in gauge["ticks"]:
         # A flat-ended bar along the radius: (along, across) corners.
-        a = math.radians(-g["arc"] / 2 + i * step)
+        a = math.radians(gauge_angle(gauge, value))
         ux, uy = math.sin(a), -math.cos(a)
         corners = [(r * ux - t * uy, r * uy + t * ux)
                    for r, t in ((inner, -width / 2), (inner + length, -width / 2),
                                 (inner + length, width / 2), (inner, width / 2))]
         draw.polygon([((c + x) * k, (c + y) * k) for x, y in corners], fill=rgb(GAUGE_GRAY))
-    # The day names, each with its outer edge `gap` inside the ticks.
-    limit = inner - g["labels"]["gap"]
-    for day, name in enumerate(DAY_NAMES):
-        label = render_gauge_text(name, g["labels"]["height"] * k)
+    # The labels, each with its outer edge `gap` inside the ticks.
+    limit = inner - GAUGE["labels"]["gap"]
+    for value, text in gauge["labels"]:
+        label = render_gauge_text(text, GAUGE["labels"]["height"] * k)
         w, h = label.width / k, label.height / k
-        a = math.radians(day_angle(day))
+        a = math.radians(gauge_angle(gauge, value))
         reach = abs(w / 2 * math.sin(a)) + abs(h / 2 * math.cos(a))
         distance = limit - reach
         x, y = c + distance * math.sin(a), c - distance * math.cos(a)
         img.alpha_composite(label, (round((x - w / 2) * k), round((y - h / 2) * k)))
-    DATE_IMAGES["pointer"] = inner - g["pointer"]["gap"]
+    name = f"{gauge['name']}_dial"
     master = img.resize((size * MASTER_SCALE,) * 2, Image.LANCZOS)
     MASTERS.mkdir(parents=True, exist_ok=True)
-    master.save(MASTERS / "date_dial.png")
-    master.resize((size * SCALE,) * 2, Image.LANCZOS).save(DRAWABLE / "date_dial.png")
-    DATE_IMAGES["dial"] = size * SCALE
+    master.save(MASTERS / f"{name}.png")
+    master.resize((size * SCALE,) * 2, Image.LANCZOS).save(DRAWABLE / f"{name}.png")
+    GAUGE_IMAGES[name] = size * SCALE
     return master, size
 
 
-def render_date_pointer():
-    """The gauge's pointer: orange, widening from the hub to a point."""
-    p = DATE_GAUGE["pointer"]
-    c = HandCanvas("date_pointer", dict(length=DATE_IMAGES["pointer"] / R,
-                                        outline=p["outline"]))
+def render_gauge_pointer():
+    """The gauges' pointer: orange, widening from the hub to a point, to
+    `gap` short of the ticks: gauge_pointer.png."""
+    p = GAUGE["pointer"]
+    GAUGE_IMAGES["pointer"] = GAUGE["ticks"][0] - p["gap"]
+    c = HandCanvas("gauge_pointer", dict(length=GAUGE_IMAGES["pointer"] / R,
+                                         outline=p["outline"]))
     c.draw.polygon(c.polygon(p["outline"]), fill=rgb(ORANGE))
     c.save()
 
 
-def render_date_hub():
-    """The gauge's hub, drawn large: date_hub.png. Returns the master."""
-    size = 2 * math.ceil(DATE_GAUGE["hub"][0][0] + 1)
+def render_gauge_hub():
+    """The gauges' hub, drawn large: gauge_hub.png. Returns the master."""
+    size = 2 * math.ceil(GAUGE["hub"][0][0] + 1)
     k = DRAW_SCALE
     img = Image.new("RGBA", (size * k,) * 2, (0, 0, 0, 0))
     draw = ImageDraw.Draw(img)
     c = size * k / 2
-    for radius, color in DATE_GAUGE["hub"]:
+    for radius, color in GAUGE["hub"]:
         r = radius * k
         draw.ellipse([c - r, c - r, c + r, c + r], fill=rgb(color))
     master = img.resize((size * MASTER_SCALE,) * 2, Image.LANCZOS)
-    master.save(MASTERS / "date_hub.png")
-    master.resize((size * SCALE,) * 2, Image.LANCZOS).save(DRAWABLE / "date_hub.png")
-    DATE_IMAGES["hub"] = size * SCALE
+    master.save(MASTERS / "gauge_hub.png")
+    master.resize((size * SCALE,) * 2, Image.LANCZOS).save(DRAWABLE / "gauge_hub.png")
+    GAUGE_IMAGES["hub"] = size * SCALE
     return master
 
 
-def render_date_digits():
-    """The date's digits in the gauge's font, each with its spacing after
-    it: date_digit_<n>.png. Returns the masters."""
-    height = DATE_GAUGE["date"]["height"] * DRAW_SCALE
-    masters = []
-    DATE_IMAGES["digits"] = {}
-    for d in range(10):
-        img = render_gauge_text(str(d), height, trailing=True)
+def render_gauge_digits():
+    """The values' characters (GAUGE_CHARS) in the gauges' font, each with
+    its spacing after it: gauge_digit_<name>.png. Returns the masters by
+    character."""
+    height = GAUGE["value"]["height"] * DRAW_SCALE
+    masters = {}
+    GAUGE_IMAGES["digits"] = {}
+    for ch, name in GAUGE_CHARS.items():
+        img = render_gauge_text(ch, height, trailing=True)
         w, h = img.width / DRAW_SCALE, img.height / DRAW_SCALE
         master = img.resize((round(w * MASTER_SCALE), round(h * MASTER_SCALE)), Image.LANCZOS)
-        master.save(MASTERS / f"date_digit_{d}.png")
+        master.save(MASTERS / f"gauge_digit_{name}.png")
         size = (round(w * SCALE), round(h * SCALE))
-        master.resize(size, Image.LANCZOS).save(DRAWABLE / f"date_digit_{d}.png")
-        DATE_IMAGES["digits"][str(d)] = size
-        masters.append(master)
+        master.resize(size, Image.LANCZOS).save(DRAWABLE / f"gauge_digit_{name}.png")
+        GAUGE_IMAGES["digits"][ch] = size
+        masters[ch] = master
     return masters
 
 
-def render_date_gauge():
-    """The date gauge's images, and a review sheet of the gauge on Friday
-    the 20th (build/masters/date_gauge.png)."""
-    dial, size = render_date_dial()
-    render_date_pointer()
-    hub = render_date_hub()
-    digits = render_date_digits()
-    # The review sheet, from the masters: the dial, the pointer at Friday,
-    # the hub and the date, on black.
+def render_gauges():
+    """Each gauge's dial, the shared pointer, hub and digits, and a review
+    sheet per gauge at its review pointer and value
+    (build/masters/<name>_gauge.png)."""
+    render_gauge_pointer()
+    hub = render_gauge_hub()
+    digits = render_gauge_digits()
+    pointer = Image.open(MASTERS / "gauge_pointer.png")
+    w, top, _ = HAND_IMAGES["gauge_pointer"]
     k = MASTER_SCALE
-    pad = 8 * k
-    sheet = Image.new("RGBA", (dial.width + 2 * pad,) * 2, (0, 0, 0, 255))
-    sheet.alpha_composite(dial, (pad, pad))
-    cx = cy = pad + size / 2 * k
-    w, top, _ = HAND_IMAGES["date_pointer"]
-    layer = Image.new("RGBA", sheet.size, (0, 0, 0, 0))
-    layer.alpha_composite(Image.open(MASTERS / "date_pointer.png"),
-                          (round(cx - w * k / 2), round(cy - top * k)))
-    sheet.alpha_composite(layer.rotate(-day_angle(5), resample=Image.BICUBIC, center=(cx, cy)))
-    sheet.alpha_composite(hub, (round(cx - hub.width / 2), round(cy - hub.height / 2)))
-    shown = [digits[2], digits[0]]
-    trailing = GAUGE_FONT["tracking"] * DATE_GAUGE["date"]["height"] * k
-    x = round(cx - (sum(d.width for d in shown) - trailing) / 2)
-    y = round(cy + (DATE_GAUGE["hub"][0][0] + DATE_GAUGE["date"]["gap"]) * k)
-    for d in shown:
-        sheet.alpha_composite(d, (x, y))
-        x += d.width
-    sheet.convert("RGB").save(MASTERS / "date_gauge.png")
+    for gauge in GAUGES:
+        dial, size = render_gauge_dial(gauge)
+        # The review sheet, from the masters, on black.
+        pad = 8 * k
+        sheet = Image.new("RGBA", (dial.width + 2 * pad,) * 2, (0, 0, 0, 255))
+        sheet.alpha_composite(dial, (pad, pad))
+        cx = cy = pad + size / 2 * k
+        layer = Image.new("RGBA", sheet.size, (0, 0, 0, 0))
+        layer.alpha_composite(pointer, (round(cx - w * k / 2), round(cy - top * k)))
+        angle = gauge_angle(gauge, gauge["review"]["pointer"])
+        sheet.alpha_composite(layer.rotate(-angle, resample=Image.BICUBIC, center=(cx, cy)))
+        sheet.alpha_composite(hub, (round(cx - hub.width / 2), round(cy - hub.height / 2)))
+        shown = [digits[d] for d in gauge["review"]["value"]]
+        trailing = GAUGE_FONT["tracking"] * GAUGE["value"]["height"] * k
+        x = round(cx - (sum(d.width for d in shown) - trailing) / 2)
+        y = round(cy + (GAUGE["hub"][0][0] + GAUGE["value"]["gap"]) * k)
+        for d in shown:
+            sheet.alpha_composite(d, (x, y))
+            x += d.width
+        sheet.convert("RGB").save(MASTERS / f"{gauge['name']}_gauge.png")
 
 
 def render_images():
@@ -1333,7 +1387,7 @@ def render_images():
     render_weather_icons()
     render_temperature_glyphs()
     render_battery()
-    render_date_gauge()
+    render_gauges()
     render_hand("hand_hour", HOUR_HAND)
     render_hand("hand_hour_ambient", HOUR_HAND, ambient=True)
     render_hand("hand_minute", MINUTE_HAND)
@@ -1349,9 +1403,9 @@ TEST_WEATHER = dict(IS_AVAILABLE=1, IS_DAY=1, CONDITION=1, TEMPERATURE=72,
                     TEMPERATURE_UNIT=0, CONDITION_NAME='"Clear Sky"')
 #: The test build's battery percentage, in place of the watch's.
 TEST_BATTERY = 80
-#: The test build's date, in place of the watch's: Friday the 20th
-#: ([DAY_OF_WEEK] is 1 for Sunday).
-TEST_DATE = dict(DAY_OF_WEEK=6, DAY=20)
+#: The test build's gauge values, in place of the watch's: Friday the
+#: 20th ([DAY_OF_WEEK] is 1 for Sunday) and a heart rate of 72.
+TEST_SOURCES = {"[DAY_OF_WEEK]": 6, "[DAY]": 20, "[HEART_RATE]": 72}
 
 
 def write_xml(test=False):
