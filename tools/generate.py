@@ -461,12 +461,17 @@ def gauge_reading(parent, spec, size, center, pointer, value, available=None,
     trailing = GAUGE_FONT["tracking"] * height
     top_y = cy + GAUGE["hub"][0][0] + GAUGE["value"]["gap"]
 
+    # The font's size is its images' height, so the watch draws them at
+    # their own size (at another, it scales them, softer, and clips their
+    # tops), in a box with room to spare.
+    image_h = GAUGE_IMAGES["digits"]["0"][1]
+
     def value_text(under, shown):
         """The value's text part under `under`, showing `shown`."""
-        text = el(under, "PartText", x=round(trailing / 2), y=round(top_y), width=size,
-                  height=math.ceil(height + 1))
+        text = el(under, "PartText", x=round(trailing / 2), y=round(top_y) - 1, width=size,
+                  height=image_h + 2)
         t = el(text, "Text", align="CENTER")
-        template(el(t, "BitmapFont", family="gauge_digits", size=height), "%s", shown)
+        template(el(t, "BitmapFont", family="gauge_digits", size=image_h), "%s", shown)
 
     if value is None:
         value_text(parent, '"--"')
@@ -565,9 +570,10 @@ def weather(scene, sample=None):
         template(el(t, "BitmapFont", family=family, size=icon), "%s",
                  f"{w('CONDITION')} <= 15 ? {w('CONDITION')} : 0")
 
-    # The temperature, colored by how hot or cold it is (in °F).
-    celsius = f'{w("TEMPERATURE_UNIT")} == 1'
-    fahrenheit = f"({celsius} ? {w('TEMPERATURE')} * 9 / 5 + 32 : {w('TEMPERATURE')})"
+    # The temperature, colored by how hot or cold it is (in °F). As on
+    # DataDial, unit 2 is Fahrenheit and any other Celsius.
+    in_f = f'{w("TEMPERATURE_UNIT")} == 2'
+    fahrenheit = f"({in_f} ? {w('TEMPERATURE')} : {w('TEMPERATURE')} * 9 / 5 + 32)"
     colored = el(content, "Condition")
     exprs = el(colored, "Expressions")
     el(exprs, "Expression", name="hot").text = f"{fahrenheit} > {TEMPERATURE_LIMITS['hot']}"
@@ -577,7 +583,7 @@ def weather(scene, sample=None):
                         (el(colored, "Default"), "")):
         t = text_part(branch, layout["temp_y"], text_w, temp + 1, x=layout["text_x"])
         template(el(t, "BitmapFont", family=f"weather_temperature{temperature_set(key)}",
-                    size=temp), "%s°%s", w("TEMPERATURE"), f'{celsius} ? "C" : "F"')
+                    size=temp), "%s°%s", w("TEMPERATURE"), f'{in_f} ? "F" : "C"')
 
     t = text_part(content, layout["name_y"], text_w, line, x=layout["text_x"], ellipsis="TRUE",
                   maxLines=1)
@@ -1385,14 +1391,14 @@ def render_battery():
 #: - unit: the unit label's capital height (beside the hub).
 GAUGE = dict(
     distance=118.0,
-    ticks=(50.0, 4.4, 1.8),
-    labels=dict(height=10.0, gap=3.0),
+    ticks=(56.0, 4.4, 1.8),
+    labels=dict(height=12.0, gap=3.0),
     arc=240.0,
     pointer=dict(gap=2.0, outline=((-0.10, 2.35), (0.0, 2.47), (0.71, 3.33), (1.0, 0.0))),
     hub=((6.0, "#DCDCDC"), (4.5, "#161616"), (3.5, "#BEBEBE"), (2.4, "#8E8E8E"),
          (0.8, "#222222")),
-    value=dict(height=16.0, gap=4.0, weight=700, unit=0.55),
-    unit=6.0,
+    value=dict(height=19.0, gap=4.0, weight=700, unit=0.55),
+    unit=7.0,
 )
 #: The gauges' gray, for their tick marks, labels and values, as measured
 #: from the reference.
@@ -1690,25 +1696,31 @@ def render_gauge_hub():
 def render_gauge_digits():
     """The values' characters (GAUGE_CHARS) in the gauges' font, each with
     its spacing after it: gauge_digit_<name>.png. Letters (a unit, "ft")
-    are small, centered in an image as tall as a digit's.
-    Returns the masters by character."""
-    height = GAUGE["value"]["height"] * DRAW_SCALE
+    are small, centered in an image as tall as a digit's. The watch's
+    images are drawn straight at their pixel size, for crisp text (drawn
+    large and scaled down, their edges came out soft), and the masters at
+    theirs. Returns the masters by character."""
     weight = GAUGE["value"]["weight"]
+
+    def glyph(ch, scale):
+        """One character's image at `scale` pixels per unit."""
+        height = GAUGE["value"]["height"] * scale
+        img = render_gauge_text(ch, height, trailing=True, weight=weight)
+        if ch.isalpha():
+            small = render_gauge_text(ch, height * GAUGE["value"]["unit"], trailing=True,
+                                      weight=weight)
+            img = Image.new("RGBA", (small.width, img.height), (0, 0, 0, 0))
+            img.alpha_composite(small, (0, (img.height - small.height) // 2))
+        return img
+
     masters = {}
     GAUGE_IMAGES["digits"] = {}
     for ch, name in GAUGE_CHARS.items():
-        img = render_gauge_text(ch, height, trailing=True, weight=weight)
-        if ch.isalpha():
-            small_height = height * GAUGE["value"]["unit"]
-            small = render_gauge_text(ch, small_height, trailing=True, weight=weight)
-            img = Image.new("RGBA", (small.width, img.height), (0, 0, 0, 0))
-            img.alpha_composite(small, (0, (img.height - small.height) // 2))
-        w, h = img.width / DRAW_SCALE, img.height / DRAW_SCALE
-        master = img.resize((round(w * MASTER_SCALE), round(h * MASTER_SCALE)), Image.LANCZOS)
+        master = glyph(ch, MASTER_SCALE)
         master.save(MASTERS / f"gauge_digit_{name}.png")
-        size = (round(w * SCALE), round(h * SCALE))
-        master.resize(size, Image.LANCZOS).save(DRAWABLE / f"gauge_digit_{name}.png")
-        GAUGE_IMAGES["digits"][ch] = size
+        img = glyph(ch, SCALE)
+        img.save(DRAWABLE / f"gauge_digit_{name}.png")
+        GAUGE_IMAGES["digits"][ch] = img.size
         masters[ch] = master
     return masters
 
@@ -1887,9 +1899,9 @@ def render_images():
 #: The test build's time (hour, minute, second), also the picker preview's.
 TEST_TIME = (10, 9, 36)
 #: The test build's weather, in place of the watch's (the emulator often
-#: has none): the WEATHER data sources' values, unit 1 being Celsius.
+#: has none): the WEATHER data sources' values, unit 2 being Fahrenheit.
 TEST_WEATHER = dict(IS_AVAILABLE=1, IS_DAY=1, CONDITION=1, TEMPERATURE=72,
-                    TEMPERATURE_UNIT=0, CONDITION_NAME='"Clear Sky"')
+                    TEMPERATURE_UNIT=2, CONDITION_NAME='"Clear Sky"')
 #: The test build's battery percentage, in place of the watch's.
 TEST_BATTERY = 80
 #: The test build's date and heart rate, in place of the watch's: Friday
