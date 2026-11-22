@@ -21,7 +21,7 @@ import pathlib
 import sys
 import xml.etree.ElementTree as ET
 
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageChops, ImageDraw, ImageFont
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 RES = ROOT / "watchface" / "src" / "main" / "res"
@@ -319,16 +319,20 @@ def weather_layout():
     ("temp_y", "name_y") and the icon's top left ("icon_x", "icon_y"), in
     watch face units."""
     cx, cy = WEATHER["text_center"]
+    ix, iy = WEATHER["icon_center"]
     icon, temp = WEATHER_ICON["size"], WEATHER["temperature"]
     line = WEATHER["text"] * 1.4  # the name's line height
     block = temp + WEATHER["gap"] + line
-    height = max(icon, block)
-    x0 = cx - WEATHER["text_width"] / 2
-    right = WEATHER["icon_x"] + icon / 2
-    return dict(x=round(x0), y=round(cy - height / 2), width=math.ceil(right - x0),
-                height=math.ceil(height), text_x=0.0, temp_y=(height - block) / 2,
-                name_y=(height - block) / 2 + temp + WEATHER["gap"],
-                icon_x=WEATHER["icon_x"] - icon / 2 - x0, icon_y=(height - icon) / 2)
+    # The text column's and the icon's boxes on the face, and the group
+    # around both.
+    tx, ty = cx - WEATHER["text_width"] / 2, cy - block / 2
+    icon_left, icon_top = ix - icon / 2, iy - icon / 2
+    x0, y0 = math.floor(min(tx, icon_left)), math.floor(min(ty, icon_top))
+    x1 = max(tx + WEATHER["text_width"], icon_left + icon)
+    y1 = max(ty + block, icon_top + icon)
+    return dict(x=x0, y=y0, width=math.ceil(x1 - x0), height=math.ceil(y1 - y0),
+                text_x=tx - x0, temp_y=ty - y0, name_y=ty - y0 + temp + WEATHER["gap"],
+                icon_x=icon_left - x0, icon_y=icon_top - y0)
 
 
 def battery(scene, sample=None):
@@ -406,15 +410,20 @@ def gauge(scene, spec, sample=None):
         # The slot draws nothing while its source has no data, so the gauge
         # without data goes under it, and each of its readings covers that.
         gauge_reading(group, spec, size, (cx, cy), str(spec["scale"][0]), None)
-        gauge_complication(group, spec, size, (cx, cy))
+        gauge_complication(scene, spec, b, (cx, cy))
     elif "complication" in spec:
         # The test build: the sample complication text, read as the watch
         # reads the complication's.
-        kind = spec["complication"]["types"][spec["complication"]["test"]]
+        c = spec["complication"]
+
+        def sampled(e):
+            return expression(e.replace("[COMPLICATION.TEXT]", c["sample"]))
+        kind = c["types"][c["test"]]
         gauge_reading(group, spec, size, (cx, cy),
-                      expression(spec["pointer"].replace(spec["complication"]["source"],
-                                                         kind["number"])),
-                      expression(kind["value"]))
+                      sampled(spec["pointer"].replace(c["source"], kind["number"])),
+                      sampled(kind["value"]),
+                      sampled(kind["available"]) if "available" in kind else None,
+                      sampled(kind.get("fallback", '"--"')))
     else:
         gauge_reading(group, spec, size, (cx, cy), expression(spec["pointer"]),
                       expression(spec["value"]),
@@ -437,29 +446,17 @@ def gauge_face(parent, spec, size, center, cover=False):
         el(icon, "Image", resource=spec["icon"])
 
 
-def gauge_reading(parent, spec, size, center, pointer, value, available=None):
-    """A gauge's moving parts under parent: the pointer turned to the
-    expression `pointer` on its scale, the hub, and the expression `value`
-    in digits below the hub (or "--" while `available` is false, or always
-    with no `value`). center is the gauge center in parent."""
+def gauge_reading(parent, spec, size, center, pointer, value, available=None,
+                  fallback='"--"'):
+    """A gauge's moving parts under parent: the expression `value` in
+    digits below the hub (or `fallback`, "--" unless given, while
+    `available` is false, or always with no `value`), the pointer over it
+    turned to the expression `pointer` on its scale, and the hub. center is
+    the gauge center in parent."""
     cx, cy = center
-    # The pointer, its pivot at the gauge center, turned from the scale's
-    # low end by its value.
-    w, top, bottom = HAND_IMAGES["gauge_pointer"]
-    lo, hi = spec["scale"]
-    part = el(parent, "PartImage", x=round(cx - w / 2), y=round(cy - top), width=w,
-              height=top + bottom, pivotX=0.5, pivotY=top / (top + bottom))
-    el(part, "Image", resource="gauge_pointer")
-    el(part, "Transform", target="angle",
-       value=f"{fmt(gauge_angle(spec, lo))} + ({pointer} - {fmt(lo)}) * "
-             f"{fmt(gauge_arc(spec) / (hi - lo))}")
-
-    hub_size = GAUGE_IMAGES["hub"]
-    hub_part = el(parent, "PartImage", **box(cx, cy, hub_size, hub_size))
-    el(hub_part, "Image", resource="gauge_hub")
-
-    # The value, centered below the hub. Each digit image ends in the
-    # digits' spacing, so the box moves right by half of it.
+    # The value, centered below the hub, under the pointer (which sweeps
+    # over it, as over the labels). Each digit image ends in the digits'
+    # spacing, so the box moves right by half of it.
     height = GAUGE["value"]["height"]
     trailing = GAUGE_FONT["tracking"] * height
     top_y = cy + GAUGE["hub"][0][0] + GAUGE["value"]["gap"]
@@ -476,24 +473,45 @@ def gauge_reading(parent, spec, size, center, pointer, value, available=None):
     elif available is None:
         value_text(parent, value)
     else:
-        # Without data, "--" in the value's place.
+        # Without data, the fallback in the value's place.
         shown = el(parent, "Condition")
         el(el(shown, "Expressions"), "Expression", name="available").text = available
         value_text(el(shown, "Compare", expression="available"), value)
-        value_text(el(shown, "Default"), '"--"')
+        value_text(el(shown, "Default"), fallback)
+
+    # The pointer, its pivot at the gauge center, turned from the scale's
+    # low end by its value.
+    w, top, bottom = HAND_IMAGES["gauge_pointer"]
+    lo, hi = spec["scale"]
+    part = el(parent, "PartImage", x=round(cx - w / 2), y=round(cy - top), width=w,
+              height=top + bottom, pivotX=0.5, pivotY=top / (top + bottom))
+    el(part, "Image", resource="gauge_pointer")
+    # Degrees per unit as a fraction: fmt() rounds to two decimals, which
+    # for a long scale (288 / 15000 = 0.0192 as 0.02) overshoots the end.
+    el(part, "Transform", target="angle",
+       value=f"{fmt(gauge_angle(spec, lo))} + ({pointer} - {fmt(lo)}) * "
+             f"{fmt(gauge_arc(spec))} / {fmt(hi - lo)}")
+
+    hub_size = GAUGE_IMAGES["hub"]
+    hub_part = el(parent, "PartImage", **box(cx, cy, hub_size, hub_size))
+    el(hub_part, "Image", resource="gauge_hub")
 
 
-def gauge_complication(parent, spec, size, center):
-    """A gauge's complication slot under parent, covering the gauge, filled
-    from its data source (see GAUGES) and not changeable in the watch face
-    editor. For each complication type the gauge takes, the whole gauge
-    over the one without data (see gauge), its moving parts with the
-    gauge's value source replaced by that type's number; and for an empty
-    slot, the gauge without data again."""
+def gauge_complication(scene, spec, bounds, center):
+    """A gauge's complication slot, covering the gauge (`bounds`, its box
+    on the face), filled from its data source (see GAUGES) and not
+    changeable in the watch face editor. It goes straight in the scene:
+    the runtime only connects data sources to slots there (one inside a
+    Group draws, but never gets data). Hidden in always-on mode. For each
+    complication type the gauge takes, the whole gauge over the one
+    without data (see gauge), its moving parts with the gauge's value
+    source replaced by that type's number; and for an empty slot, the
+    gauge without data again. center is the gauge center in the slot."""
     c = spec["complication"]
-    slot = el(parent, "ComplicationSlot", x=0, y=0, width=size, height=size,
-              slotId=c["slot"], name=f"{spec['name']}Slot",
+    size = bounds["width"]
+    slot = el(scene, "ComplicationSlot", **bounds, slotId=c["slot"], name=f"{spec['name']}Slot",
               supportedTypes=" ".join(list(c["types"]) + ["EMPTY"]), isCustomizable="FALSE")
+    ambient_hide(slot)
     el(slot, "DefaultProviderPolicy", defaultSystemProvider="EMPTY",
        defaultSystemProviderType="EMPTY", primaryProvider=c["provider"],
        primaryProviderType=c["provider_type"])
@@ -502,7 +520,8 @@ def gauge_complication(parent, spec, size, center):
         comp = el(slot, "Complication", type=kind)
         gauge_face(comp, spec, size, center, cover=True)
         gauge_reading(comp, spec, size, center,
-                      spec["pointer"].replace(c["source"], k["number"]), k["value"])
+                      spec["pointer"].replace(c["source"], k["number"]), k["value"],
+                      k.get("available"), k.get("fallback", '"--"'))
     gauge_reading(el(slot, "Complication", type="EMPTY"), spec, size, center,
                   str(spec["scale"][0]), None)
 
@@ -971,14 +990,15 @@ WEATHER_ICON = dict(size=44.0, line=0.075)
 
 #: The weather display, right of the 9: the temperature with the
 #: condition's name below it, centered on `text_center` (level with the
-#: 9), and the condition's icon to their right, its center at `icon_x` and
-#: level with them, all orange. The temperature's digit height (in the
-#: hour numerals' style), the name's font size (the watch's own font), the
-#: gap between the two, and the text column's width (a longer name is cut
-#: short), in watch face units. Hidden when the watch has no weather;
-#: hidden in always-on mode.
-WEATHER = dict(text_center=(82.0, C), icon_x=144.0, temperature=18.0, text=17.0, gap=1.0,
-               text_width=96.0)
+#: 9), and above them the condition's icon, centered on `icon_center` in
+#: the open space between the 9 and the 10 (as far as it can be from the
+#: 10, the heart rate gauge and the temperature), all orange. The
+#: temperature's digit height (in the hour numerals' style), the name's
+#: font size (the watch's own font), the gap between the two, and the text
+#: column's width (a longer name is cut short), in watch face units.
+#: Hidden when the watch has no weather; hidden in always-on mode.
+WEATHER = dict(text_center=(82.0, C), icon_center=(56.0, 176.0), temperature=18.0, text=17.0,
+               gap=1.0, text_width=96.0)
 #: The icon for each [WEATHER.CONDITION] value, 0 to 15, by day and by night.
 WEATHER_CONDITIONS = (
     ("unknown", "unknown"), ("clear_day", "clear_night"), ("cloudy", "cloudy"),
@@ -1360,7 +1380,8 @@ def render_battery():
 #: - hub: discs as (radius, color), outermost first, each drawn over the
 #:   last: light gray rings with a dark one between, as in the reference.
 #: - value: the value's digit height, its gap below the hub and its font weight
-#:   (bold, to read easily on the watch).
+#:   (bold, to read easily on the watch); and the units' letters ("ft"),
+#:   small: their height as a fraction of the digits', centered on them.
 #: - unit: the unit label's capital height (beside the hub).
 GAUGE = dict(
     distance=118.0,
@@ -1370,7 +1391,7 @@ GAUGE = dict(
     pointer=dict(gap=2.0, outline=((-0.10, 2.35), (0.0, 2.47), (0.71, 3.33), (1.0, 0.0))),
     hub=((6.0, "#DCDCDC"), (4.5, "#161616"), (3.5, "#BEBEBE"), (2.4, "#8E8E8E"),
          (0.8, "#222222")),
-    value=dict(height=16.0, gap=4.0, weight=700),
+    value=dict(height=16.0, gap=4.0, weight=700, unit=0.55),
     unit=6.0,
 )
 #: The gauges' gray, for their tick marks, labels and values, as measured
@@ -1397,8 +1418,9 @@ DAY_NAMES = ("SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT")
 #: its own: its slot is filled from another app's complication `provider`
 #: (of `provider_type`). Its `source` stands for the number in `pointer`,
 #: its `types` give each complication type it takes that type's number
-#: and the value shown, and `test` the type the test build reads its
-#: sample (TEST_SOURCES) as.
+#: and the value shown (with, optionally, an expression false when the
+#: fallback, by default "--", shows instead), and `test` the type the test
+#: build reads its `sample` complication text as.
 #:
 #: - date, in the 1:30 segment: the days of the week, SUN to SAT, a tick at
 #:   each and one between each, the pointer at today's ([DAY_OF_WEEK] is 1
@@ -1411,10 +1433,16 @@ DAY_NAMES = ("SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT")
 #: - calories, in the 7:30 segment: the day's calories from 0 to 5000 over
 #:   the heart gauge's arc, a tick every 250 and a label every 1000 (in
 #:   thousands, "x1000" beside the hub), the pointer held at 5000 above it,
-#:   and the calories as the source gives them. Wear OS gives watch faces
+#:   and the calories (without a thousands separator). Wear OS gives watch faces
 #:   no calorie count, so they come from Google Health's complication, as
 #:   on DataDial (short text, the pointer at its number; a ranged or goal
 #:   value also works), "--" without it.
+#: - elevation, in the 4:30 segment: the elevation from 0 to 15000 ft over
+#:   the same arc, a tick every 750 and a label every 3000 (in thousands,
+#:   "x1000" beside the hub), the pointer held at 15000 above it (and at 0
+#:   below 0) while the number shows the real value, and the feet with
+#:   "ft". Wear OS gives watch faces no elevation, so it comes from
+#:   DataDial Stats' complication, as on DataDial, "--" without it.
 DATE_GAUGE = dict(
     name="date", angle=45.0, scale=(0, 6),
     ticks=[i / 2 for i in range(13)], labels=list(enumerate(DAY_NAMES)),
@@ -1451,39 +1479,86 @@ def text_number(text):
             f"{number(f'subText({text}, {n} - 3, {n})')} : {number(text)})")
 
 
+#: DataDial Stats' elevation (DataDial's own companion app, as the
+#: DataDial watch face uses it): the barometer's elevation as short text,
+#: whole feet with "ft" after them ("1234ft"), or "--" without a reading.
+#: (Where the watch's region uses metric units it sends meters, "376m",
+#: which this face doesn't read.)
+DATADIAL_ELEVATION = ("io.github.ls6777.datadial.stats/"
+                      "io.github.ls6777.datadial.stats.ElevationSource")
+
+
+def elevation_number(text):
+    """An expression for the feet in DataDial Stats' elevation `text`
+    ("1234ft"): the text without its last two characters, through clamp()
+    to make it a number (see text_number); 0 for "--" (too short to hold
+    a number and "ft")."""
+    n = f"textLength({text})"
+    return f"({n} > 2 ? clamp(subText({text}, 0, {n} - 2), -99999, 999999) : 0)"
+
+
 CALORIE_GAUGE = dict(
     name="calories", angle=-135.0, scale=(0, 5000), arc=288.0,
     ticks=list(range(0, 5001, 250)), labels=[(v, str(v // 1000)) for v in range(0, 5001, 1000)],
     unit="\u00d71000",
     pointer="clamp([CALORIES], 0, 5000)", icon="gauge_flame",
     complication=dict(
-        slot=0, source="[CALORIES]", provider=GOOGLE_HEALTH_CALORIES, provider_type="SHORT_TEXT",
+        slot=1, source="[CALORIES]", provider=GOOGLE_HEALTH_CALORIES, provider_type="SHORT_TEXT",
         types={
+            # Shown without its thousands separator: from 1000 up, the
+            # number read from the text; below that, the text as it is
+            # (also "--" without data).
             "SHORT_TEXT": dict(number=text_number("[COMPLICATION.TEXT]"),
-                               value="[COMPLICATION.TEXT]"),
+                               value=f'round({text_number("[COMPLICATION.TEXT]")})',
+                               available="textLength([COMPLICATION.TEXT]) > 3",
+                               fallback="[COMPLICATION.TEXT]"),
             "RANGED_VALUE": dict(number="[COMPLICATION.RANGED_VALUE_VALUE]",
                                  value="round([COMPLICATION.RANGED_VALUE_VALUE])"),
             "GOAL_PROGRESS": dict(number="[COMPLICATION.GOAL_PROGRESS_VALUE]",
                                   value="round([COMPLICATION.GOAL_PROGRESS_VALUE])"),
         },
-        test="SHORT_TEXT"),
-    review=dict(pointer=1850, value="1,850"),
+        test="SHORT_TEXT", sample='"1,850"'),
+    review=dict(pointer=1850, value="1850"),
 )
-GAUGES = (DATE_GAUGE, HEART_GAUGE, CALORIE_GAUGE)
+ELEVATION_GAUGE = dict(
+    name="elevation", angle=135.0, scale=(0, 15000), arc=288.0,
+    ticks=list(range(0, 15001, 750)),
+    labels=[(v, str(v // 1000)) for v in range(0, 15001, 3000)],
+    unit="\u00d71000",
+    pointer="clamp([ELEVATION], 0, 15000)", icon="gauge_mountain",
+    complication=dict(
+        slot=2, source="[ELEVATION]", provider=DATADIAL_ELEVATION, provider_type="SHORT_TEXT",
+        types={
+            # The text as it is: the feet with "ft" ("16753ft", also above
+            # the scale), or "--".
+            "SHORT_TEXT": dict(number=elevation_number("[COMPLICATION.TEXT]"),
+                               value="[COMPLICATION.TEXT]"),
+        },
+        test="SHORT_TEXT", sample='"8250ft"'),
+    review=dict(pointer=8250, value="8250ft"),
+)
+GAUGES = (DATE_GAUGE, HEART_GAUGE, CALORIE_GAUGE, ELEVATION_GAUGE)
 #: The heart gauge's icon, below its value: a red heart (the low battery's
 #: red), its width and its gap below the value, in watch face units.
 HEART_ICON = dict(width=15.0, gap=7.0, color=TEMPERATURE_COLORS["hot"])
-#: The calorie gauge's icon, below its value: DataDial's flame (its
-#: art/flame.svg), orange, its height in watch face units.
-FLAME_ICON = dict(height=17.0, color=ORANGE)
-#: DataDial's flame: an outer flame with a smaller one cut out of its core
-#: (even-odd), as SVG path data in a 24 x 24 box.
-FLAME_PATH = ("M12.5 2C13.3 6 11 8.2 9.5 10 9.2 8.6 8.6 7.6 7.6 7 7.8 9.2 4.5 11.5 4.5 15.2 "
-              "4.5 19 7.9 22 12 22S19.5 19 19.5 15.2C19.5 9.5 15.5 5 12.5 2ZM12 19.5C10.3 19.5 "
-              "9 18.3 9 16.7 9 14.8 10.6 13.9 11.6 12.2 12.3 14 15 14.7 15 16.8 15 18.3 13.7 "
-              "19.5 12 19.5Z")
+#: The calorie and elevation gauges' icons, below their values: DataDial's
+#: flame and mountain (its art/flame.svg and art/mountain.svg), orange.
+#: Each one's height in watch face units and its SVG paths in a 24 x 24
+#: box, with each path's fill rule: the flame is an outer flame with a
+#: smaller one cut out of its core (even-odd); the mountain is two peaks,
+#: its snowcap the same color.
+SVG_ICONS = {
+    "gauge_flame": dict(height=17.0, paths=(
+        ("M12.5 2C13.3 6 11 8.2 9.5 10 9.2 8.6 8.6 7.6 7.6 7 7.8 9.2 4.5 11.5 4.5 15.2 "
+         "4.5 19 7.9 22 12 22S19.5 19 19.5 15.2C19.5 9.5 15.5 5 12.5 2ZM12 19.5C10.3 19.5 "
+         "9 18.3 9 16.7 9 14.8 10.6 13.9 11.6 12.2 12.3 14 15 14.7 15 16.8 15 18.3 13.7 "
+         "19.5 12 19.5Z", "evenodd"),)),
+    "gauge_mountain": dict(height=14.0, paths=(
+        ("M1 21 9 6 13.5 14.4 16 10.5 23 21Z", "nonzero"),
+        ("M9 6 11.2 10.1 10 11 9 9.8 7.9 11 6.8 10.1Z", "nonzero"))),
+}
 #: The gauges' value characters and their image names.
-GAUGE_CHARS = {**{str(n): str(n) for n in range(10)}, "-": "minus", ",": "comma"}
+GAUGE_CHARS = {**{str(n): str(n) for n in range(10)}, "-": "minus", "f": "f", "t": "t"}
 #: The gauges' image sizes and the pointer's length (set by
 #: render_gauges): "<name>_dial" and "hub" (pixels square), "digits" (each
 #: digit's (width, height) in pixels) and "pointer" (watch face units).
@@ -1513,8 +1588,7 @@ def render_gauge_text(text, height, color=GAUGE_GRAY, trailing=False, weight=Non
     """Text in GAUGE_FONT (at `weight`, if given), its capitals `height`
     pixels tall, as an image from the capitals' top to the baseline (and
     the curves' overshoot past them). Characters are spaced by their advance and GAUGE_FONT's
-    tracking, which also follows the last one when `trailing`. A comma is
-    raised so its tail ends there too."""
+    tracking, which also follows the last one when `trailing`."""
     font, top, bottom = gauge_font(height, weight=weight)
     gap = GAUGE_FONT["tracking"] * height
     widths = [font.getlength(ch) for ch in text]
@@ -1523,8 +1597,7 @@ def render_gauge_text(text, height, color=GAUGE_GRAY, trailing=False, weight=Non
     draw = ImageDraw.Draw(img)
     x = 0.0
     for ch, w in zip(text, widths):
-        lift = max(0, font.getbbox(ch, anchor="ls")[3] - bottom) if ch == "," else 0
-        draw.text((x, -top - lift), ch, font=font, fill=rgb(color), anchor="ls")
+        draw.text((x, -top), ch, font=font, fill=rgb(color), anchor="ls")
         x += w + gap
     return img
 
@@ -1616,13 +1689,20 @@ def render_gauge_hub():
 
 def render_gauge_digits():
     """The values' characters (GAUGE_CHARS) in the gauges' font, each with
-    its spacing after it: gauge_digit_<name>.png. Returns the masters by
-    character."""
+    its spacing after it: gauge_digit_<name>.png. Letters (a unit, "ft")
+    are small, centered in an image as tall as a digit's.
+    Returns the masters by character."""
     height = GAUGE["value"]["height"] * DRAW_SCALE
+    weight = GAUGE["value"]["weight"]
     masters = {}
     GAUGE_IMAGES["digits"] = {}
     for ch, name in GAUGE_CHARS.items():
-        img = render_gauge_text(ch, height, trailing=True, weight=GAUGE["value"]["weight"])
+        img = render_gauge_text(ch, height, trailing=True, weight=weight)
+        if ch.isalpha():
+            small_height = height * GAUGE["value"]["unit"]
+            small = render_gauge_text(ch, small_height, trailing=True, weight=weight)
+            img = Image.new("RGBA", (small.width, img.height), (0, 0, 0, 0))
+            img.alpha_composite(small, (0, (img.height - small.height) // 2))
         w, h = img.width / DRAW_SCALE, img.height / DRAW_SCALE
         master = img.resize((round(w * MASTER_SCALE), round(h * MASTER_SCALE)), Image.LANCZOS)
         master.save(MASTERS / f"gauge_digit_{name}.png")
@@ -1709,25 +1789,37 @@ def svg_polygons(d, steps=24):
     return polygons
 
 
-def render_flame_icon():
-    """The calorie gauge's icon (FLAME_ICON): DataDial's flame in orange,
-    its core cut out, gauge_flame.png. Returns the master."""
+def render_svg_icon(name):
+    """One of SVG_ICONS in orange, drawn large and scaled down to its
+    height: <name>.png. Returns the master."""
+    icon = SVG_ICONS[name]
     k = DRAW_SCALE
-    outer, core = svg_polygons(FLAME_PATH)
-    xs, ys = [x for x, _ in outer], [y for _, y in outer]
-    s = FLAME_ICON["height"] / (max(ys) - min(ys))
+    paths = [(svg_polygons(d), rule) for d, rule in icon["paths"]]
+    xs = [x for polys, _ in paths for poly in polys for x, _ in poly]
+    ys = [y for polys, _ in paths for poly in polys for _, y in poly]
+    s = icon["height"] / (max(ys) - min(ys))
     w = math.ceil((max(xs) - min(xs)) * s) + 2
-    h = math.ceil(FLAME_ICON["height"]) + 2
+    h = math.ceil(icon["height"]) + 2
     ox = w / 2 - (max(xs) + min(xs)) / 2 * s
     oy = 1 - min(ys) * s
-    img = Image.new("RGBA", (w * k, h * k), (0, 0, 0, 0))
-    draw = ImageDraw.Draw(img)
-    for poly, fill in ((outer, rgb(FLAME_ICON["color"])), (core, (0, 0, 0, 0))):
-        draw.polygon([((ox + x * s) * k, (oy + y * s) * k) for x, y in poly], fill=fill)
+    mask = Image.new("L", (w * k, h * k), 0)
+    for polys, rule in paths:
+        shape = Image.new("L", mask.size, 0)
+        for poly in polys:
+            layer = Image.new("L", mask.size, 0)
+            ImageDraw.Draw(layer).polygon([((ox + x * s) * k, (oy + y * s) * k) for x, y in poly],
+                                          fill=255)
+            # Even-odd: each subpath flips what it covers (the layers are 0
+            # or 255, so the difference is their XOR); nonzero: a union.
+            shape = (ImageChops.difference(shape, layer) if rule == "evenodd"
+                     else ImageChops.lighter(shape, layer))
+        mask = ImageChops.lighter(mask, shape)
+    img = Image.new("RGBA", mask.size, rgb(ORANGE))
+    img.putalpha(mask)
     master = img.resize((w * MASTER_SCALE, h * MASTER_SCALE), Image.LANCZOS)
-    master.save(MASTERS / "gauge_flame.png")
-    master.resize((w * SCALE, h * SCALE), Image.LANCZOS).save(DRAWABLE / "gauge_flame.png")
-    GAUGE_IMAGES["gauge_flame"] = (w * SCALE, h * SCALE)
+    master.save(MASTERS / f"{name}.png")
+    master.resize((w * SCALE, h * SCALE), Image.LANCZOS).save(DRAWABLE / f"{name}.png")
+    GAUGE_IMAGES[name] = (w * SCALE, h * SCALE)
     return master
 
 
@@ -1745,7 +1837,7 @@ def render_gauges():
     render_gauge_pointer()
     hub = render_gauge_hub()
     digits = render_gauge_digits()
-    icons = {"gauge_heart": render_heart_icon(), "gauge_flame": render_flame_icon()}
+    icons = {"gauge_heart": render_heart_icon(), **{n: render_svg_icon(n) for n in SVG_ICONS}}
     pointer = Image.open(MASTERS / "gauge_pointer.png")
     w, top, _ = HAND_IMAGES["gauge_pointer"]
     k = MASTER_SCALE
@@ -1756,11 +1848,11 @@ def render_gauges():
         sheet = Image.new("RGBA", (dial.width + 2 * pad,) * 2, (0, 0, 0, 255))
         sheet.alpha_composite(dial, (pad, pad))
         cx = cy = pad + size / 2 * k
-        layer = Image.new("RGBA", sheet.size, (0, 0, 0, 0))
-        layer.alpha_composite(pointer, (round(cx - w * k / 2), round(cy - top * k)))
-        angle = gauge_angle(gauge, gauge["review"]["pointer"])
-        sheet.alpha_composite(layer.rotate(-angle, resample=Image.BICUBIC, center=(cx, cy)))
-        sheet.alpha_composite(hub, (round(cx - hub.width / 2), round(cy - hub.height / 2)))
+        if "icon" in gauge:
+            icon = icons[gauge["icon"]]
+            sheet.alpha_composite(icon, (round(cx - icon.width / 2),
+                                         round(gauge_icon_top(cy / k) * k)))
+        # The value, then the pointer over it and the hub, as on the watch.
         shown = [digits[d] for d in gauge["review"]["value"]]
         trailing = GAUGE_FONT["tracking"] * GAUGE["value"]["height"] * k
         x = round(cx - (sum(d.width for d in shown) - trailing) / 2)
@@ -1768,10 +1860,11 @@ def render_gauges():
         for d in shown:
             sheet.alpha_composite(d, (x, y))
             x += d.width
-        if "icon" in gauge:
-            icon = icons[gauge["icon"]]
-            sheet.alpha_composite(icon, (round(cx - icon.width / 2),
-                                         round(gauge_icon_top(cy / k) * k)))
+        layer = Image.new("RGBA", sheet.size, (0, 0, 0, 0))
+        layer.alpha_composite(pointer, (round(cx - w * k / 2), round(cy - top * k)))
+        angle = gauge_angle(gauge, gauge["review"]["pointer"])
+        sheet.alpha_composite(layer.rotate(-angle, resample=Image.BICUBIC, center=(cx, cy)))
+        sheet.alpha_composite(hub, (round(cx - hub.width / 2), round(cy - hub.height / 2)))
         sheet.convert("RGB").save(MASTERS / f"{gauge['name']}_gauge.png")
 
 
@@ -1799,11 +1892,10 @@ TEST_WEATHER = dict(IS_AVAILABLE=1, IS_DAY=1, CONDITION=1, TEMPERATURE=72,
                     TEMPERATURE_UNIT=0, CONDITION_NAME='"Clear Sky"')
 #: The test build's battery percentage, in place of the watch's.
 TEST_BATTERY = 80
-#: The test build's date, heart rate and calories, in place of the
-#: watch's: Friday 20 March ([DAY_OF_WEEK] is 1 for Sunday), a heart rate
-#: of 72 and 1,850 calories (as Google Health's complication text).
-TEST_SOURCES = {"[DAY_OF_WEEK]": 6, "[DAY]": 20, "[MONTH]": 3, "[HEART_RATE]": 72,
-                "[COMPLICATION.TEXT]": '"1,850"'}
+#: The test build's date and heart rate, in place of the watch's: Friday
+#: 20 March ([DAY_OF_WEEK] is 1 for Sunday) and a heart rate of 72. (The
+#: calorie and elevation gauges' samples are in GAUGES.)
+TEST_SOURCES = {"[DAY_OF_WEEK]": 6, "[DAY]": 20, "[MONTH]": 3, "[HEART_RATE]": 72}
 
 
 def write_xml(test=False):

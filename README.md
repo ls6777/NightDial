@@ -32,11 +32,17 @@ It is built with the [Watch Face Format](https://developer.android.com/training/
 - **Heart rate:** a matching gauge in the 10:30 segment, from 0 to 220 bpm around a wider
   arc: a tick every 10, a label every 40, the rate below the hub and a red heart below the
   rate. Without a reading, "--" and the pointer at 0.
-- **Calories:** a matching gauge in the 7:30 segment, from 0 to 5000 (labels in thousands),
-  the pointer held at 5000 above it, today's calories below the hub and an orange flame
-  below them. Watch Face Format can't read calories itself, so they come from the Google
-  Health app's calories complication, as on DataDial; without it, "--" and the pointer at
-  0.
+- **Calories:** a matching gauge in the 7:30 segment, from 0 to 5000 (labels in thousands):
+  the pointer stops at 5000, while today's calories below the hub show the full count, with
+  an orange flame below them. Watch Face Format can't read calories itself, so they come
+  from the Google Health app's calories complication, as on DataDial; without it, "--" and
+  the pointer at 0.
+- **Elevation:** a matching gauge in the 4:30 segment, from 0 to 15,000 ft (labels in
+  thousands): the pointer stops at 15,000, while the elevation below the hub shows the full
+  value with a small "ft", and an orange mountain below it. It comes from DataDial's
+  companion app, DataDial Stats (barometric elevation), which must be installed on the
+  watch; without it, "--" and the pointer at 0. DataDial Stats sends meters in regions
+  that use metric units, which this gauge doesn't read.
 - **Month:** a light gray band on the ring over the current month's numeral (1 for January
   to 12 for December), from the minute dot before it to the one after, with "Month" in
   black along it.
@@ -70,7 +76,7 @@ Python 3 with Pillow.
 ```sh
 ./build.sh          # generate and build the debug APK
 ./build.sh run      # also install it on the watch or emulator and make it the active face
-./build.sh test     # the same with the hands frozen and sample weather, battery, date, month, heart rate and calories, to check the layout
+./build.sh test     # the same with the hands frozen and sample weather, battery, date, month, heart rate, calories and elevation, to check the layout
 ./build.sh release  # release bundle (.aab) for Google Play (set up release signing first)
 ./build.sh log      # the watch face runtime's log: XML and expression errors show up here
 ```
