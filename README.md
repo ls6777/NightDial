@@ -20,17 +20,23 @@ It is built with the [Watch Face Format](https://developer.android.com/training/
   point, a gray outline, a bordered orange insert and a gray center bar; a light gray seconds
   hand with a counterweight, ending just inside the ring; and a black hub with three gray
   rings.
-- **Weather:** left of the center, a little low, from the watch's weather data: an orange icon for the
-  condition (night versions after dark), the temperature (red above 90°F, blue below 40°F,
-  orange between) and the condition's name. Without weather data, the sun and "--°".
+- **Weather:** right of the 9, between the left gauges, from the watch's weather data: the
+  temperature (red above 90°F, blue below 40°F, orange between) over the condition's name,
+  level with the 9, and an orange icon for the condition (night versions after dark) to
+  their right. Without weather data, "--°" and the sun.
 - **Battery:** at the top, between the gauges: an orange battery with a segment lit for
   every 20% (rounded up), and the percentage below it. Both turn red below 20%.
 - **Date:** a gauge in the 1:30 segment: gray tick marks and day names, SUN to SAT, around
   an arc open at the bottom, an orange pointer at today's on a light gray hub, and the day
-  of the month in gray below the hub.
+  of the month in bold gray below the hub.
 - **Heart rate:** a matching gauge in the 10:30 segment, from 0 to 220 bpm around a wider
   arc: a tick every 10, a label every 40, the rate below the hub and a red heart below the
   rate. Without a reading, "--" and the pointer at 0.
+- **Calories:** a matching gauge in the 7:30 segment, from 0 to 5000 (labels in thousands),
+  the pointer held at 5000 above it, today's calories below the hub and an orange flame
+  below them. Watch Face Format can't read calories itself, so they come from the Google
+  Health app's calories complication, as on DataDial; without it, "--" and the pointer at
+  0.
 - **Month:** a light gray band on the ring over the current month's numeral (1 for January
   to 12 for December), from the minute dot before it to the one after, with "Month" in
   black along it.
@@ -64,7 +70,7 @@ Python 3 with Pillow.
 ```sh
 ./build.sh          # generate and build the debug APK
 ./build.sh run      # also install it on the watch or emulator and make it the active face
-./build.sh test     # the same with the hands frozen and sample weather, battery, date, month and heart rate, to check the layout
+./build.sh test     # the same with the hands frozen and sample weather, battery, date, month, heart rate and calories, to check the layout
 ./build.sh release  # release bundle (.aab) for Google Play (set up release signing first)
 ./build.sh log      # the watch face runtime's log: XML and expression errors show up here
 ```
