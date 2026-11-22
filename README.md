@@ -29,10 +29,14 @@ It is built with the [Watch Face Format](https://developer.android.com/training/
   an arc open at the bottom, an orange pointer at today's on a light gray hub, and the day
   of the month in gray below the hub.
 - **Heart rate:** a matching gauge in the 10:30 segment, from 0 to 220 bpm around a wider
-  arc: a tick every 10, a label every 40, and the rate below the hub. Without a reading,
-  "--" and the pointer at 0.
+  arc: a tick every 10, a label every 40, the rate below the hub and a red heart below the
+  rate. Without a reading, "--" and the pointer at 0.
+- **Month:** a light gray band on the ring over the current month's numeral (1 for January
+  to 12 for December), from the minute dot before it to the one after, with "Month" in
+  black along it.
 - **Always-on mode:** the dimmed ring and numerals, and the hour and minute hands with
-  their orange hollowed out to an outline; no seconds hand, weather, battery or gauges.
+  their orange hollowed out to an outline; no seconds hand, weather, battery, gauges or
+  month.
 
 ## How it's built
 
@@ -60,7 +64,7 @@ Python 3 with Pillow.
 ```sh
 ./build.sh          # generate and build the debug APK
 ./build.sh run      # also install it on the watch or emulator and make it the active face
-./build.sh test     # the same with the hands frozen and sample weather, battery, date and heart rate, to check the layout
+./build.sh test     # the same with the hands frozen and sample weather, battery, date, month and heart rate, to check the layout
 ./build.sh release  # release bundle (.aab) for Google Play (set up release signing first)
 ./build.sh log      # the watch face runtime's log: XML and expression errors show up here
 ```

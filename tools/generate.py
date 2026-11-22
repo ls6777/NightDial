@@ -218,6 +218,25 @@ def hub(parent):
         el(e, "Stroke", color=HAND_EDGE_COLOR, thickness=width)
 
 
+def month_mark(parent, sample=None):
+    """The month marker (see MONTH_MARK) on the ring above the month's
+    numeral, over the ring. Hidden
+    in always-on mode. sample maps data sources to fixed values to show
+    instead (see TEST_SOURCES)."""
+    month = str((sample or {}).get("[MONTH]", "[MONTH]"))
+    group = el(parent, "Group", name="monthMark", x=0, y=0, width=SIZE, height=SIZE)
+    ambient_hide(group)
+    shown = el(group, "Condition")
+    exprs = el(shown, "Expressions")
+    for n in range(1, 13):
+        el(exprs, "Expression", name=f"month{n}").text = f"{month} == {n}"
+    for n in range(1, 13):
+        x, y, w, h = MONTH_MARK_BOXES[n]
+        part = el(el(shown, "Compare", expression=f"month{n}"), "PartImage",
+                  x=x, y=y, width=w, height=h)
+        el(part, "Image", resource=f"month_mark_{n}")
+
+
 def analog_clock(parent, frozen=None):
     """The hour, minute and seconds hands while awake; the hour and minute
     hands with their orange hollowed out, and no seconds, in always-on mode. frozen is an (hour,
@@ -399,6 +418,12 @@ def gauge(scene, spec, sample=None):
         template(el(t, "BitmapFont", family="gauge_digits", size=height), "%s",
                  expression(value))
 
+    if "icon" in spec:
+        iw, ih = GAUGE_IMAGES[spec["icon"]]
+        icon = el(group, "PartImage", x=round(cx - iw / 2), y=round(gauge_icon_top(cy)),
+                  width=iw, height=ih)
+        el(icon, "Image", resource=spec["icon"])
+
     if "available" not in spec:
         value_text(group, spec["value"])
         return
@@ -477,6 +502,7 @@ def watch_face(test=False):
     bitmap_fonts(face)
     scene = el(face, "Scene", backgroundColor="#000000")
     dial(scene)
+    month_mark(scene, sample=TEST_SOURCES if test else None)
     weather(scene, sample=TEST_WEATHER if test else None)
     battery(scene, sample=TEST_BATTERY if test else None)
     for spec in GAUGES:
@@ -740,6 +766,11 @@ def render_label(text, k, height=None, color=ORANGE):
     return out
 
 
+#: Each hour numeral's center and size on the face, (x, y, width, height)
+#: in watch face units (set by render_numerals).
+NUMERAL_BOXES = {}
+
+
 def render_numerals():
     """The hour numerals, upright, each placed so its outer edge keeps the
     same gap from the ring's hour dots. One face-size image."""
@@ -752,11 +783,110 @@ def render_numerals():
         a = math.radians(hour * 30)
         reach = abs(w / 2 * math.sin(a)) + abs(h / 2 * math.cos(a))
         x, y = polar(hour * 30, limit - reach)
+        NUMERAL_BOXES[hour] = (x, y, w, h)
         master.alpha_composite(label, (round(x * MASTER_SCALE - label.width / 2),
                                        round(y * MASTER_SCALE - label.height / 2)))
     MASTERS.mkdir(parents=True, exist_ok=True)
     master.save(MASTERS / "numerals.png")
     master.resize((SIZE * SCALE,) * 2, Image.LANCZOS).save(DRAWABLE / "numerals.png")
+
+
+#: The month marker: the dial ring's stretch above the month's numeral (1
+#: for January, 12 for December) covered by a light gray band along the
+#: ring, from the minute dot before the hour to the one after, its ends
+#: round, and "Month" in black along its middle (its letters' tops outward
+#: above 3 and 9, inward below, so it reads left to right). Thick enough
+#: to cover the ring's triangle at 3, 6, 9 and 12. The band's half-span in
+#: degrees (to its round ends' centers, on the minute dots), its
+#: thickness, the text's capital height, tracking (as a fraction of it)
+#: and weight (in the gauges' font, heavier to read at this size), in
+#: watch face units.
+MONTH_MARK = dict(span=6.0, thickness=12.0, text="Month", cap=8.4, tracking=0.08, weight=600,
+                  color="#E6E6E6", text_color="#000000")
+#: Each month marker image's box on the face, (x, y, width, height) in
+#: watch face units (set by render_month_marks).
+MONTH_MARK_BOXES = {}
+
+
+def month_mark_shapes(month):
+    """The month marker's band, as a list of one polygon of points on the
+    face in watch face units."""
+    m = MONTH_MARK
+    a0 = month * 30
+    radius = R * RING
+    half = m["thickness"] / 2
+    # The band: its outer edge clockwise, a round end, its inner edge back
+    # and the other round end.
+    steps = 90
+    outer = [polar(a0 - m["span"] + 2 * m["span"] * i / steps, radius + half)
+             for i in range(steps + 1)]
+    inner = [polar(a0 + m["span"] - 2 * m["span"] * i / steps, radius - half)
+             for i in range(steps + 1)]
+
+    def cap(angle, start):
+        """A round end at `angle`, from the edge at `start` radians
+        (outward is 0) half a turn around."""
+        cx, cy = polar(angle, radius)
+        a = math.radians(angle)
+        ux, uy = math.sin(a), -math.cos(a)  # outward
+        px, py = -uy, ux  # clockwise along the ring
+        pts = []
+        for i in range(1, 24):
+            t = start + math.pi * i / 24
+            pts.append((cx + half * (ux * math.cos(t) + px * math.sin(t)),
+                        cy + half * (uy * math.cos(t) + py * math.sin(t))))
+        return pts
+    band = outer + cap(a0 + m["span"], 0.0) + inner + cap(a0 - m["span"], math.pi)
+    return [band]
+
+
+def render_month_text(img, month, origin):
+    """MONTH_MARK's text along the band's middle, drawn into img (at
+    DRAW_SCALE, its top left at `origin` on the face): each letter upright
+    to the ring, centered on it."""
+    m = MONTH_MARK
+    k = DRAW_SCALE
+    font, _, _ = gauge_font(m["cap"] * k, weight=m["weight"])
+    top, bottom = font.getbbox(m["text"], anchor="ls")[1::2]
+    gap = m["tracking"] * m["cap"] * k
+    widths = [font.getlength(ch) for ch in m["text"]]
+    total = sum(widths) + gap * (len(widths) - 1)
+    radius = R * RING * k
+    below = 90 < month * 30 < 270  # read along the bottom of the dial
+    s = 0.0
+    for ch, w in zip(m["text"], widths):
+        glyph = Image.new("RGBA", (math.ceil(w) + 2, bottom - top), (0, 0, 0, 0))
+        ImageDraw.Draw(glyph).text((1, -top), ch, font=font, fill=rgb(m["text_color"]),
+                                   anchor="ls")
+        offset = math.degrees((s + w / 2 - total / 2) / radius)
+        angle = month * 30 + (-offset if below else offset)
+        turned = glyph.rotate(-(angle + (180 if below else 0)), resample=Image.BICUBIC,
+                              expand=True)
+        x, y = polar(angle, R * RING)
+        img.alpha_composite(turned, (round((x - origin[0]) * k - turned.width / 2),
+                                     round((y - origin[1]) * k - turned.height / 2)))
+        s += w + gap
+
+
+def render_month_marks():
+    """The month marker for each month, drawn large and scaled down:
+    month_mark_<n>.png, each in its own box on the face."""
+    k = DRAW_SCALE
+    color = rgb(MONTH_MARK["color"])
+    for month in range(1, 13):
+        shapes = month_mark_shapes(month)
+        xs = [x for shape in shapes for x, _ in shape]
+        ys = [y for shape in shapes for _, y in shape]
+        x0, y0 = math.floor(min(xs)) - 1, math.floor(min(ys)) - 1
+        w, h = math.ceil(max(xs)) + 1 - x0, math.ceil(max(ys)) + 1 - y0
+        MONTH_MARK_BOXES[month] = (x0, y0, w, h)
+        img = Image.new("RGBA", (w * k, h * k), (0, 0, 0, 0))
+        draw = ImageDraw.Draw(img)
+        for shape in shapes:
+            draw.polygon([((x - x0) * k, (y - y0) * k) for x, y in shape], fill=color)
+        render_month_text(img, month, (x0, y0))
+        img.resize((w * SCALE, h * SCALE), Image.LANCZOS).save(
+            DRAWABLE / f"month_mark_{month}.png")
 
 
 # ------------------------------------------------------------- weather icons
@@ -772,7 +902,7 @@ WEATHER_ICON = dict(size=44.0, line=0.075)
 #: numerals' style), the name's font size (the watch's own font), the gaps
 #: between the three, and the name's box width, in watch face units. Hidden
 #: when the watch has no weather; hidden in always-on mode.
-WEATHER = dict(center=(92.0, 245.0), temperature=18.0, text=17.0, gaps=(4.0, 5.0),
+WEATHER = dict(center=(92.0, 245.0), temperature=18.0, text=17.0, gaps=(4.0, 1.0),
                text_width=160.0)
 #: The icon for each [WEATHER.CONDITION] value, 0 to 15, by day and by night.
 WEATHER_CONDITIONS = (
@@ -1183,7 +1313,8 @@ DAY_NAMES = ("SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT")
 #: the values with tick marks and with labels (value, text), the pointer's
 #: expression on that scale, the value's expression shown below the hub
 #: (and, optionally, an expression that is false when there is no data, to
-#: show "--" instead), and the pointer and value shown on its review sheet.
+#: show "--" instead, and an icon image below the value), and the pointer
+#: and value shown on its review sheet.
 #:
 #: - date, in the 1:30 segment: the days of the week, SUN to SAT, a tick at
 #:   each and one between each, the pointer at today's ([DAY_OF_WEEK] is 1
@@ -1203,10 +1334,13 @@ HEART_GAUGE = dict(
     name="heart", angle=-45.0, scale=(0, 220), arc=288.0,
     ticks=list(range(0, 221, 10)), labels=[(v, str(v)) for v in range(0, 201, 40)],
     pointer="clamp([HEART_RATE], 0, 220)", value="round([HEART_RATE])",
-    available="[HEART_RATE] > 0",
+    available="[HEART_RATE] > 0", icon="gauge_heart",
     review=dict(pointer=72, value="72"),
 )
 GAUGES = (DATE_GAUGE, HEART_GAUGE)
+#: The heart gauge's icon, below its value: a red heart (the low battery's
+#: red), its width and its gap below the value, in watch face units.
+HEART_ICON = dict(width=15.0, gap=7.0, color=TEMPERATURE_COLORS["hot"])
 #: The gauges' value characters and their image names.
 GAUGE_CHARS = {**{str(n): str(n) for n in range(10)}, "-": "minus"}
 #: The gauges' image sizes and the pointer's length (set by
@@ -1215,14 +1349,17 @@ GAUGE_CHARS = {**{str(n): str(n) for n in range(10)}, "-": "minus"}
 GAUGE_IMAGES = {}
 
 
-def gauge_font(height):
-    """GAUGE_FONT at the size that makes its capitals `height` pixels tall,
-    and the top and bottom of its capitals and digits, with their curves'
-    overshoot, from the baseline."""
+def gauge_font(height, weight=None):
+    """GAUGE_FONT at the size that makes its capitals `height` pixels tall
+    (at `weight` instead of its own, if given), and the top and bottom of
+    its capitals and digits, with their curves' overshoot, from the
+    baseline."""
+    weight = weight or GAUGE_FONT["weight"]
+
     def load(size):
         font = ImageFont.truetype(str(GAUGE_FONT["file"]), size)
-        if GAUGE_FONT["weight"] is not None:
-            font.set_variation_by_axes([GAUGE_FONT["weight"]])
+        if weight is not None:
+            font.set_variation_by_axes([weight])
         return font
     probe = load(1000)
     top, bottom = probe.getbbox("H", anchor="ls")[1::2]
@@ -1348,13 +1485,48 @@ def render_gauge_digits():
     return masters
 
 
+def render_heart_icon():
+    """The heart gauge's icon (HEART_ICON): a red heart, gauge_heart.png.
+    Returns the master."""
+    k = DRAW_SCALE
+    # The classic heart curve, x = 16 sin^3 t and y = 13 cos t - 5 cos 2t -
+    # 2 cos 3t - cos 4t, which spans 32 across and about 29 down.
+    points = []
+    for i in range(720):
+        t = 2 * math.pi * i / 720
+        points.append((16 * math.sin(t) ** 3,
+                       -(13 * math.cos(t) - 5 * math.cos(2 * t) - 2 * math.cos(3 * t)
+                         - math.cos(4 * t))))
+    s = HEART_ICON["width"] / 32
+    ys = [y for _, y in points]
+    w = math.ceil(HEART_ICON["width"]) + 1
+    h = math.ceil((max(ys) - min(ys)) * s) + 1
+    img = Image.new("RGBA", (w * k, h * k), (0, 0, 0, 0))
+    ox, oy = w / 2, (h - (max(ys) - min(ys)) * s) / 2 - min(ys) * s
+    ImageDraw.Draw(img).polygon([((ox + x * s) * k, (oy + y * s) * k) for x, y in points],
+                                fill=rgb(HEART_ICON["color"]))
+    master = img.resize((w * MASTER_SCALE, h * MASTER_SCALE), Image.LANCZOS)
+    master.save(MASTERS / "gauge_heart.png")
+    master.resize((w * SCALE, h * SCALE), Image.LANCZOS).save(DRAWABLE / "gauge_heart.png")
+    GAUGE_IMAGES["gauge_heart"] = (w * SCALE, h * SCALE)
+    return master
+
+
+def gauge_icon_top(cy):
+    """The top of a gauge's icon, below its value, for the gauge center's
+    y `cy`, in watch face units."""
+    return (cy + GAUGE["hub"][0][0] + GAUGE["value"]["gap"] + GAUGE_IMAGES["digits"]["0"][1]
+            + HEART_ICON["gap"])
+
+
 def render_gauges():
-    """Each gauge's dial, the shared pointer, hub and digits, and a review
-    sheet per gauge at its review pointer and value
+    """Each gauge's dial, the shared pointer, hub and digits, the heart
+    icon, and a review sheet per gauge at its review pointer and value
     (build/masters/<name>_gauge.png)."""
     render_gauge_pointer()
     hub = render_gauge_hub()
     digits = render_gauge_digits()
+    icons = {"gauge_heart": render_heart_icon()}
     pointer = Image.open(MASTERS / "gauge_pointer.png")
     w, top, _ = HAND_IMAGES["gauge_pointer"]
     k = MASTER_SCALE
@@ -1377,6 +1549,10 @@ def render_gauges():
         for d in shown:
             sheet.alpha_composite(d, (x, y))
             x += d.width
+        if "icon" in gauge:
+            icon = icons[gauge["icon"]]
+            sheet.alpha_composite(icon, (round(cx - icon.width / 2),
+                                         round(gauge_icon_top(cy / k) * k)))
         sheet.convert("RGB").save(MASTERS / f"{gauge['name']}_gauge.png")
 
 
@@ -1384,6 +1560,7 @@ def render_images():
     DRAWABLE.mkdir(parents=True, exist_ok=True)
     render_triangle()
     render_numerals()
+    render_month_marks()
     render_weather_icons()
     render_temperature_glyphs()
     render_battery()
@@ -1403,9 +1580,9 @@ TEST_WEATHER = dict(IS_AVAILABLE=1, IS_DAY=1, CONDITION=1, TEMPERATURE=72,
                     TEMPERATURE_UNIT=0, CONDITION_NAME='"Clear Sky"')
 #: The test build's battery percentage, in place of the watch's.
 TEST_BATTERY = 80
-#: The test build's gauge values, in place of the watch's: Friday the
-#: 20th ([DAY_OF_WEEK] is 1 for Sunday) and a heart rate of 72.
-TEST_SOURCES = {"[DAY_OF_WEEK]": 6, "[DAY]": 20, "[HEART_RATE]": 72}
+#: The test build's date and heart rate, in place of the watch's: Friday
+#: 20 March ([DAY_OF_WEEK] is 1 for Sunday) and a heart rate of 72.
+TEST_SOURCES = {"[DAY_OF_WEEK]": 6, "[DAY]": 20, "[MONTH]": 3, "[HEART_RATE]": 72}
 
 
 def write_xml(test=False):
