@@ -100,109 +100,122 @@
             <Character name="8" resource="date_digit_8" width="17" height="26" />
             <Character name="9" resource="date_digit_9" width="17" height="26" />
         </BitmapFont>
+        <BitmapFont name="hr_digits">
+            <Character name="0" resource="hr_0" width="25" height="36" />
+            <Character name="1" resource="hr_1" width="19" height="36" />
+            <Character name="2" resource="hr_2" width="23" height="36" />
+            <Character name="3" resource="hr_3" width="23" height="36" />
+            <Character name="4" resource="hr_4" width="23" height="36" />
+            <Character name="5" resource="hr_5" width="23" height="36" />
+            <Character name="6" resource="hr_6" width="24" height="36" />
+            <Character name="7" resource="hr_7" width="19" height="36" />
+            <Character name="8" resource="hr_8" width="24" height="36" />
+            <Character name="9" resource="hr_9" width="24" height="36" />
+            <Character name="-" resource="hr_minus" width="16" height="36" />
+        </BitmapFont>
         <BitmapFont name="heart_rate_digits">
-            <Character name="0" resource="heart_rate_0" width="21" height="30" />
-            <Character name="1" resource="heart_rate_1" width="16" height="30" />
-            <Character name="2" resource="heart_rate_2" width="20" height="30" />
-            <Character name="3" resource="heart_rate_3" width="20" height="30" />
-            <Character name="4" resource="heart_rate_4" width="20" height="30" />
-            <Character name="5" resource="heart_rate_5" width="20" height="30" />
-            <Character name="6" resource="heart_rate_6" width="21" height="30" />
-            <Character name="7" resource="heart_rate_7" width="17" height="30" />
-            <Character name="8" resource="heart_rate_8" width="20" height="30" />
-            <Character name="9" resource="heart_rate_9" width="21" height="30" />
-            <Character name="-" resource="heart_rate_minus" width="14" height="30" />
+            <Character name="0" resource="heart_rate_0" width="25" height="36" />
+            <Character name="1" resource="heart_rate_1" width="19" height="36" />
+            <Character name="2" resource="heart_rate_2" width="23" height="36" />
+            <Character name="3" resource="heart_rate_3" width="23" height="36" />
+            <Character name="4" resource="heart_rate_4" width="23" height="36" />
+            <Character name="5" resource="heart_rate_5" width="23" height="36" />
+            <Character name="6" resource="heart_rate_6" width="24" height="36" />
+            <Character name="7" resource="heart_rate_7" width="19" height="36" />
+            <Character name="8" resource="heart_rate_8" width="24" height="36" />
+            <Character name="9" resource="heart_rate_9" width="24" height="36" />
+            <Character name="-" resource="heart_rate_minus" width="16" height="36" />
         </BitmapFont>
         <BitmapFont name="uv_low_digits">
-            <Character name="0" resource="uv_low_0" width="21" height="30" />
-            <Character name="1" resource="uv_low_1" width="16" height="30" />
-            <Character name="2" resource="uv_low_2" width="20" height="30" />
-            <Character name="3" resource="uv_low_3" width="20" height="30" />
-            <Character name="4" resource="uv_low_4" width="20" height="30" />
-            <Character name="5" resource="uv_low_5" width="20" height="30" />
-            <Character name="6" resource="uv_low_6" width="21" height="30" />
-            <Character name="7" resource="uv_low_7" width="17" height="30" />
-            <Character name="8" resource="uv_low_8" width="20" height="30" />
-            <Character name="9" resource="uv_low_9" width="21" height="30" />
-            <Character name="-" resource="uv_low_minus" width="14" height="30" />
+            <Character name="0" resource="uv_low_0" width="25" height="36" />
+            <Character name="1" resource="uv_low_1" width="19" height="36" />
+            <Character name="2" resource="uv_low_2" width="23" height="36" />
+            <Character name="3" resource="uv_low_3" width="23" height="36" />
+            <Character name="4" resource="uv_low_4" width="23" height="36" />
+            <Character name="5" resource="uv_low_5" width="23" height="36" />
+            <Character name="6" resource="uv_low_6" width="24" height="36" />
+            <Character name="7" resource="uv_low_7" width="19" height="36" />
+            <Character name="8" resource="uv_low_8" width="24" height="36" />
+            <Character name="9" resource="uv_low_9" width="24" height="36" />
+            <Character name="-" resource="uv_low_minus" width="16" height="36" />
         </BitmapFont>
         <BitmapFont name="uv_moderate_digits">
-            <Character name="0" resource="uv_moderate_0" width="21" height="30" />
-            <Character name="1" resource="uv_moderate_1" width="16" height="30" />
-            <Character name="2" resource="uv_moderate_2" width="20" height="30" />
-            <Character name="3" resource="uv_moderate_3" width="20" height="30" />
-            <Character name="4" resource="uv_moderate_4" width="20" height="30" />
-            <Character name="5" resource="uv_moderate_5" width="20" height="30" />
-            <Character name="6" resource="uv_moderate_6" width="21" height="30" />
-            <Character name="7" resource="uv_moderate_7" width="17" height="30" />
-            <Character name="8" resource="uv_moderate_8" width="20" height="30" />
-            <Character name="9" resource="uv_moderate_9" width="21" height="30" />
-            <Character name="-" resource="uv_moderate_minus" width="14" height="30" />
+            <Character name="0" resource="uv_moderate_0" width="25" height="36" />
+            <Character name="1" resource="uv_moderate_1" width="19" height="36" />
+            <Character name="2" resource="uv_moderate_2" width="23" height="36" />
+            <Character name="3" resource="uv_moderate_3" width="23" height="36" />
+            <Character name="4" resource="uv_moderate_4" width="23" height="36" />
+            <Character name="5" resource="uv_moderate_5" width="23" height="36" />
+            <Character name="6" resource="uv_moderate_6" width="24" height="36" />
+            <Character name="7" resource="uv_moderate_7" width="19" height="36" />
+            <Character name="8" resource="uv_moderate_8" width="24" height="36" />
+            <Character name="9" resource="uv_moderate_9" width="24" height="36" />
+            <Character name="-" resource="uv_moderate_minus" width="16" height="36" />
         </BitmapFont>
         <BitmapFont name="uv_high_digits">
-            <Character name="0" resource="uv_high_0" width="21" height="30" />
-            <Character name="1" resource="uv_high_1" width="16" height="30" />
-            <Character name="2" resource="uv_high_2" width="20" height="30" />
-            <Character name="3" resource="uv_high_3" width="20" height="30" />
-            <Character name="4" resource="uv_high_4" width="20" height="30" />
-            <Character name="5" resource="uv_high_5" width="20" height="30" />
-            <Character name="6" resource="uv_high_6" width="21" height="30" />
-            <Character name="7" resource="uv_high_7" width="17" height="30" />
-            <Character name="8" resource="uv_high_8" width="20" height="30" />
-            <Character name="9" resource="uv_high_9" width="21" height="30" />
-            <Character name="-" resource="uv_high_minus" width="14" height="30" />
+            <Character name="0" resource="uv_high_0" width="25" height="36" />
+            <Character name="1" resource="uv_high_1" width="19" height="36" />
+            <Character name="2" resource="uv_high_2" width="23" height="36" />
+            <Character name="3" resource="uv_high_3" width="23" height="36" />
+            <Character name="4" resource="uv_high_4" width="23" height="36" />
+            <Character name="5" resource="uv_high_5" width="23" height="36" />
+            <Character name="6" resource="uv_high_6" width="24" height="36" />
+            <Character name="7" resource="uv_high_7" width="19" height="36" />
+            <Character name="8" resource="uv_high_8" width="24" height="36" />
+            <Character name="9" resource="uv_high_9" width="24" height="36" />
+            <Character name="-" resource="uv_high_minus" width="16" height="36" />
         </BitmapFont>
         <BitmapFont name="uv_very_high_digits">
-            <Character name="0" resource="uv_very_high_0" width="21" height="30" />
-            <Character name="1" resource="uv_very_high_1" width="16" height="30" />
-            <Character name="2" resource="uv_very_high_2" width="20" height="30" />
-            <Character name="3" resource="uv_very_high_3" width="20" height="30" />
-            <Character name="4" resource="uv_very_high_4" width="20" height="30" />
-            <Character name="5" resource="uv_very_high_5" width="20" height="30" />
-            <Character name="6" resource="uv_very_high_6" width="21" height="30" />
-            <Character name="7" resource="uv_very_high_7" width="17" height="30" />
-            <Character name="8" resource="uv_very_high_8" width="20" height="30" />
-            <Character name="9" resource="uv_very_high_9" width="21" height="30" />
-            <Character name="-" resource="uv_very_high_minus" width="14" height="30" />
+            <Character name="0" resource="uv_very_high_0" width="25" height="36" />
+            <Character name="1" resource="uv_very_high_1" width="19" height="36" />
+            <Character name="2" resource="uv_very_high_2" width="23" height="36" />
+            <Character name="3" resource="uv_very_high_3" width="23" height="36" />
+            <Character name="4" resource="uv_very_high_4" width="23" height="36" />
+            <Character name="5" resource="uv_very_high_5" width="23" height="36" />
+            <Character name="6" resource="uv_very_high_6" width="24" height="36" />
+            <Character name="7" resource="uv_very_high_7" width="19" height="36" />
+            <Character name="8" resource="uv_very_high_8" width="24" height="36" />
+            <Character name="9" resource="uv_very_high_9" width="24" height="36" />
+            <Character name="-" resource="uv_very_high_minus" width="16" height="36" />
         </BitmapFont>
         <BitmapFont name="uv_extreme_digits">
-            <Character name="0" resource="uv_extreme_0" width="21" height="30" />
-            <Character name="1" resource="uv_extreme_1" width="16" height="30" />
-            <Character name="2" resource="uv_extreme_2" width="20" height="30" />
-            <Character name="3" resource="uv_extreme_3" width="20" height="30" />
-            <Character name="4" resource="uv_extreme_4" width="20" height="30" />
-            <Character name="5" resource="uv_extreme_5" width="20" height="30" />
-            <Character name="6" resource="uv_extreme_6" width="21" height="30" />
-            <Character name="7" resource="uv_extreme_7" width="17" height="30" />
-            <Character name="8" resource="uv_extreme_8" width="20" height="30" />
-            <Character name="9" resource="uv_extreme_9" width="21" height="30" />
-            <Character name="-" resource="uv_extreme_minus" width="14" height="30" />
+            <Character name="0" resource="uv_extreme_0" width="25" height="36" />
+            <Character name="1" resource="uv_extreme_1" width="19" height="36" />
+            <Character name="2" resource="uv_extreme_2" width="23" height="36" />
+            <Character name="3" resource="uv_extreme_3" width="23" height="36" />
+            <Character name="4" resource="uv_extreme_4" width="23" height="36" />
+            <Character name="5" resource="uv_extreme_5" width="23" height="36" />
+            <Character name="6" resource="uv_extreme_6" width="24" height="36" />
+            <Character name="7" resource="uv_extreme_7" width="19" height="36" />
+            <Character name="8" resource="uv_extreme_8" width="24" height="36" />
+            <Character name="9" resource="uv_extreme_9" width="24" height="36" />
+            <Character name="-" resource="uv_extreme_minus" width="16" height="36" />
         </BitmapFont>
         <BitmapFont name="battery_percent">
-            <Character name="0" resource="battery_digit_0" width="16" height="24" />
-            <Character name="1" resource="battery_digit_1" width="12" height="24" />
-            <Character name="2" resource="battery_digit_2" width="15" height="24" />
-            <Character name="3" resource="battery_digit_3" width="15" height="24" />
-            <Character name="4" resource="battery_digit_4" width="15" height="24" />
-            <Character name="5" resource="battery_digit_5" width="15" height="24" />
-            <Character name="6" resource="battery_digit_6" width="16" height="24" />
-            <Character name="7" resource="battery_digit_7" width="12" height="24" />
-            <Character name="8" resource="battery_digit_8" width="15" height="24" />
-            <Character name="9" resource="battery_digit_9" width="16" height="24" />
-            <Character name="%" resource="battery_percent" width="24" height="24" />
+            <Character name="0" resource="battery_digit_0" width="22" height="32" />
+            <Character name="1" resource="battery_digit_1" width="17" height="32" />
+            <Character name="2" resource="battery_digit_2" width="21" height="32" />
+            <Character name="3" resource="battery_digit_3" width="21" height="32" />
+            <Character name="4" resource="battery_digit_4" width="21" height="32" />
+            <Character name="5" resource="battery_digit_5" width="21" height="32" />
+            <Character name="6" resource="battery_digit_6" width="22" height="32" />
+            <Character name="7" resource="battery_digit_7" width="17" height="32" />
+            <Character name="8" resource="battery_digit_8" width="21" height="32" />
+            <Character name="9" resource="battery_digit_9" width="22" height="32" />
+            <Character name="%" resource="battery_percent" width="33" height="32" />
         </BitmapFont>
         <BitmapFont name="battery_percent_low">
-            <Character name="0" resource="battery_digit_low_0" width="16" height="24" />
-            <Character name="1" resource="battery_digit_low_1" width="12" height="24" />
-            <Character name="2" resource="battery_digit_low_2" width="15" height="24" />
-            <Character name="3" resource="battery_digit_low_3" width="15" height="24" />
-            <Character name="4" resource="battery_digit_low_4" width="15" height="24" />
-            <Character name="5" resource="battery_digit_low_5" width="15" height="24" />
-            <Character name="6" resource="battery_digit_low_6" width="16" height="24" />
-            <Character name="7" resource="battery_digit_low_7" width="12" height="24" />
-            <Character name="8" resource="battery_digit_low_8" width="15" height="24" />
-            <Character name="9" resource="battery_digit_low_9" width="16" height="24" />
-            <Character name="%" resource="battery_percent_low" width="24" height="24" />
+            <Character name="0" resource="battery_digit_low_0" width="22" height="32" />
+            <Character name="1" resource="battery_digit_low_1" width="17" height="32" />
+            <Character name="2" resource="battery_digit_low_2" width="21" height="32" />
+            <Character name="3" resource="battery_digit_low_3" width="21" height="32" />
+            <Character name="4" resource="battery_digit_low_4" width="21" height="32" />
+            <Character name="5" resource="battery_digit_low_5" width="21" height="32" />
+            <Character name="6" resource="battery_digit_low_6" width="22" height="32" />
+            <Character name="7" resource="battery_digit_low_7" width="17" height="32" />
+            <Character name="8" resource="battery_digit_low_8" width="21" height="32" />
+            <Character name="9" resource="battery_digit_low_9" width="22" height="32" />
+            <Character name="%" resource="battery_percent_low" width="33" height="32" />
         </BitmapFont>
         <BitmapFont name="gauge_digits">
             <Character name="0" resource="gauge_digit_0" width="14" height="20" />
@@ -235,6 +248,84 @@
             <Character name="f" resource="gauge_digit_goal_f" width="5" height="20" />
             <Character name="t" resource="gauge_digit_goal_t" width="5" height="20" />
             <Character name="h" resource="gauge_digit_goal_h" width="7" height="20" />
+        </BitmapFont>
+        <BitmapFont name="gauge_big0_digits">
+            <Character name="0" resource="gauge_big0_digit_0" width="31" height="45" />
+            <Character name="1" resource="gauge_big0_digit_1" width="24" height="45" />
+            <Character name="2" resource="gauge_big0_digit_2" width="29" height="45" />
+            <Character name="3" resource="gauge_big0_digit_3" width="29" height="45" />
+            <Character name="4" resource="gauge_big0_digit_4" width="30" height="45" />
+            <Character name="5" resource="gauge_big0_digit_5" width="29" height="45" />
+            <Character name="6" resource="gauge_big0_digit_6" width="31" height="45" />
+            <Character name="7" resource="gauge_big0_digit_7" width="24" height="45" />
+            <Character name="8" resource="gauge_big0_digit_8" width="30" height="45" />
+            <Character name="9" resource="gauge_big0_digit_9" width="31" height="45" />
+            <Character name="-" resource="gauge_big0_digit_minus" width="20" height="45" />
+        </BitmapFont>
+        <BitmapFont name="gauge_big0_digits_goal">
+            <Character name="0" resource="gauge_big0_digit_goal_0" width="31" height="45" />
+            <Character name="1" resource="gauge_big0_digit_goal_1" width="24" height="45" />
+            <Character name="2" resource="gauge_big0_digit_goal_2" width="29" height="45" />
+            <Character name="3" resource="gauge_big0_digit_goal_3" width="29" height="45" />
+            <Character name="4" resource="gauge_big0_digit_goal_4" width="30" height="45" />
+            <Character name="5" resource="gauge_big0_digit_goal_5" width="29" height="45" />
+            <Character name="6" resource="gauge_big0_digit_goal_6" width="31" height="45" />
+            <Character name="7" resource="gauge_big0_digit_goal_7" width="24" height="45" />
+            <Character name="8" resource="gauge_big0_digit_goal_8" width="30" height="45" />
+            <Character name="9" resource="gauge_big0_digit_goal_9" width="31" height="45" />
+            <Character name="-" resource="gauge_big0_digit_goal_minus" width="20" height="45" />
+        </BitmapFont>
+        <BitmapFont name="gauge_big1_digits">
+            <Character name="0" resource="gauge_big1_digit_0" width="25" height="36" />
+            <Character name="1" resource="gauge_big1_digit_1" width="19" height="36" />
+            <Character name="2" resource="gauge_big1_digit_2" width="23" height="36" />
+            <Character name="3" resource="gauge_big1_digit_3" width="23" height="36" />
+            <Character name="4" resource="gauge_big1_digit_4" width="23" height="36" />
+            <Character name="5" resource="gauge_big1_digit_5" width="23" height="36" />
+            <Character name="6" resource="gauge_big1_digit_6" width="24" height="36" />
+            <Character name="7" resource="gauge_big1_digit_7" width="19" height="36" />
+            <Character name="8" resource="gauge_big1_digit_8" width="24" height="36" />
+            <Character name="9" resource="gauge_big1_digit_9" width="24" height="36" />
+            <Character name="-" resource="gauge_big1_digit_minus" width="16" height="36" />
+        </BitmapFont>
+        <BitmapFont name="gauge_big1_digits_goal">
+            <Character name="0" resource="gauge_big1_digit_goal_0" width="25" height="36" />
+            <Character name="1" resource="gauge_big1_digit_goal_1" width="19" height="36" />
+            <Character name="2" resource="gauge_big1_digit_goal_2" width="23" height="36" />
+            <Character name="3" resource="gauge_big1_digit_goal_3" width="23" height="36" />
+            <Character name="4" resource="gauge_big1_digit_goal_4" width="23" height="36" />
+            <Character name="5" resource="gauge_big1_digit_goal_5" width="23" height="36" />
+            <Character name="6" resource="gauge_big1_digit_goal_6" width="24" height="36" />
+            <Character name="7" resource="gauge_big1_digit_goal_7" width="19" height="36" />
+            <Character name="8" resource="gauge_big1_digit_goal_8" width="24" height="36" />
+            <Character name="9" resource="gauge_big1_digit_goal_9" width="24" height="36" />
+            <Character name="-" resource="gauge_big1_digit_goal_minus" width="16" height="36" />
+        </BitmapFont>
+        <BitmapFont name="gauge_big2_digits">
+            <Character name="0" resource="gauge_big2_digit_0" width="21" height="30" />
+            <Character name="1" resource="gauge_big2_digit_1" width="16" height="30" />
+            <Character name="2" resource="gauge_big2_digit_2" width="20" height="30" />
+            <Character name="3" resource="gauge_big2_digit_3" width="20" height="30" />
+            <Character name="4" resource="gauge_big2_digit_4" width="20" height="30" />
+            <Character name="5" resource="gauge_big2_digit_5" width="20" height="30" />
+            <Character name="6" resource="gauge_big2_digit_6" width="21" height="30" />
+            <Character name="7" resource="gauge_big2_digit_7" width="17" height="30" />
+            <Character name="8" resource="gauge_big2_digit_8" width="20" height="30" />
+            <Character name="9" resource="gauge_big2_digit_9" width="21" height="30" />
+            <Character name="-" resource="gauge_big2_digit_minus" width="14" height="30" />
+        </BitmapFont>
+        <BitmapFont name="gauge_big2_digits_goal">
+            <Character name="0" resource="gauge_big2_digit_goal_0" width="21" height="30" />
+            <Character name="1" resource="gauge_big2_digit_goal_1" width="16" height="30" />
+            <Character name="2" resource="gauge_big2_digit_goal_2" width="20" height="30" />
+            <Character name="3" resource="gauge_big2_digit_goal_3" width="20" height="30" />
+            <Character name="4" resource="gauge_big2_digit_goal_4" width="20" height="30" />
+            <Character name="5" resource="gauge_big2_digit_goal_5" width="20" height="30" />
+            <Character name="6" resource="gauge_big2_digit_goal_6" width="21" height="30" />
+            <Character name="7" resource="gauge_big2_digit_goal_7" width="17" height="30" />
+            <Character name="8" resource="gauge_big2_digit_goal_8" width="20" height="30" />
+            <Character name="9" resource="gauge_big2_digit_goal_9" width="21" height="30" />
+            <Character name="-" resource="gauge_big2_digit_goal_minus" width="14" height="30" />
         </BitmapFont>
     </BitmapFonts>
     <Scene backgroundColor="#000000">
@@ -603,9 +694,9 @@
                 </Default>
             </Condition>
         </Group>
-        <Group name="heartRate" x="50" y="209" width="90" height="32">
+        <Group name="heartRate" x="43" y="169" width="75" height="76">
             <Variant mode="AMBIENT" target="alpha" value="0" />
-            <PartImage x="0" y="8" width="17" height="16">
+            <PartImage x="0" y="1" width="27" height="25">
                 <Image resource="gauge_heart" />
             </PartImage>
             <Condition>
@@ -613,9 +704,9 @@
                     <Expression name="hasHeartRate">[HEART_RATE] &gt; 0</Expression>
                 </Expressions>
                 <Compare expression="hasHeartRate">
-                    <PartText x="22" y="0" width="68" height="32">
-                        <Text align="START">
-                            <BitmapFont family="heart_rate_digits" size="30">
+                    <PartText x="1" y="37" width="75" height="38">
+                        <Text align="CENTER">
+                            <BitmapFont family="hr_digits" size="36">
                                 <Template>%s<Parameter expression="round([HEART_RATE])" />
                                 </Template>
                             </BitmapFont>
@@ -623,9 +714,9 @@
                     </PartText>
                 </Compare>
                 <Default>
-                    <PartText x="22" y="0" width="68" height="32">
-                        <Text align="START">
-                            <BitmapFont family="heart_rate_digits" size="30">
+                    <PartText x="1" y="37" width="75" height="38">
+                        <Text align="CENTER">
+                            <BitmapFont family="hr_digits" size="36">
                                 <Template>%s<Parameter expression="&quot;--&quot;" />
                                 </Template>
                             </BitmapFont>
@@ -634,7 +725,7 @@
                 </Default>
             </Condition>
         </Group>
-        <Group name="dayName" x="242" y="218" width="103" height="15">
+        <Group name="dayName" x="242" y="218" width="127" height="15">
             <Variant mode="AMBIENT" target="alpha" value="0" />
             <Condition>
                 <Expressions>
@@ -647,37 +738,37 @@
                     <Expression name="day7">[DAY_OF_WEEK] == 7</Expression>
                 </Expressions>
                 <Compare expression="day1">
-                    <PartImage x="24" y="0" width="55" height="15">
+                    <PartImage x="36" y="0" width="55" height="15">
                         <Image resource="day_sunday" />
                     </PartImage>
                 </Compare>
                 <Compare expression="day2">
-                    <PartImage x="22" y="0" width="58" height="15">
+                    <PartImage x="35" y="0" width="58" height="15">
                         <Image resource="day_monday" />
                     </PartImage>
                 </Compare>
                 <Compare expression="day3">
-                    <PartImage x="20" y="0" width="62" height="15">
+                    <PartImage x="33" y="0" width="62" height="15">
                         <Image resource="day_tuesday" />
                     </PartImage>
                 </Compare>
                 <Compare expression="day4">
-                    <PartImage x="10" y="0" width="83" height="15">
+                    <PartImage x="22" y="0" width="83" height="15">
                         <Image resource="day_wednesday" />
                     </PartImage>
                 </Compare>
                 <Compare expression="day5">
-                    <PartImage x="15" y="0" width="73" height="15">
+                    <PartImage x="27" y="0" width="73" height="15">
                         <Image resource="day_thursday" />
                     </PartImage>
                 </Compare>
                 <Compare expression="day6">
-                    <PartImage x="27" y="0" width="48" height="15">
+                    <PartImage x="40" y="0" width="48" height="15">
                         <Image resource="day_friday" />
                     </PartImage>
                 </Compare>
                 <Compare expression="day7">
-                    <PartImage x="15" y="0" width="72" height="15">
+                    <PartImage x="28" y="0" width="72" height="15">
                         <Image resource="day_saturday" />
                     </PartImage>
                 </Compare>
@@ -694,9 +785,9 @@
                 </Text>
             </PartText>
         </Group>
-        <Group name="uvIndex" x="310" y="209" width="90" height="32">
+        <Group name="uvIndex" x="332" y="169" width="75" height="76">
             <Variant mode="AMBIENT" target="alpha" value="0" />
-            <PartImage x="68" y="8" width="22" height="16">
+            <PartImage x="41" y="1" width="34" height="25">
                 <Image resource="gauge_uv" />
             </PartImage>
             <Condition>
@@ -708,9 +799,9 @@
                     <Expression name="uv_extreme">([WEATHER.IS_AVAILABLE]) &amp;&amp; round([WEATHER.UV_INDEX]) &gt;= 11</Expression>
                 </Expressions>
                 <Compare expression="uv_low">
-                    <PartText x="0" y="0" width="65" height="32">
+                    <PartText x="0" y="37" width="75" height="38">
                         <Text align="END">
-                            <BitmapFont family="uv_low_digits" size="30">
+                            <BitmapFont family="uv_low_digits" size="36">
                                 <Template>%s<Parameter expression="round([WEATHER.UV_INDEX])" />
                                 </Template>
                             </BitmapFont>
@@ -718,9 +809,9 @@
                     </PartText>
                 </Compare>
                 <Compare expression="uv_moderate">
-                    <PartText x="0" y="0" width="65" height="32">
+                    <PartText x="0" y="37" width="75" height="38">
                         <Text align="END">
-                            <BitmapFont family="uv_moderate_digits" size="30">
+                            <BitmapFont family="uv_moderate_digits" size="36">
                                 <Template>%s<Parameter expression="round([WEATHER.UV_INDEX])" />
                                 </Template>
                             </BitmapFont>
@@ -728,9 +819,9 @@
                     </PartText>
                 </Compare>
                 <Compare expression="uv_high">
-                    <PartText x="0" y="0" width="65" height="32">
+                    <PartText x="0" y="37" width="75" height="38">
                         <Text align="END">
-                            <BitmapFont family="uv_high_digits" size="30">
+                            <BitmapFont family="uv_high_digits" size="36">
                                 <Template>%s<Parameter expression="round([WEATHER.UV_INDEX])" />
                                 </Template>
                             </BitmapFont>
@@ -738,9 +829,9 @@
                     </PartText>
                 </Compare>
                 <Compare expression="uv_very_high">
-                    <PartText x="0" y="0" width="65" height="32">
+                    <PartText x="0" y="37" width="75" height="38">
                         <Text align="END">
-                            <BitmapFont family="uv_very_high_digits" size="30">
+                            <BitmapFont family="uv_very_high_digits" size="36">
                                 <Template>%s<Parameter expression="round([WEATHER.UV_INDEX])" />
                                 </Template>
                             </BitmapFont>
@@ -748,9 +839,9 @@
                     </PartText>
                 </Compare>
                 <Compare expression="uv_extreme">
-                    <PartText x="0" y="0" width="65" height="32">
+                    <PartText x="0" y="37" width="75" height="38">
                         <Text align="END">
-                            <BitmapFont family="uv_extreme_digits" size="30">
+                            <BitmapFont family="uv_extreme_digits" size="36">
                                 <Template>%s<Parameter expression="round([WEATHER.UV_INDEX])" />
                                 </Template>
                             </BitmapFont>
@@ -758,9 +849,9 @@
                     </PartText>
                 </Compare>
                 <Default>
-                    <PartText x="0" y="0" width="65" height="32">
+                    <PartText x="0" y="37" width="75" height="38">
                         <Text align="END">
-                            <BitmapFont family="heart_rate_digits" size="30">
+                            <BitmapFont family="heart_rate_digits" size="36">
                                 <Template>%s<Parameter expression="&quot;--&quot;" />
                                 </Template>
                             </BitmapFont>
@@ -769,7 +860,7 @@
                 </Default>
             </Condition>
         </Group>
-        <Group name="battery" x="181" y="51" width="88" height="50">
+        <Group name="battery" x="173" y="51" width="104" height="64">
             <Variant mode="AMBIENT" target="alpha" value="0" />
             <Condition>
                 <Expressions>
@@ -781,19 +872,19 @@
                             <Expression name="lit1">[BATTERY_PERCENT] &gt; 0</Expression>
                         </Expressions>
                         <Compare expression="lit1">
-                            <PartImage x="22" y="0" width="44" height="20">
+                            <PartImage x="26" y="40" width="52" height="24">
                                 <Image resource="battery_low_1" />
                             </PartImage>
                         </Compare>
                         <Default>
-                            <PartImage x="22" y="0" width="44" height="20">
+                            <PartImage x="26" y="40" width="52" height="24">
                                 <Image resource="battery_low_0" />
                             </PartImage>
                         </Default>
                     </Condition>
-                    <PartText x="0" y="24" width="88" height="26">
+                    <PartText x="0" y="0" width="104" height="34">
                         <Text align="CENTER">
-                            <BitmapFont family="battery_percent_low" size="24">
+                            <BitmapFont family="battery_percent_low" size="32">
                                 <Template>%s%s<Parameter expression="[BATTERY_PERCENT]" />
                                     <Parameter expression="&quot;%&quot;" />
                                 </Template>
@@ -810,34 +901,34 @@
                             <Expression name="lit2">[BATTERY_PERCENT] &gt; 20 &amp;&amp; [BATTERY_PERCENT] &lt;= 40</Expression>
                         </Expressions>
                         <Compare expression="lit5">
-                            <PartImage x="22" y="0" width="44" height="20">
+                            <PartImage x="26" y="40" width="52" height="24">
                                 <Image resource="battery_5" />
                             </PartImage>
                         </Compare>
                         <Compare expression="lit4">
-                            <PartImage x="22" y="0" width="44" height="20">
+                            <PartImage x="26" y="40" width="52" height="24">
                                 <Image resource="battery_4" />
                             </PartImage>
                         </Compare>
                         <Compare expression="lit3">
-                            <PartImage x="22" y="0" width="44" height="20">
+                            <PartImage x="26" y="40" width="52" height="24">
                                 <Image resource="battery_3" />
                             </PartImage>
                         </Compare>
                         <Compare expression="lit2">
-                            <PartImage x="22" y="0" width="44" height="20">
+                            <PartImage x="26" y="40" width="52" height="24">
                                 <Image resource="battery_2" />
                             </PartImage>
                         </Compare>
                         <Default>
-                            <PartImage x="22" y="0" width="44" height="20">
+                            <PartImage x="26" y="40" width="52" height="24">
                                 <Image resource="battery_1" />
                             </PartImage>
                         </Default>
                     </Condition>
-                    <PartText x="0" y="24" width="88" height="26">
+                    <PartText x="0" y="0" width="104" height="34">
                         <Text align="CENTER">
-                            <BitmapFont family="battery_percent" size="24">
+                            <BitmapFont family="battery_percent" size="32">
                                 <Template>%s%s<Parameter expression="[BATTERY_PERCENT]" />
                                     <Parameter expression="&quot;%&quot;" />
                                 </Template>
@@ -852,24 +943,17 @@
             <PartImage x="0" y="0" width="123" height="123">
                 <Image resource="calories_dial" />
             </PartImage>
-            <PartImage x="54" y="96" width="15" height="19">
+            <PartImage x="50" y="90" width="23" height="30">
                 <Image resource="gauge_flame" />
             </PartImage>
-            <PartText x="1" y="68" width="123" height="22">
+            <PartText x="2" y="38" width="123" height="47">
                 <Text align="CENTER">
-                    <BitmapFont family="gauge_digits" size="20">
+                    <BitmapFont family="gauge_big0_digits" size="45">
                         <Template>%s<Parameter expression="&quot;--&quot;" />
                         </Template>
                     </BitmapFont>
                 </Text>
             </PartText>
-            <PartImage x="57" y="6" width="10" height="62" pivotX="0.5" pivotY="0.89">
-                <Image resource="gauge_pointer" />
-                <Transform target="angle" value="-144 + (0 - 0) * 288 / 5000" />
-            </PartImage>
-            <PartImage x="55" y="54" width="14" height="14">
-                <Image resource="gauge_hub" />
-            </PartImage>
         </Group>
         <ComplicationSlot x="80" y="239" width="123" height="123" slotId="1" name="caloriesSlot" supportedTypes="SHORT_TEXT RANGED_VALUE GOAL_PROGRESS EMPTY" isCustomizable="FALSE">
             <Variant mode="AMBIENT" target="alpha" value="0" />
@@ -884,41 +968,132 @@
                 <PartImage x="0" y="0" width="123" height="123">
                     <Image resource="calories_dial" />
                 </PartImage>
-                <PartImage x="54" y="96" width="15" height="19">
+                <PartImage x="50" y="90" width="23" height="30">
                     <Image resource="gauge_flame" />
                 </PartImage>
                 <Condition>
                     <Expressions>
-                        <Expression name="available">textLength([COMPLICATION.TEXT]) &gt; 3</Expression>
+                        <Expression name="size0">abs((textLength([COMPLICATION.TEXT]) &gt; 4 ? clamp(subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 4), 0, 999999) * 1000 + clamp(subText([COMPLICATION.TEXT], textLength([COMPLICATION.TEXT]) - 3, textLength([COMPLICATION.TEXT])), 0, 999999) : clamp([COMPLICATION.TEXT], 0, 999999))) &lt; 1000</Expression>
+                        <Expression name="size1">abs((textLength([COMPLICATION.TEXT]) &gt; 4 ? clamp(subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 4), 0, 999999) * 1000 + clamp(subText([COMPLICATION.TEXT], textLength([COMPLICATION.TEXT]) - 3, textLength([COMPLICATION.TEXT])), 0, 999999) : clamp([COMPLICATION.TEXT], 0, 999999))) &gt;= 1000 &amp;&amp; abs((textLength([COMPLICATION.TEXT]) &gt; 4 ? clamp(subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 4), 0, 999999) * 1000 + clamp(subText([COMPLICATION.TEXT], textLength([COMPLICATION.TEXT]) - 3, textLength([COMPLICATION.TEXT])), 0, 999999) : clamp([COMPLICATION.TEXT], 0, 999999))) &lt; 10000</Expression>
+                        <Expression name="size2">abs((textLength([COMPLICATION.TEXT]) &gt; 4 ? clamp(subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 4), 0, 999999) * 1000 + clamp(subText([COMPLICATION.TEXT], textLength([COMPLICATION.TEXT]) - 3, textLength([COMPLICATION.TEXT])), 0, 999999) : clamp([COMPLICATION.TEXT], 0, 999999))) &gt;= 10000</Expression>
                     </Expressions>
-                    <Compare expression="available">
-                        <PartText x="1" y="68" width="123" height="22">
-                            <Text align="CENTER">
-                                <BitmapFont family="gauge_digits" size="20">
-                                    <Template>%s<Parameter expression="round((textLength([COMPLICATION.TEXT]) &gt; 4 ? clamp(subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 4), 0, 999999) * 1000 + clamp(subText([COMPLICATION.TEXT], textLength([COMPLICATION.TEXT]) - 3, textLength([COMPLICATION.TEXT])), 0, 999999) : clamp([COMPLICATION.TEXT], 0, 999999)))" />
-                                    </Template>
-                                </BitmapFont>
-                            </Text>
-                        </PartText>
+                    <Compare expression="size0">
+                        <Group x="0" y="0" width="123" height="123">
+                            <Condition>
+                                <Expressions>
+                                    <Expression name="available">textLength([COMPLICATION.TEXT]) &gt; 3</Expression>
+                                </Expressions>
+                                <Compare expression="available">
+                                    <PartText x="2" y="38" width="123" height="47">
+                                        <Text align="CENTER">
+                                            <BitmapFont family="gauge_big0_digits" size="45">
+                                                <Template>%s<Parameter expression="round((textLength([COMPLICATION.TEXT]) &gt; 4 ? clamp(subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 4), 0, 999999) * 1000 + clamp(subText([COMPLICATION.TEXT], textLength([COMPLICATION.TEXT]) - 3, textLength([COMPLICATION.TEXT])), 0, 999999) : clamp([COMPLICATION.TEXT], 0, 999999)))" />
+                                                </Template>
+                                            </BitmapFont>
+                                        </Text>
+                                    </PartText>
+                                </Compare>
+                                <Default>
+                                    <PartText x="2" y="38" width="123" height="47">
+                                        <Text align="CENTER">
+                                            <BitmapFont family="gauge_big0_digits" size="45">
+                                                <Template>%s<Parameter expression="[COMPLICATION.TEXT]" />
+                                                </Template>
+                                            </BitmapFont>
+                                        </Text>
+                                    </PartText>
+                                </Default>
+                            </Condition>
+                        </Group>
+                    </Compare>
+                    <Compare expression="size1">
+                        <Group x="0" y="0" width="123" height="123">
+                            <Condition>
+                                <Expressions>
+                                    <Expression name="available">textLength([COMPLICATION.TEXT]) &gt; 3</Expression>
+                                </Expressions>
+                                <Compare expression="available">
+                                    <PartText x="1" y="42" width="123" height="38">
+                                        <Text align="CENTER">
+                                            <BitmapFont family="gauge_big1_digits" size="36">
+                                                <Template>%s<Parameter expression="round((textLength([COMPLICATION.TEXT]) &gt; 4 ? clamp(subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 4), 0, 999999) * 1000 + clamp(subText([COMPLICATION.TEXT], textLength([COMPLICATION.TEXT]) - 3, textLength([COMPLICATION.TEXT])), 0, 999999) : clamp([COMPLICATION.TEXT], 0, 999999)))" />
+                                                </Template>
+                                            </BitmapFont>
+                                        </Text>
+                                    </PartText>
+                                </Compare>
+                                <Default>
+                                    <PartText x="1" y="42" width="123" height="38">
+                                        <Text align="CENTER">
+                                            <BitmapFont family="gauge_big1_digits" size="36">
+                                                <Template>%s<Parameter expression="[COMPLICATION.TEXT]" />
+                                                </Template>
+                                            </BitmapFont>
+                                        </Text>
+                                    </PartText>
+                                </Default>
+                            </Condition>
+                        </Group>
+                    </Compare>
+                    <Compare expression="size2">
+                        <Group x="0" y="0" width="123" height="123">
+                            <Condition>
+                                <Expressions>
+                                    <Expression name="available">textLength([COMPLICATION.TEXT]) &gt; 3</Expression>
+                                </Expressions>
+                                <Compare expression="available">
+                                    <PartText x="1" y="45" width="123" height="32">
+                                        <Text align="CENTER">
+                                            <BitmapFont family="gauge_big2_digits" size="30">
+                                                <Template>%s<Parameter expression="round((textLength([COMPLICATION.TEXT]) &gt; 4 ? clamp(subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 4), 0, 999999) * 1000 + clamp(subText([COMPLICATION.TEXT], textLength([COMPLICATION.TEXT]) - 3, textLength([COMPLICATION.TEXT])), 0, 999999) : clamp([COMPLICATION.TEXT], 0, 999999)))" />
+                                                </Template>
+                                            </BitmapFont>
+                                        </Text>
+                                    </PartText>
+                                </Compare>
+                                <Default>
+                                    <PartText x="1" y="45" width="123" height="32">
+                                        <Text align="CENTER">
+                                            <BitmapFont family="gauge_big2_digits" size="30">
+                                                <Template>%s<Parameter expression="[COMPLICATION.TEXT]" />
+                                                </Template>
+                                            </BitmapFont>
+                                        </Text>
+                                    </PartText>
+                                </Default>
+                            </Condition>
+                        </Group>
                     </Compare>
                     <Default>
-                        <PartText x="1" y="68" width="123" height="22">
-                            <Text align="CENTER">
-                                <BitmapFont family="gauge_digits" size="20">
-                                    <Template>%s<Parameter expression="[COMPLICATION.TEXT]" />
-                                    </Template>
-                                </BitmapFont>
-                            </Text>
-                        </PartText>
+                        <Group x="0" y="0" width="123" height="123">
+                            <Condition>
+                                <Expressions>
+                                    <Expression name="available">textLength([COMPLICATION.TEXT]) &gt; 3</Expression>
+                                </Expressions>
+                                <Compare expression="available">
+                                    <PartText x="2" y="38" width="123" height="47">
+                                        <Text align="CENTER">
+                                            <BitmapFont family="gauge_big0_digits" size="45">
+                                                <Template>%s<Parameter expression="round((textLength([COMPLICATION.TEXT]) &gt; 4 ? clamp(subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 4), 0, 999999) * 1000 + clamp(subText([COMPLICATION.TEXT], textLength([COMPLICATION.TEXT]) - 3, textLength([COMPLICATION.TEXT])), 0, 999999) : clamp([COMPLICATION.TEXT], 0, 999999)))" />
+                                                </Template>
+                                            </BitmapFont>
+                                        </Text>
+                                    </PartText>
+                                </Compare>
+                                <Default>
+                                    <PartText x="2" y="38" width="123" height="47">
+                                        <Text align="CENTER">
+                                            <BitmapFont family="gauge_big0_digits" size="45">
+                                                <Template>%s<Parameter expression="[COMPLICATION.TEXT]" />
+                                                </Template>
+                                            </BitmapFont>
+                                        </Text>
+                                    </PartText>
+                                </Default>
+                            </Condition>
+                        </Group>
                     </Default>
                 </Condition>
-                <PartImage x="57" y="6" width="10" height="62" pivotX="0.5" pivotY="0.89">
-                    <Image resource="gauge_pointer" />
-                    <Transform target="angle" value="-144 + (clamp((textLength([COMPLICATION.TEXT]) &gt; 4 ? clamp(subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 4), 0, 999999) * 1000 + clamp(subText([COMPLICATION.TEXT], textLength([COMPLICATION.TEXT]) - 3, textLength([COMPLICATION.TEXT])), 0, 999999) : clamp([COMPLICATION.TEXT], 0, 999999)), 0, 5000) - 0) * 288 / 5000" />
-                </PartImage>
-                <PartImage x="55" y="54" width="14" height="14">
-                    <Image resource="gauge_hub" />
-                </PartImage>
             </Complication>
             <Complication type="RANGED_VALUE">
                 <PartDraw x="0" y="0" width="123" height="123">
@@ -929,24 +1104,64 @@
                 <PartImage x="0" y="0" width="123" height="123">
                     <Image resource="calories_dial" />
                 </PartImage>
-                <PartImage x="54" y="96" width="15" height="19">
+                <PartImage x="50" y="90" width="23" height="30">
                     <Image resource="gauge_flame" />
                 </PartImage>
-                <PartText x="1" y="68" width="123" height="22">
-                    <Text align="CENTER">
-                        <BitmapFont family="gauge_digits" size="20">
-                            <Template>%s<Parameter expression="round([COMPLICATION.RANGED_VALUE_VALUE])" />
-                            </Template>
-                        </BitmapFont>
-                    </Text>
-                </PartText>
-                <PartImage x="57" y="6" width="10" height="62" pivotX="0.5" pivotY="0.89">
-                    <Image resource="gauge_pointer" />
-                    <Transform target="angle" value="-144 + (clamp([COMPLICATION.RANGED_VALUE_VALUE], 0, 5000) - 0) * 288 / 5000" />
-                </PartImage>
-                <PartImage x="55" y="54" width="14" height="14">
-                    <Image resource="gauge_hub" />
-                </PartImage>
+                <Condition>
+                    <Expressions>
+                        <Expression name="size0">abs([COMPLICATION.RANGED_VALUE_VALUE]) &lt; 1000</Expression>
+                        <Expression name="size1">abs([COMPLICATION.RANGED_VALUE_VALUE]) &gt;= 1000 &amp;&amp; abs([COMPLICATION.RANGED_VALUE_VALUE]) &lt; 10000</Expression>
+                        <Expression name="size2">abs([COMPLICATION.RANGED_VALUE_VALUE]) &gt;= 10000</Expression>
+                    </Expressions>
+                    <Compare expression="size0">
+                        <Group x="0" y="0" width="123" height="123">
+                            <PartText x="2" y="38" width="123" height="47">
+                                <Text align="CENTER">
+                                    <BitmapFont family="gauge_big0_digits" size="45">
+                                        <Template>%s<Parameter expression="round([COMPLICATION.RANGED_VALUE_VALUE])" />
+                                        </Template>
+                                    </BitmapFont>
+                                </Text>
+                            </PartText>
+                        </Group>
+                    </Compare>
+                    <Compare expression="size1">
+                        <Group x="0" y="0" width="123" height="123">
+                            <PartText x="1" y="42" width="123" height="38">
+                                <Text align="CENTER">
+                                    <BitmapFont family="gauge_big1_digits" size="36">
+                                        <Template>%s<Parameter expression="round([COMPLICATION.RANGED_VALUE_VALUE])" />
+                                        </Template>
+                                    </BitmapFont>
+                                </Text>
+                            </PartText>
+                        </Group>
+                    </Compare>
+                    <Compare expression="size2">
+                        <Group x="0" y="0" width="123" height="123">
+                            <PartText x="1" y="45" width="123" height="32">
+                                <Text align="CENTER">
+                                    <BitmapFont family="gauge_big2_digits" size="30">
+                                        <Template>%s<Parameter expression="round([COMPLICATION.RANGED_VALUE_VALUE])" />
+                                        </Template>
+                                    </BitmapFont>
+                                </Text>
+                            </PartText>
+                        </Group>
+                    </Compare>
+                    <Default>
+                        <Group x="0" y="0" width="123" height="123">
+                            <PartText x="2" y="38" width="123" height="47">
+                                <Text align="CENTER">
+                                    <BitmapFont family="gauge_big0_digits" size="45">
+                                        <Template>%s<Parameter expression="round([COMPLICATION.RANGED_VALUE_VALUE])" />
+                                        </Template>
+                                    </BitmapFont>
+                                </Text>
+                            </PartText>
+                        </Group>
+                    </Default>
+                </Condition>
             </Complication>
             <Complication type="GOAL_PROGRESS">
                 <PartDraw x="0" y="0" width="123" height="123">
@@ -957,41 +1172,74 @@
                 <PartImage x="0" y="0" width="123" height="123">
                     <Image resource="calories_dial" />
                 </PartImage>
-                <PartImage x="54" y="96" width="15" height="19">
+                <PartImage x="50" y="90" width="23" height="30">
                     <Image resource="gauge_flame" />
                 </PartImage>
-                <PartText x="1" y="68" width="123" height="22">
-                    <Text align="CENTER">
-                        <BitmapFont family="gauge_digits" size="20">
-                            <Template>%s<Parameter expression="round([COMPLICATION.GOAL_PROGRESS_VALUE])" />
-                            </Template>
-                        </BitmapFont>
-                    </Text>
-                </PartText>
-                <PartImage x="57" y="6" width="10" height="62" pivotX="0.5" pivotY="0.89">
-                    <Image resource="gauge_pointer" />
-                    <Transform target="angle" value="-144 + (clamp([COMPLICATION.GOAL_PROGRESS_VALUE], 0, 5000) - 0) * 288 / 5000" />
-                </PartImage>
-                <PartImage x="55" y="54" width="14" height="14">
-                    <Image resource="gauge_hub" />
-                </PartImage>
+                <Condition>
+                    <Expressions>
+                        <Expression name="size0">abs([COMPLICATION.GOAL_PROGRESS_VALUE]) &lt; 1000</Expression>
+                        <Expression name="size1">abs([COMPLICATION.GOAL_PROGRESS_VALUE]) &gt;= 1000 &amp;&amp; abs([COMPLICATION.GOAL_PROGRESS_VALUE]) &lt; 10000</Expression>
+                        <Expression name="size2">abs([COMPLICATION.GOAL_PROGRESS_VALUE]) &gt;= 10000</Expression>
+                    </Expressions>
+                    <Compare expression="size0">
+                        <Group x="0" y="0" width="123" height="123">
+                            <PartText x="2" y="38" width="123" height="47">
+                                <Text align="CENTER">
+                                    <BitmapFont family="gauge_big0_digits" size="45">
+                                        <Template>%s<Parameter expression="round([COMPLICATION.GOAL_PROGRESS_VALUE])" />
+                                        </Template>
+                                    </BitmapFont>
+                                </Text>
+                            </PartText>
+                        </Group>
+                    </Compare>
+                    <Compare expression="size1">
+                        <Group x="0" y="0" width="123" height="123">
+                            <PartText x="1" y="42" width="123" height="38">
+                                <Text align="CENTER">
+                                    <BitmapFont family="gauge_big1_digits" size="36">
+                                        <Template>%s<Parameter expression="round([COMPLICATION.GOAL_PROGRESS_VALUE])" />
+                                        </Template>
+                                    </BitmapFont>
+                                </Text>
+                            </PartText>
+                        </Group>
+                    </Compare>
+                    <Compare expression="size2">
+                        <Group x="0" y="0" width="123" height="123">
+                            <PartText x="1" y="45" width="123" height="32">
+                                <Text align="CENTER">
+                                    <BitmapFont family="gauge_big2_digits" size="30">
+                                        <Template>%s<Parameter expression="round([COMPLICATION.GOAL_PROGRESS_VALUE])" />
+                                        </Template>
+                                    </BitmapFont>
+                                </Text>
+                            </PartText>
+                        </Group>
+                    </Compare>
+                    <Default>
+                        <Group x="0" y="0" width="123" height="123">
+                            <PartText x="2" y="38" width="123" height="47">
+                                <Text align="CENTER">
+                                    <BitmapFont family="gauge_big0_digits" size="45">
+                                        <Template>%s<Parameter expression="round([COMPLICATION.GOAL_PROGRESS_VALUE])" />
+                                        </Template>
+                                    </BitmapFont>
+                                </Text>
+                            </PartText>
+                        </Group>
+                    </Default>
+                </Condition>
             </Complication>
             <Complication type="EMPTY">
-                <PartText x="1" y="68" width="123" height="22">
+                <PartText x="2" y="38" width="123" height="47">
                     <Text align="CENTER">
-                        <BitmapFont family="gauge_digits" size="20">
+                        <BitmapFont family="gauge_big0_digits" size="45">
                             <Template>%s<Parameter expression="&quot;--&quot;" />
                             </Template>
                         </BitmapFont>
                     </Text>
                 </PartText>
-                <PartImage x="57" y="6" width="10" height="62" pivotX="0.5" pivotY="0.89">
-                    <Image resource="gauge_pointer" />
-                    <Transform target="angle" value="-144 + (0 - 0) * 288 / 5000" />
-                </PartImage>
-                <PartImage x="55" y="54" width="14" height="14">
-                    <Image resource="gauge_hub" />
-                </PartImage>
             </Complication>
         </ComplicationSlot>
         <Group name="elevationGauge" x="247" y="239" width="123" height="123">
@@ -999,24 +1247,20 @@
             <PartImage x="0" y="0" width="123" height="123">
                 <Image resource="elevation_dial" />
             </PartImage>
-            <PartImage x="50" y="96" width="23" height="16">
+            <PartImage x="44" y="96" width="35" height="24">
                 <Image resource="gauge_mountain" />
             </PartImage>
-            <PartText x="1" y="68" width="123" height="22">
+            <PartImage x="57" y="22" width="9" height="13">
+                <Image resource="unit_elevation" />
+            </PartImage>
+            <PartText x="2" y="38" width="123" height="47">
                 <Text align="CENTER">
-                    <BitmapFont family="gauge_digits" size="20">
+                    <BitmapFont family="gauge_big0_digits" size="45">
                         <Template>%s<Parameter expression="&quot;--&quot;" />
                         </Template>
                     </BitmapFont>
                 </Text>
             </PartText>
-            <PartImage x="56" y="6" width="10" height="62" pivotX="0.5" pivotY="0.89">
-                <Image resource="gauge_pointer" />
-                <Transform target="angle" value="-144 + (0 - 0) * 288 / 15000" />
-            </PartImage>
-            <PartImage x="54" y="54" width="14" height="14">
-                <Image resource="gauge_hub" />
-            </PartImage>
         </Group>
         <ComplicationSlot x="247" y="239" width="123" height="123" slotId="2" name="elevationSlot" supportedTypes="SHORT_TEXT EMPTY" isCustomizable="FALSE">
             <Variant mode="AMBIENT" target="alpha" value="0" />
@@ -1031,41 +1275,157 @@
                 <PartImage x="0" y="0" width="123" height="123">
                     <Image resource="elevation_dial" />
                 </PartImage>
-                <PartImage x="50" y="96" width="23" height="16">
+                <PartImage x="44" y="96" width="35" height="24">
                     <Image resource="gauge_mountain" />
                 </PartImage>
-                <PartText x="1" y="68" width="123" height="22">
-                    <Text align="CENTER">
-                        <BitmapFont family="gauge_digits" size="20">
-                            <Template>%s<Parameter expression="[COMPLICATION.TEXT]" />
-                            </Template>
-                        </BitmapFont>
-                    </Text>
-                </PartText>
-                <PartImage x="56" y="6" width="10" height="62" pivotX="0.5" pivotY="0.89">
-                    <Image resource="gauge_pointer" />
-                    <Transform target="angle" value="-144 + (clamp((textLength([COMPLICATION.TEXT]) &gt; 2 ? clamp(subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 2), -99999, 999999) : 0), 0, 15000) - 0) * 288 / 15000" />
-                </PartImage>
-                <PartImage x="54" y="54" width="14" height="14">
-                    <Image resource="gauge_hub" />
-                </PartImage>
+                <Condition>
+                    <Expressions>
+                        <Expression name="size0">abs((textLength([COMPLICATION.TEXT]) &gt; 2 ? clamp(subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 2), -99999, 999999) : 0)) &lt; 1000</Expression>
+                        <Expression name="size1">abs((textLength([COMPLICATION.TEXT]) &gt; 2 ? clamp(subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 2), -99999, 999999) : 0)) &gt;= 1000 &amp;&amp; abs((textLength([COMPLICATION.TEXT]) &gt; 2 ? clamp(subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 2), -99999, 999999) : 0)) &lt; 10000</Expression>
+                        <Expression name="size2">abs((textLength([COMPLICATION.TEXT]) &gt; 2 ? clamp(subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 2), -99999, 999999) : 0)) &gt;= 10000</Expression>
+                    </Expressions>
+                    <Compare expression="size0">
+                        <Group x="0" y="0" width="123" height="123">
+                            <PartImage x="57" y="22" width="9" height="13">
+                                <Image resource="unit_elevation" />
+                            </PartImage>
+                            <Condition>
+                                <Expressions>
+                                    <Expression name="available">textLength([COMPLICATION.TEXT]) &gt; 2</Expression>
+                                </Expressions>
+                                <Compare expression="available">
+                                    <PartText x="2" y="38" width="123" height="47">
+                                        <Text align="CENTER">
+                                            <BitmapFont family="gauge_big0_digits" size="45">
+                                                <Template>%s<Parameter expression="subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 2)" />
+                                                </Template>
+                                            </BitmapFont>
+                                        </Text>
+                                    </PartText>
+                                </Compare>
+                                <Default>
+                                    <PartText x="2" y="38" width="123" height="47">
+                                        <Text align="CENTER">
+                                            <BitmapFont family="gauge_big0_digits" size="45">
+                                                <Template>%s<Parameter expression="[COMPLICATION.TEXT]" />
+                                                </Template>
+                                            </BitmapFont>
+                                        </Text>
+                                    </PartText>
+                                </Default>
+                            </Condition>
+                        </Group>
+                    </Compare>
+                    <Compare expression="size1">
+                        <Group x="0" y="0" width="123" height="123">
+                            <PartImage x="57" y="26" width="9" height="13">
+                                <Image resource="unit_elevation" />
+                            </PartImage>
+                            <Condition>
+                                <Expressions>
+                                    <Expression name="available">textLength([COMPLICATION.TEXT]) &gt; 2</Expression>
+                                </Expressions>
+                                <Compare expression="available">
+                                    <PartText x="1" y="42" width="123" height="38">
+                                        <Text align="CENTER">
+                                            <BitmapFont family="gauge_big1_digits" size="36">
+                                                <Template>%s<Parameter expression="subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 2)" />
+                                                </Template>
+                                            </BitmapFont>
+                                        </Text>
+                                    </PartText>
+                                </Compare>
+                                <Default>
+                                    <PartText x="1" y="42" width="123" height="38">
+                                        <Text align="CENTER">
+                                            <BitmapFont family="gauge_big1_digits" size="36">
+                                                <Template>%s<Parameter expression="[COMPLICATION.TEXT]" />
+                                                </Template>
+                                            </BitmapFont>
+                                        </Text>
+                                    </PartText>
+                                </Default>
+                            </Condition>
+                        </Group>
+                    </Compare>
+                    <Compare expression="size2">
+                        <Group x="0" y="0" width="123" height="123">
+                            <PartImage x="57" y="29" width="9" height="13">
+                                <Image resource="unit_elevation" />
+                            </PartImage>
+                            <Condition>
+                                <Expressions>
+                                    <Expression name="available">textLength([COMPLICATION.TEXT]) &gt; 2</Expression>
+                                </Expressions>
+                                <Compare expression="available">
+                                    <PartText x="1" y="45" width="123" height="32">
+                                        <Text align="CENTER">
+                                            <BitmapFont family="gauge_big2_digits" size="30">
+                                                <Template>%s<Parameter expression="subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 2)" />
+                                                </Template>
+                                            </BitmapFont>
+                                        </Text>
+                                    </PartText>
+                                </Compare>
+                                <Default>
+                                    <PartText x="1" y="45" width="123" height="32">
+                                        <Text align="CENTER">
+                                            <BitmapFont family="gauge_big2_digits" size="30">
+                                                <Template>%s<Parameter expression="[COMPLICATION.TEXT]" />
+                                                </Template>
+                                            </BitmapFont>
+                                        </Text>
+                                    </PartText>
+                                </Default>
+                            </Condition>
+                        </Group>
+                    </Compare>
+                    <Default>
+                        <Group x="0" y="0" width="123" height="123">
+                            <PartImage x="57" y="22" width="9" height="13">
+                                <Image resource="unit_elevation" />
+                            </PartImage>
+                            <Condition>
+                                <Expressions>
+                                    <Expression name="available">textLength([COMPLICATION.TEXT]) &gt; 2</Expression>
+                                </Expressions>
+                                <Compare expression="available">
+                                    <PartText x="2" y="38" width="123" height="47">
+                                        <Text align="CENTER">
+                                            <BitmapFont family="gauge_big0_digits" size="45">
+                                                <Template>%s<Parameter expression="subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 2)" />
+                                                </Template>
+                                            </BitmapFont>
+                                        </Text>
+                                    </PartText>
+                                </Compare>
+                                <Default>
+                                    <PartText x="2" y="38" width="123" height="47">
+                                        <Text align="CENTER">
+                                            <BitmapFont family="gauge_big0_digits" size="45">
+                                                <Template>%s<Parameter expression="[COMPLICATION.TEXT]" />
+                                                </Template>
+                                            </BitmapFont>
+                                        </Text>
+                                    </PartText>
+                                </Default>
+                            </Condition>
+                        </Group>
+                    </Default>
+                </Condition>
             </Complication>
             <Complication type="EMPTY">
-                <PartText x="1" y="68" width="123" height="22">
+                <PartImage x="57" y="22" width="9" height="13">
+                    <Image resource="unit_elevation" />
+                </PartImage>
+                <PartText x="2" y="38" width="123" height="47">
                     <Text align="CENTER">
-                        <BitmapFont family="gauge_digits" size="20">
+                        <BitmapFont family="gauge_big0_digits" size="45">
                             <Template>%s<Parameter expression="&quot;--&quot;" />
                             </Template>
                         </BitmapFont>
                     </Text>
                 </PartText>
-                <PartImage x="56" y="6" width="10" height="62" pivotX="0.5" pivotY="0.89">
-                    <Image resource="gauge_pointer" />
-                    <Transform target="angle" value="-144 + (0 - 0) * 288 / 15000" />
-                </PartImage>
-                <PartImage x="54" y="54" width="14" height="14">
-                    <Image resource="gauge_hub" />
-                </PartImage>
             </Complication>
         </ComplicationSlot>
         <Group name="stepsGauge" x="80" y="88" width="123" height="123">
@@ -1073,24 +1433,17 @@
             <PartImage x="0" y="0" width="123" height="123">
                 <Image resource="steps_dial" />
             </PartImage>
-            <PartImage x="54" y="97" width="16" height="18">
+            <PartImage x="48" y="89" width="27" height="32">
                 <Image resource="gauge_steps" />
             </PartImage>
-            <PartText x="1" y="69" width="123" height="22">
+            <PartText x="2" y="38" width="123" height="47">
                 <Text align="CENTER">
-                    <BitmapFont family="gauge_digits" size="20">
+                    <BitmapFont family="gauge_big0_digits" size="45">
                         <Template>%s<Parameter expression="&quot;--&quot;" />
                         </Template>
                     </BitmapFont>
                 </Text>
             </PartText>
-            <PartImage x="57" y="7" width="10" height="62" pivotX="0.5" pivotY="0.89">
-                <Image resource="gauge_pointer" />
-                <Transform target="angle" value="-144 + (0 - 0) * 288 / 20000" />
-            </PartImage>
-            <PartImage x="55" y="55" width="14" height="14">
-                <Image resource="gauge_hub" />
-            </PartImage>
         </Group>
         <ComplicationSlot x="80" y="88" width="123" height="123" slotId="3" name="stepsSlot" supportedTypes="GOAL_PROGRESS RANGED_VALUE SHORT_TEXT EMPTY" isCustomizable="FALSE">
             <Variant mode="AMBIENT" target="alpha" value="0" />
@@ -1105,41 +1458,132 @@
                 <PartImage x="0" y="0" width="123" height="123">
                     <Image resource="steps_dial" />
                 </PartImage>
-                <PartImage x="54" y="97" width="16" height="18">
+                <PartImage x="48" y="89" width="27" height="32">
                     <Image resource="gauge_steps" />
                 </PartImage>
                 <Condition>
                     <Expressions>
-                        <Expression name="goalMet">[COMPLICATION.GOAL_PROGRESS_TARGET_VALUE] &gt; 0 &amp;&amp; [COMPLICATION.GOAL_PROGRESS_VALUE] &gt;= [COMPLICATION.GOAL_PROGRESS_TARGET_VALUE]</Expression>
+                        <Expression name="size0">abs([COMPLICATION.GOAL_PROGRESS_VALUE]) &lt; 1000</Expression>
+                        <Expression name="size1">abs([COMPLICATION.GOAL_PROGRESS_VALUE]) &gt;= 1000 &amp;&amp; abs([COMPLICATION.GOAL_PROGRESS_VALUE]) &lt; 10000</Expression>
+                        <Expression name="size2">abs([COMPLICATION.GOAL_PROGRESS_VALUE]) &gt;= 10000</Expression>
                     </Expressions>
-                    <Compare expression="goalMet">
-                        <PartText x="1" y="69" width="123" height="22">
-                            <Text align="CENTER">
-                                <BitmapFont family="gauge_digits_goal" size="20">
-                                    <Template>%s<Parameter expression="round([COMPLICATION.GOAL_PROGRESS_VALUE])" />
-                                    </Template>
-                                </BitmapFont>
-                            </Text>
-                        </PartText>
+                    <Compare expression="size0">
+                        <Group x="0" y="0" width="123" height="123">
+                            <Condition>
+                                <Expressions>
+                                    <Expression name="goalMet">[COMPLICATION.GOAL_PROGRESS_TARGET_VALUE] &gt; 0 &amp;&amp; [COMPLICATION.GOAL_PROGRESS_VALUE] &gt;= [COMPLICATION.GOAL_PROGRESS_TARGET_VALUE]</Expression>
+                                </Expressions>
+                                <Compare expression="goalMet">
+                                    <PartText x="2" y="38" width="123" height="47">
+                                        <Text align="CENTER">
+                                            <BitmapFont family="gauge_big0_digits_goal" size="45">
+                                                <Template>%s<Parameter expression="round([COMPLICATION.GOAL_PROGRESS_VALUE])" />
+                                                </Template>
+                                            </BitmapFont>
+                                        </Text>
+                                    </PartText>
+                                </Compare>
+                                <Default>
+                                    <PartText x="2" y="38" width="123" height="47">
+                                        <Text align="CENTER">
+                                            <BitmapFont family="gauge_big0_digits" size="45">
+                                                <Template>%s<Parameter expression="round([COMPLICATION.GOAL_PROGRESS_VALUE])" />
+                                                </Template>
+                                            </BitmapFont>
+                                        </Text>
+                                    </PartText>
+                                </Default>
+                            </Condition>
+                        </Group>
+                    </Compare>
+                    <Compare expression="size1">
+                        <Group x="0" y="0" width="123" height="123">
+                            <Condition>
+                                <Expressions>
+                                    <Expression name="goalMet">[COMPLICATION.GOAL_PROGRESS_TARGET_VALUE] &gt; 0 &amp;&amp; [COMPLICATION.GOAL_PROGRESS_VALUE] &gt;= [COMPLICATION.GOAL_PROGRESS_TARGET_VALUE]</Expression>
+                                </Expressions>
+                                <Compare expression="goalMet">
+                                    <PartText x="1" y="43" width="123" height="38">
+                                        <Text align="CENTER">
+                                            <BitmapFont family="gauge_big1_digits_goal" size="36">
+                                                <Template>%s<Parameter expression="round([COMPLICATION.GOAL_PROGRESS_VALUE])" />
+                                                </Template>
+                                            </BitmapFont>
+                                        </Text>
+                                    </PartText>
+                                </Compare>
+                                <Default>
+                                    <PartText x="1" y="43" width="123" height="38">
+                                        <Text align="CENTER">
+                                            <BitmapFont family="gauge_big1_digits" size="36">
+                                                <Template>%s<Parameter expression="round([COMPLICATION.GOAL_PROGRESS_VALUE])" />
+                                                </Template>
+                                            </BitmapFont>
+                                        </Text>
+                                    </PartText>
+                                </Default>
+                            </Condition>
+                        </Group>
+                    </Compare>
+                    <Compare expression="size2">
+                        <Group x="0" y="0" width="123" height="123">
+                            <Condition>
+                                <Expressions>
+                                    <Expression name="goalMet">[COMPLICATION.GOAL_PROGRESS_TARGET_VALUE] &gt; 0 &amp;&amp; [COMPLICATION.GOAL_PROGRESS_VALUE] &gt;= [COMPLICATION.GOAL_PROGRESS_TARGET_VALUE]</Expression>
+                                </Expressions>
+                                <Compare expression="goalMet">
+                                    <PartText x="1" y="46" width="123" height="32">
+                                        <Text align="CENTER">
+                                            <BitmapFont family="gauge_big2_digits_goal" size="30">
+                                                <Template>%s<Parameter expression="round([COMPLICATION.GOAL_PROGRESS_VALUE])" />
+                                                </Template>
+                                            </BitmapFont>
+                                        </Text>
+                                    </PartText>
+                                </Compare>
+                                <Default>
+                                    <PartText x="1" y="46" width="123" height="32">
+                                        <Text align="CENTER">
+                                            <BitmapFont family="gauge_big2_digits" size="30">
+                                                <Template>%s<Parameter expression="round([COMPLICATION.GOAL_PROGRESS_VALUE])" />
+                                                </Template>
+                                            </BitmapFont>
+                                        </Text>
+                                    </PartText>
+                                </Default>
+                            </Condition>
+                        </Group>
                     </Compare>
                     <Default>
-                        <PartText x="1" y="69" width="123" height="22">
-                            <Text align="CENTER">
-                                <BitmapFont family="gauge_digits" size="20">
-                                    <Template>%s<Parameter expression="round([COMPLICATION.GOAL_PROGRESS_VALUE])" />
-                                    </Template>
-                                </BitmapFont>
-                            </Text>
-                        </PartText>
+                        <Group x="0" y="0" width="123" height="123">
+                            <Condition>
+                                <Expressions>
+                                    <Expression name="goalMet">[COMPLICATION.GOAL_PROGRESS_TARGET_VALUE] &gt; 0 &amp;&amp; [COMPLICATION.GOAL_PROGRESS_VALUE] &gt;= [COMPLICATION.GOAL_PROGRESS_TARGET_VALUE]</Expression>
+                                </Expressions>
+                                <Compare expression="goalMet">
+                                    <PartText x="2" y="38" width="123" height="47">
+                                        <Text align="CENTER">
+                                            <BitmapFont family="gauge_big0_digits_goal" size="45">
+                                                <Template>%s<Parameter expression="round([COMPLICATION.GOAL_PROGRESS_VALUE])" />
+                                                </Template>
+                                            </BitmapFont>
+                                        </Text>
+                                    </PartText>
+                                </Compare>
+                                <Default>
+                                    <PartText x="2" y="38" width="123" height="47">
+                                        <Text align="CENTER">
+                                            <BitmapFont family="gauge_big0_digits" size="45">
+                                                <Template>%s<Parameter expression="round([COMPLICATION.GOAL_PROGRESS_VALUE])" />
+                                                </Template>
+                                            </BitmapFont>
+                                        </Text>
+                                    </PartText>
+                                </Default>
+                            </Condition>
+                        </Group>
                     </Default>
                 </Condition>
-                <PartImage x="57" y="7" width="10" height="62" pivotX="0.5" pivotY="0.89">
-                    <Image resource="gauge_pointer" />
-                    <Transform target="angle" value="-144 + (clamp([COMPLICATION.GOAL_PROGRESS_VALUE], 0, 20000) - 0) * 288 / 20000" />
-                </PartImage>
-                <PartImage x="55" y="55" width="14" height="14">
-                    <Image resource="gauge_hub" />
-                </PartImage>
             </Complication>
             <Complication type="RANGED_VALUE">
                 <PartDraw x="0" y="0" width="123" height="123">
@@ -1150,41 +1594,132 @@
                 <PartImage x="0" y="0" width="123" height="123">
                     <Image resource="steps_dial" />
                 </PartImage>
-                <PartImage x="54" y="97" width="16" height="18">
+                <PartImage x="48" y="89" width="27" height="32">
                     <Image resource="gauge_steps" />
                 </PartImage>
                 <Condition>
                     <Expressions>
-                        <Expression name="goalMet">[COMPLICATION.RANGED_VALUE_MAX] &gt; 0 &amp;&amp; [COMPLICATION.RANGED_VALUE_VALUE] &gt;= [COMPLICATION.RANGED_VALUE_MAX]</Expression>
+                        <Expression name="size0">abs([COMPLICATION.RANGED_VALUE_VALUE]) &lt; 1000</Expression>
+                        <Expression name="size1">abs([COMPLICATION.RANGED_VALUE_VALUE]) &gt;= 1000 &amp;&amp; abs([COMPLICATION.RANGED_VALUE_VALUE]) &lt; 10000</Expression>
+                        <Expression name="size2">abs([COMPLICATION.RANGED_VALUE_VALUE]) &gt;= 10000</Expression>
                     </Expressions>
-                    <Compare expression="goalMet">
-                        <PartText x="1" y="69" width="123" height="22">
-                            <Text align="CENTER">
-                                <BitmapFont family="gauge_digits_goal" size="20">
-                                    <Template>%s<Parameter expression="round([COMPLICATION.RANGED_VALUE_VALUE])" />
-                                    </Template>
-                                </BitmapFont>
-                            </Text>
-                        </PartText>
+                    <Compare expression="size0">
+                        <Group x="0" y="0" width="123" height="123">
+                            <Condition>
+                                <Expressions>
+                                    <Expression name="goalMet">[COMPLICATION.RANGED_VALUE_MAX] &gt; 0 &amp;&amp; [COMPLICATION.RANGED_VALUE_VALUE] &gt;= [COMPLICATION.RANGED_VALUE_MAX]</Expression>
+                                </Expressions>
+                                <Compare expression="goalMet">
+                                    <PartText x="2" y="38" width="123" height="47">
+                                        <Text align="CENTER">
+                                            <BitmapFont family="gauge_big0_digits_goal" size="45">
+                                                <Template>%s<Parameter expression="round([COMPLICATION.RANGED_VALUE_VALUE])" />
+                                                </Template>
+                                            </BitmapFont>
+                                        </Text>
+                                    </PartText>
+                                </Compare>
+                                <Default>
+                                    <PartText x="2" y="38" width="123" height="47">
+                                        <Text align="CENTER">
+                                            <BitmapFont family="gauge_big0_digits" size="45">
+                                                <Template>%s<Parameter expression="round([COMPLICATION.RANGED_VALUE_VALUE])" />
+                                                </Template>
+                                            </BitmapFont>
+                                        </Text>
+                                    </PartText>
+                                </Default>
+                            </Condition>
+                        </Group>
+                    </Compare>
+                    <Compare expression="size1">
+                        <Group x="0" y="0" width="123" height="123">
+                            <Condition>
+                                <Expressions>
+                                    <Expression name="goalMet">[COMPLICATION.RANGED_VALUE_MAX] &gt; 0 &amp;&amp; [COMPLICATION.RANGED_VALUE_VALUE] &gt;= [COMPLICATION.RANGED_VALUE_MAX]</Expression>
+                                </Expressions>
+                                <Compare expression="goalMet">
+                                    <PartText x="1" y="43" width="123" height="38">
+                                        <Text align="CENTER">
+                                            <BitmapFont family="gauge_big1_digits_goal" size="36">
+                                                <Template>%s<Parameter expression="round([COMPLICATION.RANGED_VALUE_VALUE])" />
+                                                </Template>
+                                            </BitmapFont>
+                                        </Text>
+                                    </PartText>
+                                </Compare>
+                                <Default>
+                                    <PartText x="1" y="43" width="123" height="38">
+                                        <Text align="CENTER">
+                                            <BitmapFont family="gauge_big1_digits" size="36">
+                                                <Template>%s<Parameter expression="round([COMPLICATION.RANGED_VALUE_VALUE])" />
+                                                </Template>
+                                            </BitmapFont>
+                                        </Text>
+                                    </PartText>
+                                </Default>
+                            </Condition>
+                        </Group>
+                    </Compare>
+                    <Compare expression="size2">
+                        <Group x="0" y="0" width="123" height="123">
+                            <Condition>
+                                <Expressions>
+                                    <Expression name="goalMet">[COMPLICATION.RANGED_VALUE_MAX] &gt; 0 &amp;&amp; [COMPLICATION.RANGED_VALUE_VALUE] &gt;= [COMPLICATION.RANGED_VALUE_MAX]</Expression>
+                                </Expressions>
+                                <Compare expression="goalMet">
+                                    <PartText x="1" y="46" width="123" height="32">
+                                        <Text align="CENTER">
+                                            <BitmapFont family="gauge_big2_digits_goal" size="30">
+                                                <Template>%s<Parameter expression="round([COMPLICATION.RANGED_VALUE_VALUE])" />
+                                                </Template>
+                                            </BitmapFont>
+                                        </Text>
+                                    </PartText>
+                                </Compare>
+                                <Default>
+                                    <PartText x="1" y="46" width="123" height="32">
+                                        <Text align="CENTER">
+                                            <BitmapFont family="gauge_big2_digits" size="30">
+                                                <Template>%s<Parameter expression="round([COMPLICATION.RANGED_VALUE_VALUE])" />
+                                                </Template>
+                                            </BitmapFont>
+                                        </Text>
+                                    </PartText>
+                                </Default>
+                            </Condition>
+                        </Group>
                     </Compare>
                     <Default>
-                        <PartText x="1" y="69" width="123" height="22">
-                            <Text align="CENTER">
-                                <BitmapFont family="gauge_digits" size="20">
-                                    <Template>%s<Parameter expression="round([COMPLICATION.RANGED_VALUE_VALUE])" />
-                                    </Template>
-                                </BitmapFont>
-                            </Text>
-                        </PartText>
+                        <Group x="0" y="0" width="123" height="123">
+                            <Condition>
+                                <Expressions>
+                                    <Expression name="goalMet">[COMPLICATION.RANGED_VALUE_MAX] &gt; 0 &amp;&amp; [COMPLICATION.RANGED_VALUE_VALUE] &gt;= [COMPLICATION.RANGED_VALUE_MAX]</Expression>
+                                </Expressions>
+                                <Compare expression="goalMet">
+                                    <PartText x="2" y="38" width="123" height="47">
+                                        <Text align="CENTER">
+                                            <BitmapFont family="gauge_big0_digits_goal" size="45">
+                                                <Template>%s<Parameter expression="round([COMPLICATION.RANGED_VALUE_VALUE])" />
+                                                </Template>
+                                            </BitmapFont>
+                                        </Text>
+                                    </PartText>
+                                </Compare>
+                                <Default>
+                                    <PartText x="2" y="38" width="123" height="47">
+                                        <Text align="CENTER">
+                                            <BitmapFont family="gauge_big0_digits" size="45">
+                                                <Template>%s<Parameter expression="round([COMPLICATION.RANGED_VALUE_VALUE])" />
+                                                </Template>
+                                            </BitmapFont>
+                                        </Text>
+                                    </PartText>
+                                </Default>
+                            </Condition>
+                        </Group>
                     </Default>
                 </Condition>
-                <PartImage x="57" y="7" width="10" height="62" pivotX="0.5" pivotY="0.89">
-                    <Image resource="gauge_pointer" />
-                    <Transform target="angle" value="-144 + (clamp([COMPLICATION.RANGED_VALUE_VALUE], 0, 20000) - 0) * 288 / 20000" />
-                </PartImage>
-                <PartImage x="55" y="55" width="14" height="14">
-                    <Image resource="gauge_hub" />
-                </PartImage>
             </Complication>
             <Complication type="SHORT_TEXT">
                 <PartDraw x="0" y="0" width="123" height="123">
@@ -1195,58 +1730,142 @@
                 <PartImage x="0" y="0" width="123" height="123">
                     <Image resource="steps_dial" />
                 </PartImage>
-                <PartImage x="54" y="97" width="16" height="18">
+                <PartImage x="48" y="89" width="27" height="32">
                     <Image resource="gauge_steps" />
                 </PartImage>
                 <Condition>
                     <Expressions>
-                        <Expression name="available">textLength([COMPLICATION.TEXT]) &gt; 3</Expression>
+                        <Expression name="size0">abs((textLength([COMPLICATION.TEXT]) &gt; 4 ? clamp(subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 4), 0, 999999) * 1000 + clamp(subText([COMPLICATION.TEXT], textLength([COMPLICATION.TEXT]) - 3, textLength([COMPLICATION.TEXT])), 0, 999999) : clamp([COMPLICATION.TEXT], 0, 999999))) &lt; 1000</Expression>
+                        <Expression name="size1">abs((textLength([COMPLICATION.TEXT]) &gt; 4 ? clamp(subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 4), 0, 999999) * 1000 + clamp(subText([COMPLICATION.TEXT], textLength([COMPLICATION.TEXT]) - 3, textLength([COMPLICATION.TEXT])), 0, 999999) : clamp([COMPLICATION.TEXT], 0, 999999))) &gt;= 1000 &amp;&amp; abs((textLength([COMPLICATION.TEXT]) &gt; 4 ? clamp(subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 4), 0, 999999) * 1000 + clamp(subText([COMPLICATION.TEXT], textLength([COMPLICATION.TEXT]) - 3, textLength([COMPLICATION.TEXT])), 0, 999999) : clamp([COMPLICATION.TEXT], 0, 999999))) &lt; 10000</Expression>
+                        <Expression name="size2">abs((textLength([COMPLICATION.TEXT]) &gt; 4 ? clamp(subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 4), 0, 999999) * 1000 + clamp(subText([COMPLICATION.TEXT], textLength([COMPLICATION.TEXT]) - 3, textLength([COMPLICATION.TEXT])), 0, 999999) : clamp([COMPLICATION.TEXT], 0, 999999))) &gt;= 10000</Expression>
                     </Expressions>
-                    <Compare expression="available">
-                        <PartText x="1" y="69" width="123" height="22">
-                            <Text align="CENTER">
-                                <BitmapFont family="gauge_digits" size="20">
-                                    <Template>%s<Parameter expression="round((textLength([COMPLICATION.TEXT]) &gt; 4 ? clamp(subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 4), 0, 999999) * 1000 + clamp(subText([COMPLICATION.TEXT], textLength([COMPLICATION.TEXT]) - 3, textLength([COMPLICATION.TEXT])), 0, 999999) : clamp([COMPLICATION.TEXT], 0, 999999)))" />
-                                    </Template>
-                                </BitmapFont>
-                            </Text>
-                        </PartText>
+                    <Compare expression="size0">
+                        <Group x="0" y="0" width="123" height="123">
+                            <Condition>
+                                <Expressions>
+                                    <Expression name="available">textLength([COMPLICATION.TEXT]) &gt; 3</Expression>
+                                </Expressions>
+                                <Compare expression="available">
+                                    <PartText x="2" y="38" width="123" height="47">
+                                        <Text align="CENTER">
+                                            <BitmapFont family="gauge_big0_digits" size="45">
+                                                <Template>%s<Parameter expression="round((textLength([COMPLICATION.TEXT]) &gt; 4 ? clamp(subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 4), 0, 999999) * 1000 + clamp(subText([COMPLICATION.TEXT], textLength([COMPLICATION.TEXT]) - 3, textLength([COMPLICATION.TEXT])), 0, 999999) : clamp([COMPLICATION.TEXT], 0, 999999)))" />
+                                                </Template>
+                                            </BitmapFont>
+                                        </Text>
+                                    </PartText>
+                                </Compare>
+                                <Default>
+                                    <PartText x="2" y="38" width="123" height="47">
+                                        <Text align="CENTER">
+                                            <BitmapFont family="gauge_big0_digits" size="45">
+                                                <Template>%s<Parameter expression="[COMPLICATION.TEXT]" />
+                                                </Template>
+                                            </BitmapFont>
+                                        </Text>
+                                    </PartText>
+                                </Default>
+                            </Condition>
+                        </Group>
+                    </Compare>
+                    <Compare expression="size1">
+                        <Group x="0" y="0" width="123" height="123">
+                            <Condition>
+                                <Expressions>
+                                    <Expression name="available">textLength([COMPLICATION.TEXT]) &gt; 3</Expression>
+                                </Expressions>
+                                <Compare expression="available">
+                                    <PartText x="1" y="43" width="123" height="38">
+                                        <Text align="CENTER">
+                                            <BitmapFont family="gauge_big1_digits" size="36">
+                                                <Template>%s<Parameter expression="round((textLength([COMPLICATION.TEXT]) &gt; 4 ? clamp(subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 4), 0, 999999) * 1000 + clamp(subText([COMPLICATION.TEXT], textLength([COMPLICATION.TEXT]) - 3, textLength([COMPLICATION.TEXT])), 0, 999999) : clamp([COMPLICATION.TEXT], 0, 999999)))" />
+                                                </Template>
+                                            </BitmapFont>
+                                        </Text>
+                                    </PartText>
+                                </Compare>
+                                <Default>
+                                    <PartText x="1" y="43" width="123" height="38">
+                                        <Text align="CENTER">
+                                            <BitmapFont family="gauge_big1_digits" size="36">
+                                                <Template>%s<Parameter expression="[COMPLICATION.TEXT]" />
+                                                </Template>
+                                            </BitmapFont>
+                                        </Text>
+                                    </PartText>
+                                </Default>
+                            </Condition>
+                        </Group>
+                    </Compare>
+                    <Compare expression="size2">
+                        <Group x="0" y="0" width="123" height="123">
+                            <Condition>
+                                <Expressions>
+                                    <Expression name="available">textLength([COMPLICATION.TEXT]) &gt; 3</Expression>
+                                </Expressions>
+                                <Compare expression="available">
+                                    <PartText x="1" y="46" width="123" height="32">
+                                        <Text align="CENTER">
+                                            <BitmapFont family="gauge_big2_digits" size="30">
+                                                <Template>%s<Parameter expression="round((textLength([COMPLICATION.TEXT]) &gt; 4 ? clamp(subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 4), 0, 999999) * 1000 + clamp(subText([COMPLICATION.TEXT], textLength([COMPLICATION.TEXT]) - 3, textLength([COMPLICATION.TEXT])), 0, 999999) : clamp([COMPLICATION.TEXT], 0, 999999)))" />
+                                                </Template>
+                                            </BitmapFont>
+                                        </Text>
+                                    </PartText>
+                                </Compare>
+                                <Default>
+                                    <PartText x="1" y="46" width="123" height="32">
+                                        <Text align="CENTER">
+                                            <BitmapFont family="gauge_big2_digits" size="30">
+                                                <Template>%s<Parameter expression="[COMPLICATION.TEXT]" />
+                                                </Template>
+                                            </BitmapFont>
+                                        </Text>
+                                    </PartText>
+                                </Default>
+                            </Condition>
+                        </Group>
                     </Compare>
                     <Default>
-                        <PartText x="1" y="69" width="123" height="22">
-                            <Text align="CENTER">
-                                <BitmapFont family="gauge_digits" size="20">
-                                    <Template>%s<Parameter expression="[COMPLICATION.TEXT]" />
-                                    </Template>
-                                </BitmapFont>
-                            </Text>
-                        </PartText>
+                        <Group x="0" y="0" width="123" height="123">
+                            <Condition>
+                                <Expressions>
+                                    <Expression name="available">textLength([COMPLICATION.TEXT]) &gt; 3</Expression>
+                                </Expressions>
+                                <Compare expression="available">
+                                    <PartText x="2" y="38" width="123" height="47">
+                                        <Text align="CENTER">
+                                            <BitmapFont family="gauge_big0_digits" size="45">
+                                                <Template>%s<Parameter expression="round((textLength([COMPLICATION.TEXT]) &gt; 4 ? clamp(subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 4), 0, 999999) * 1000 + clamp(subText([COMPLICATION.TEXT], textLength([COMPLICATION.TEXT]) - 3, textLength([COMPLICATION.TEXT])), 0, 999999) : clamp([COMPLICATION.TEXT], 0, 999999)))" />
+                                                </Template>
+                                            </BitmapFont>
+                                        </Text>
+                                    </PartText>
+                                </Compare>
+                                <Default>
+                                    <PartText x="2" y="38" width="123" height="47">
+                                        <Text align="CENTER">
+                                            <BitmapFont family="gauge_big0_digits" size="45">
+                                                <Template>%s<Parameter expression="[COMPLICATION.TEXT]" />
+                                                </Template>
+                                            </BitmapFont>
+                                        </Text>
+                                    </PartText>
+                                </Default>
+                            </Condition>
+                        </Group>
                     </Default>
                 </Condition>
-                <PartImage x="57" y="7" width="10" height="62" pivotX="0.5" pivotY="0.89">
-                    <Image resource="gauge_pointer" />
-                    <Transform target="angle" value="-144 + (clamp((textLength([COMPLICATION.TEXT]) &gt; 4 ? clamp(subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 4), 0, 999999) * 1000 + clamp(subText([COMPLICATION.TEXT], textLength([COMPLICATION.TEXT]) - 3, textLength([COMPLICATION.TEXT])), 0, 999999) : clamp([COMPLICATION.TEXT], 0, 999999)), 0, 20000) - 0) * 288 / 20000" />
-                </PartImage>
-                <PartImage x="55" y="55" width="14" height="14">
-                    <Image resource="gauge_hub" />
-                </PartImage>
             </Complication>
             <Complication type="EMPTY">
-                <PartText x="1" y="69" width="123" height="22">
+                <PartText x="2" y="38" width="123" height="47">
                     <Text align="CENTER">
-                        <BitmapFont family="gauge_digits" size="20">
+                        <BitmapFont family="gauge_big0_digits" size="45">
                             <Template>%s<Parameter expression="&quot;--&quot;" />
                             </Template>
                         </BitmapFont>
                     </Text>
                 </PartText>
-                <PartImage x="57" y="7" width="10" height="62" pivotX="0.5" pivotY="0.89">
-                    <Image resource="gauge_pointer" />
-                    <Transform target="angle" value="-144 + (0 - 0) * 288 / 20000" />
-                </PartImage>
-                <PartImage x="55" y="55" width="14" height="14">
-                    <Image resource="gauge_hub" />
-                </PartImage>
             </Complication>
         </ComplicationSlot>
         <Group name="batteryGauge" x="247" y="88" width="123" height="123">
@@ -1254,24 +1873,20 @@
             <PartImage x="0" y="0" width="123" height="123">
                 <Image resource="battery_dial" />
             </PartImage>
-            <PartImage x="50" y="97" width="22" height="12">
+            <PartImage x="45" y="104" width="32" height="17">
                 <Image resource="gauge_battery" />
             </PartImage>
-            <PartText x="1" y="69" width="123" height="22">
+            <PartImage x="58" y="22" width="6" height="13">
+                <Image resource="unit_battery" />
+            </PartImage>
+            <PartText x="2" y="38" width="123" height="47">
                 <Text align="CENTER">
-                    <BitmapFont family="gauge_digits" size="20">
+                    <BitmapFont family="gauge_big0_digits" size="45">
                         <Template>%s<Parameter expression="&quot;--&quot;" />
                         </Template>
                     </BitmapFont>
                 </Text>
             </PartText>
-            <PartImage x="56" y="7" width="10" height="62" pivotX="0.5" pivotY="0.89">
-                <Image resource="gauge_pointer" />
-                <Transform target="angle" value="-144 + (0 - 0) * 288 / 60" />
-            </PartImage>
-            <PartImage x="54" y="55" width="14" height="14">
-                <Image resource="gauge_hub" />
-            </PartImage>
         </Group>
         <ComplicationSlot x="247" y="88" width="123" height="123" slotId="4" name="batterySlot" supportedTypes="SHORT_TEXT EMPTY" isCustomizable="FALSE">
             <Variant mode="AMBIENT" target="alpha" value="0" />
@@ -1286,41 +1901,89 @@
                 <PartImage x="0" y="0" width="123" height="123">
                     <Image resource="battery_dial" />
                 </PartImage>
-                <PartImage x="50" y="97" width="22" height="12">
+                <PartImage x="45" y="104" width="32" height="17">
                     <Image resource="gauge_battery" />
                 </PartImage>
-                <PartText x="1" y="69" width="123" height="22">
-                    <Text align="CENTER">
-                        <BitmapFont family="gauge_digits" size="20">
-                            <Template>%s<Parameter expression="[COMPLICATION.TEXT]" />
-                            </Template>
-                        </BitmapFont>
-                    </Text>
-                </PartText>
-                <PartImage x="56" y="7" width="10" height="62" pivotX="0.5" pivotY="0.89">
-                    <Image resource="gauge_pointer" />
-                    <Transform target="angle" value="-144 + (clamp(clamp(subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 1), 0, 9999), 0, 60) - 0) * 288 / 60" />
-                </PartImage>
-                <PartImage x="54" y="55" width="14" height="14">
-                    <Image resource="gauge_hub" />
-                </PartImage>
+                <Condition>
+                    <Expressions>
+                        <Expression name="size0">abs(clamp(subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 1), 0, 9999)) &lt; 1000</Expression>
+                        <Expression name="size1">abs(clamp(subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 1), 0, 9999)) &gt;= 1000 &amp;&amp; abs(clamp(subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 1), 0, 9999)) &lt; 10000</Expression>
+                        <Expression name="size2">abs(clamp(subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 1), 0, 9999)) &gt;= 10000</Expression>
+                    </Expressions>
+                    <Compare expression="size0">
+                        <Group x="0" y="0" width="123" height="123">
+                            <PartImage x="58" y="22" width="6" height="13">
+                                <Image resource="unit_battery" />
+                            </PartImage>
+                            <PartText x="2" y="38" width="123" height="47">
+                                <Text align="CENTER">
+                                    <BitmapFont family="gauge_big0_digits" size="45">
+                                        <Template>%s<Parameter expression="subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 1)" />
+                                        </Template>
+                                    </BitmapFont>
+                                </Text>
+                            </PartText>
+                        </Group>
+                    </Compare>
+                    <Compare expression="size1">
+                        <Group x="0" y="0" width="123" height="123">
+                            <PartImage x="58" y="27" width="6" height="13">
+                                <Image resource="unit_battery" />
+                            </PartImage>
+                            <PartText x="1" y="43" width="123" height="38">
+                                <Text align="CENTER">
+                                    <BitmapFont family="gauge_big1_digits" size="36">
+                                        <Template>%s<Parameter expression="subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 1)" />
+                                        </Template>
+                                    </BitmapFont>
+                                </Text>
+                            </PartText>
+                        </Group>
+                    </Compare>
+                    <Compare expression="size2">
+                        <Group x="0" y="0" width="123" height="123">
+                            <PartImage x="58" y="30" width="6" height="13">
+                                <Image resource="unit_battery" />
+                            </PartImage>
+                            <PartText x="1" y="46" width="123" height="32">
+                                <Text align="CENTER">
+                                    <BitmapFont family="gauge_big2_digits" size="30">
+                                        <Template>%s<Parameter expression="subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 1)" />
+                                        </Template>
+                                    </BitmapFont>
+                                </Text>
+                            </PartText>
+                        </Group>
+                    </Compare>
+                    <Default>
+                        <Group x="0" y="0" width="123" height="123">
+                            <PartImage x="58" y="22" width="6" height="13">
+                                <Image resource="unit_battery" />
+                            </PartImage>
+                            <PartText x="2" y="38" width="123" height="47">
+                                <Text align="CENTER">
+                                    <BitmapFont family="gauge_big0_digits" size="45">
+                                        <Template>%s<Parameter expression="subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 1)" />
+                                        </Template>
+                                    </BitmapFont>
+                                </Text>
+                            </PartText>
+                        </Group>
+                    </Default>
+                </Condition>
             </Complication>
             <Complication type="EMPTY">
-                <PartText x="1" y="69" width="123" height="22">
+                <PartImage x="58" y="22" width="6" height="13">
+                    <Image resource="unit_battery" />
+                </PartImage>
+                <PartText x="2" y="38" width="123" height="47">
                     <Text align="CENTER">
-                        <BitmapFont family="gauge_digits" size="20">
+                        <BitmapFont family="gauge_big0_digits" size="45">
                             <Template>%s<Parameter expression="&quot;--&quot;" />
                             </Template>
                         </BitmapFont>
                     </Text>
                 </PartText>
-                <PartImage x="56" y="7" width="10" height="62" pivotX="0.5" pivotY="0.89">
-                    <Image resource="gauge_pointer" />
-                    <Transform target="angle" value="-144 + (0 - 0) * 288 / 60" />
-                </PartImage>
-                <PartImage x="54" y="55" width="14" height="14">
-                    <Image resource="gauge_hub" />
-                </PartImage>
             </Complication>
         </ComplicationSlot>
         <AnalogClock x="0" y="0" width="450" height="450" name="hands">

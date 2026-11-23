@@ -26,41 +26,35 @@ always-on mode.*
   gray seconds hand with a counterweight, ending just inside the ring; and a small black
   hub with three gray rings.
 - **Readings:** the values (gauges, battery, temperature, heart rate, UV and date) are in
-  gray Oswald, like the gauges' labels, and show "--" without data.
+  gray Oswald and show "--" without data.
 - **Date:** the day of the month above the hub, and the day's full name (SUNDAY to
   SATURDAY) right of it, between the hub and the UV index.
 - **Weather:** above the 6, between the bottom gauges, from the watch's weather data: an
   orange icon for the condition (night versions after dark), the temperature (red above
   90°F, blue below 40°F) and the condition's name. Without weather data, the sun and "--°".
-- **Heart rate:** right of the 9: a red heart and the rate, from the watch's heart rate
+- **Heart rate:** right of the 9: a red heart above the rate, from the watch's heart rate
   sensor.
-- **UV index:** left of the 3, mirroring the heart rate: the index in the WHO scale's
-  colors (green, yellow, orange, red, violet) and an orange "UV".
-- **Battery:** at the top, between the gauges: an orange battery with a segment lit for
-  every 20% (rounded up), and the percentage below it. Both turn red below 20%.
-- **Battery time:** a gauge in the 1:30 segment: gray tick marks and labels around an arc
-  open at the bottom, an orange pointer on a light gray hub, and the hours of battery left
-  below the hub (with a small "h"), from 0 to 60 h, with a red band through the ticks from
-  0 to 9 h. The pointer stops at 60. The hours come from DataDial Stats, which measures how
-  fast the battery has been draining since it was last unplugged (DataDial 1.0.4 or later);
-  while charging, or before it has seen the battery drop a couple of percent, "--" and the
-  pointer at 0.
-- **Steps:** a matching gauge in the 10:30 segment, from 0 to 20,000 (labels in thousands):
-  the pointer stops at 20,000, while today's steps below the hub show the full count, in
-  green once they reach the step goal, with orange footprints below them. They come from
-  the Google Health app's steps complication, as on DataDial; without it, "--" and the
-  pointer at 0.
-- **Calories:** a matching gauge in the 7:30 segment, from 0 to 5000 (labels in thousands):
-  the pointer stops at 5000, while today's calories below the hub show the full count, with
-  an orange flame below them. Watch Face Format can't read calories itself, so they come
-  from the Google Health app's calories complication, as on DataDial; without it, "--" and
-  the pointer at 0.
-- **Elevation:** a matching gauge in the 4:30 segment, from 0 to 15,000 ft (labels in
-  thousands): the pointer stops at 15,000, while the elevation below the hub shows the full
-  value with a small "ft", and an orange mountain below it. It comes from DataDial's
-  companion app, DataDial Stats (barometric elevation), which must be installed on the
-  watch; without it, "--" and the pointer at 0. DataDial Stats sends meters in regions
-  that use metric units, which this gauge doesn't read.
+- **UV index:** left of the 3, mirroring the heart rate: an orange "UV" above the index, in
+  the WHO scale's colors (green, yellow, orange, red, violet).
+- **Battery:** at the top: the percentage, and below it an orange battery with a segment
+  lit for every 20% (rounded up). Both turn red below 20%.
+- **Gauges:** four rings of gray tick marks, open at the bottom, each with its value large
+  in the middle and its orange icon below. The value is as large as fits its digits: up to
+  three digits at the largest size, four and five smaller, so 25,000 steps still fit. A
+  unit, if any, sits small above the value.
+  - **Battery time** (1:30): the hours of battery left, with an "h" above and a red band
+    through the ticks from 0 to 9 h. They come from DataDial Stats, which measures how fast
+    the battery has been draining since it was last unplugged (DataDial 1.0.4 or later);
+    while charging, or before it has seen the battery drop a couple of percent, "--".
+  - **Steps** (10:30): today's steps, in green once they reach the step goal, with
+    footprints. They come from the Google Health app's steps complication, as on DataDial.
+  - **Calories** (7:30): today's calories, with a flame. Watch Face Format can't read
+    calories itself, so they come from the Google Health app's calories complication, as on
+    DataDial.
+  - **Elevation** (4:30): the elevation in feet, with "ft" above and a mountain. It comes
+    from DataDial's companion app, DataDial Stats (barometric elevation), which must be
+    installed on the watch. DataDial Stats sends meters in regions that use metric units,
+    which this gauge doesn't read.
 - **Month:** a light gray band on the ring over the current month's numeral (1 for January
   to 12 for December), from the minute dot before it to the one after, with "Month" in
   black along it.
