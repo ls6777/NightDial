@@ -7,8 +7,8 @@ It is built with the [Watch Face Format](https://developer.android.com/training/
 (version 4), which Google requires for watch faces.
 
 <p align="center">
-  <img src="docs/screenshot.png" width="380" alt="Night Dial on the Wear OS 7 emulator">
-  <img src="docs/screenshot-ambient.png" width="380" alt="Night Dial in always-on mode">
+  <img src="docs/face.png" width="380" alt="Night Dial on the Wear OS 7 emulator">
+  <img src="docs/face-ambient.png" width="380" alt="Night Dial in always-on mode">
 </p>
 
 *The Wear OS 7 emulator. Left: the test build (`./build.sh test`) at its fixed time of
@@ -84,7 +84,7 @@ size. Edit the script, not the generated files.
 | `watchface/src/main/res/xml/watch_face_info.xml` | Preview image and picker settings |
 | `watchface/src/main/res/values/strings.xml` | Names shown in the picker and editor |
 | `watchface/src/main/res/drawable/preview.png` | Picker and store preview (an emulator capture of the test build) |
-| `docs/screenshot.png`, `docs/screenshot-ambient.png` | The pictures above (emulator captures of the test build, awake and in always-on mode) |
+| `docs/face.png`, `docs/face-ambient.png` | The pictures above (emulator captures of the test build, awake and in always-on mode) |
 
 ## Build
 
