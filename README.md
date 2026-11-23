@@ -6,10 +6,15 @@ later watch.
 It is built with the [Watch Face Format](https://developer.android.com/training/wearables/wff)
 (version 4), which Google requires for watch faces.
 
-![Night Dial on the Wear OS 7 emulator](docs/screenshot.png)
+<p align="center">
+  <img src="docs/screenshot.png" width="380" alt="Night Dial on the Wear OS 7 emulator">
+  <img src="docs/screenshot-ambient.png" width="380" alt="Night Dial in always-on mode">
+</p>
 
-*Test build (`./build.sh test`) on the Wear OS 7 emulator, at the test build's fixed time of
-10:09:36.*
+*The Wear OS 7 emulator. Left: the test build (`./build.sh test`) at its fixed time of
+8:20:22, with its sample readings (72°F and clear, UV 7, 80% battery, 23 hours left, 8,250
+steps, 1,850 calories, 8,250 ft, a heart rate of 72, Friday the 20th of March). Right:
+always-on mode.*
 
 ## The face
 
@@ -37,8 +42,9 @@ It is built with the [Watch Face Format](https://developer.android.com/training/
   open at the bottom, an orange pointer on a light gray hub, and the hours of battery left
   below the hub (with a small "h"), from 0 to 60 h, with a red band through the ticks from
   0 to 9 h. The pointer stops at 60. The hours come from DataDial Stats, which measures how
-  fast the battery has been draining since it was last unplugged; while charging, or
-  before it has seen the battery drop a couple of percent, "--" and the pointer at 0.
+  fast the battery has been draining since it was last unplugged (DataDial 1.0.4 or later);
+  while charging, or before it has seen the battery drop a couple of percent, "--" and the
+  pointer at 0.
 - **Steps:** a matching gauge in the 10:30 segment, from 0 to 20,000 (labels in thousands):
   the pointer stops at 20,000, while today's steps below the hub show the full count, in
   green once they reach the step goal, with orange footprints below them. They come from
@@ -78,6 +84,7 @@ size. Edit the script, not the generated files.
 | `watchface/src/main/res/xml/watch_face_info.xml` | Preview image and picker settings |
 | `watchface/src/main/res/values/strings.xml` | Names shown in the picker and editor |
 | `watchface/src/main/res/drawable/preview.png` | Picker and store preview (an emulator capture of the test build) |
+| `docs/screenshot.png`, `docs/screenshot-ambient.png` | The pictures above (emulator captures of the test build, awake and in always-on mode) |
 
 ## Build
 

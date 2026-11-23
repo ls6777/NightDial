@@ -2274,8 +2274,9 @@ def render_images():
     render_second_hand()
 
 
-#: The test build's time (hour, minute, second), also the picker preview's.
-TEST_TIME = (10, 9, 36)
+#: The test build's time (hour, minute, second), also the picker preview's: the
+#: hands down the lower left and right, between the gauges' readings.
+TEST_TIME = (8, 20, 22)
 #: The test build's weather, in place of the watch's (the emulator often
 #: has none): the WEATHER data sources' values, unit 2 being Fahrenheit.
 TEST_WEATHER = dict(IS_AVAILABLE=1, IS_DAY=1, CONDITION=1, TEMPERATURE=72,
