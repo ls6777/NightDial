@@ -5,88 +5,110 @@
     <Metadata key="PREVIEW_TIME" value="08:20:22" />
     <BitmapFonts>
         <BitmapFont name="weather_icons_day">
-            <Character name="0" resource="weather_unknown" width="44" height="44" />
-            <Character name="1" resource="weather_clear_day" width="44" height="44" />
-            <Character name="2" resource="weather_cloudy" width="44" height="44" />
-            <Character name="3" resource="weather_fog" width="44" height="44" />
-            <Character name="4" resource="weather_heavy_rain" width="44" height="44" />
-            <Character name="5" resource="weather_heavy_snow" width="44" height="44" />
-            <Character name="6" resource="weather_rain" width="44" height="44" />
-            <Character name="7" resource="weather_snow" width="44" height="44" />
-            <Character name="8" resource="weather_clear_day" width="44" height="44" />
-            <Character name="9" resource="weather_thunderstorm" width="44" height="44" />
-            <Word name="10" resource="weather_sleet" width="44" height="44" />
-            <Word name="11" resource="weather_light_snow" width="44" height="44" />
-            <Word name="12" resource="weather_light_rain" width="44" height="44" />
-            <Word name="13" resource="weather_mist" width="44" height="44" />
-            <Word name="14" resource="weather_partly_cloudy_day" width="44" height="44" />
-            <Word name="15" resource="weather_windy" width="44" height="44" />
+            <Character name="0" resource="weather_unknown" width="52" height="52" />
+            <Character name="1" resource="weather_clear_day" width="52" height="52" />
+            <Character name="2" resource="weather_cloudy" width="52" height="52" />
+            <Character name="3" resource="weather_fog" width="52" height="52" />
+            <Character name="4" resource="weather_heavy_rain" width="52" height="52" />
+            <Character name="5" resource="weather_heavy_snow" width="52" height="52" />
+            <Character name="6" resource="weather_rain" width="52" height="52" />
+            <Character name="7" resource="weather_snow" width="52" height="52" />
+            <Character name="8" resource="weather_clear_day" width="52" height="52" />
+            <Character name="9" resource="weather_thunderstorm" width="52" height="52" />
+            <Word name="10" resource="weather_sleet" width="52" height="52" />
+            <Word name="11" resource="weather_light_snow" width="52" height="52" />
+            <Word name="12" resource="weather_light_rain" width="52" height="52" />
+            <Word name="13" resource="weather_mist" width="52" height="52" />
+            <Word name="14" resource="weather_partly_cloudy_day" width="52" height="52" />
+            <Word name="15" resource="weather_windy" width="52" height="52" />
         </BitmapFont>
         <BitmapFont name="weather_icons_night">
-            <Character name="0" resource="weather_unknown" width="44" height="44" />
-            <Character name="1" resource="weather_clear_night" width="44" height="44" />
-            <Character name="2" resource="weather_cloudy" width="44" height="44" />
-            <Character name="3" resource="weather_fog" width="44" height="44" />
-            <Character name="4" resource="weather_heavy_rain" width="44" height="44" />
-            <Character name="5" resource="weather_heavy_snow" width="44" height="44" />
-            <Character name="6" resource="weather_rain" width="44" height="44" />
-            <Character name="7" resource="weather_snow" width="44" height="44" />
-            <Character name="8" resource="weather_clear_night" width="44" height="44" />
-            <Character name="9" resource="weather_thunderstorm" width="44" height="44" />
-            <Word name="10" resource="weather_sleet" width="44" height="44" />
-            <Word name="11" resource="weather_light_snow" width="44" height="44" />
-            <Word name="12" resource="weather_light_rain" width="44" height="44" />
-            <Word name="13" resource="weather_mist" width="44" height="44" />
-            <Word name="14" resource="weather_partly_cloudy_night" width="44" height="44" />
-            <Word name="15" resource="weather_windy" width="44" height="44" />
+            <Character name="0" resource="weather_unknown" width="52" height="52" />
+            <Character name="1" resource="weather_clear_night" width="52" height="52" />
+            <Character name="2" resource="weather_cloudy" width="52" height="52" />
+            <Character name="3" resource="weather_fog" width="52" height="52" />
+            <Character name="4" resource="weather_heavy_rain" width="52" height="52" />
+            <Character name="5" resource="weather_heavy_snow" width="52" height="52" />
+            <Character name="6" resource="weather_rain" width="52" height="52" />
+            <Character name="7" resource="weather_snow" width="52" height="52" />
+            <Character name="8" resource="weather_clear_night" width="52" height="52" />
+            <Character name="9" resource="weather_thunderstorm" width="52" height="52" />
+            <Word name="10" resource="weather_sleet" width="52" height="52" />
+            <Word name="11" resource="weather_light_snow" width="52" height="52" />
+            <Word name="12" resource="weather_light_rain" width="52" height="52" />
+            <Word name="13" resource="weather_mist" width="52" height="52" />
+            <Word name="14" resource="weather_partly_cloudy_night" width="52" height="52" />
+            <Word name="15" resource="weather_windy" width="52" height="52" />
         </BitmapFont>
         <BitmapFont name="weather_temperature">
-            <Character name="0" resource="weather_temp_0" width="13" height="19" />
-            <Character name="1" resource="weather_temp_1" width="10" height="19" />
-            <Character name="2" resource="weather_temp_2" width="13" height="19" />
-            <Character name="3" resource="weather_temp_3" width="13" height="19" />
-            <Character name="4" resource="weather_temp_4" width="13" height="19" />
-            <Character name="5" resource="weather_temp_5" width="12" height="19" />
-            <Character name="6" resource="weather_temp_6" width="13" height="19" />
-            <Character name="7" resource="weather_temp_7" width="10" height="19" />
-            <Character name="8" resource="weather_temp_8" width="13" height="19" />
-            <Character name="9" resource="weather_temp_9" width="13" height="19" />
-            <Character name="-" resource="weather_temp_minus" width="9" height="19" />
-            <Character name="°" resource="weather_temp_degree" width="12" height="19" />
-            <Character name="F" resource="weather_temp_f" width="11" height="19" />
-            <Character name="C" resource="weather_temp_c" width="13" height="19" />
+            <Character name="0" resource="weather_temp_0" width="24" height="34" />
+            <Character name="1" resource="weather_temp_1" width="18" height="34" />
+            <Character name="2" resource="weather_temp_2" width="22" height="34" />
+            <Character name="3" resource="weather_temp_3" width="22" height="34" />
+            <Character name="4" resource="weather_temp_4" width="22" height="34" />
+            <Character name="5" resource="weather_temp_5" width="22" height="34" />
+            <Character name="6" resource="weather_temp_6" width="23" height="34" />
+            <Character name="7" resource="weather_temp_7" width="18" height="34" />
+            <Character name="8" resource="weather_temp_8" width="23" height="34" />
+            <Character name="9" resource="weather_temp_9" width="23" height="34" />
+            <Character name="-" resource="weather_temp_minus" width="15" height="34" />
+            <Character name="°" resource="weather_temp_degree" width="13" height="34" />
         </BitmapFont>
         <BitmapFont name="weather_temperature_hot">
-            <Character name="0" resource="weather_temp_hot_0" width="13" height="19" />
-            <Character name="1" resource="weather_temp_hot_1" width="10" height="19" />
-            <Character name="2" resource="weather_temp_hot_2" width="13" height="19" />
-            <Character name="3" resource="weather_temp_hot_3" width="13" height="19" />
-            <Character name="4" resource="weather_temp_hot_4" width="13" height="19" />
-            <Character name="5" resource="weather_temp_hot_5" width="12" height="19" />
-            <Character name="6" resource="weather_temp_hot_6" width="13" height="19" />
-            <Character name="7" resource="weather_temp_hot_7" width="10" height="19" />
-            <Character name="8" resource="weather_temp_hot_8" width="13" height="19" />
-            <Character name="9" resource="weather_temp_hot_9" width="13" height="19" />
-            <Character name="-" resource="weather_temp_hot_minus" width="9" height="19" />
-            <Character name="°" resource="weather_temp_hot_degree" width="12" height="19" />
-            <Character name="F" resource="weather_temp_hot_f" width="11" height="19" />
-            <Character name="C" resource="weather_temp_hot_c" width="13" height="19" />
+            <Character name="0" resource="weather_temp_hot_0" width="24" height="34" />
+            <Character name="1" resource="weather_temp_hot_1" width="18" height="34" />
+            <Character name="2" resource="weather_temp_hot_2" width="22" height="34" />
+            <Character name="3" resource="weather_temp_hot_3" width="22" height="34" />
+            <Character name="4" resource="weather_temp_hot_4" width="22" height="34" />
+            <Character name="5" resource="weather_temp_hot_5" width="22" height="34" />
+            <Character name="6" resource="weather_temp_hot_6" width="23" height="34" />
+            <Character name="7" resource="weather_temp_hot_7" width="18" height="34" />
+            <Character name="8" resource="weather_temp_hot_8" width="23" height="34" />
+            <Character name="9" resource="weather_temp_hot_9" width="23" height="34" />
+            <Character name="-" resource="weather_temp_hot_minus" width="15" height="34" />
+            <Character name="°" resource="weather_temp_hot_degree" width="13" height="34" />
         </BitmapFont>
         <BitmapFont name="weather_temperature_cold">
-            <Character name="0" resource="weather_temp_cold_0" width="13" height="19" />
-            <Character name="1" resource="weather_temp_cold_1" width="10" height="19" />
-            <Character name="2" resource="weather_temp_cold_2" width="13" height="19" />
-            <Character name="3" resource="weather_temp_cold_3" width="13" height="19" />
-            <Character name="4" resource="weather_temp_cold_4" width="13" height="19" />
-            <Character name="5" resource="weather_temp_cold_5" width="12" height="19" />
-            <Character name="6" resource="weather_temp_cold_6" width="13" height="19" />
-            <Character name="7" resource="weather_temp_cold_7" width="10" height="19" />
-            <Character name="8" resource="weather_temp_cold_8" width="13" height="19" />
-            <Character name="9" resource="weather_temp_cold_9" width="13" height="19" />
-            <Character name="-" resource="weather_temp_cold_minus" width="9" height="19" />
-            <Character name="°" resource="weather_temp_cold_degree" width="12" height="19" />
-            <Character name="F" resource="weather_temp_cold_f" width="11" height="19" />
-            <Character name="C" resource="weather_temp_cold_c" width="13" height="19" />
+            <Character name="0" resource="weather_temp_cold_0" width="24" height="34" />
+            <Character name="1" resource="weather_temp_cold_1" width="18" height="34" />
+            <Character name="2" resource="weather_temp_cold_2" width="22" height="34" />
+            <Character name="3" resource="weather_temp_cold_3" width="22" height="34" />
+            <Character name="4" resource="weather_temp_cold_4" width="22" height="34" />
+            <Character name="5" resource="weather_temp_cold_5" width="22" height="34" />
+            <Character name="6" resource="weather_temp_cold_6" width="23" height="34" />
+            <Character name="7" resource="weather_temp_cold_7" width="18" height="34" />
+            <Character name="8" resource="weather_temp_cold_8" width="23" height="34" />
+            <Character name="9" resource="weather_temp_cold_9" width="23" height="34" />
+            <Character name="-" resource="weather_temp_cold_minus" width="15" height="34" />
+            <Character name="°" resource="weather_temp_cold_degree" width="13" height="34" />
+        </BitmapFont>
+        <BitmapFont name="date_line">
+            <Character name="0" resource="date_line_0" width="26" height="37" />
+            <Character name="1" resource="date_line_1" width="20" height="37" />
+            <Character name="2" resource="date_line_2" width="24" height="37" />
+            <Character name="3" resource="date_line_3" width="24" height="37" />
+            <Character name="4" resource="date_line_4" width="24" height="37" />
+            <Character name="5" resource="date_line_5" width="24" height="37" />
+            <Character name="6" resource="date_line_6" width="25" height="37" />
+            <Character name="7" resource="date_line_7" width="20" height="37" />
+            <Character name="8" resource="date_line_8" width="25" height="37" />
+            <Character name="9" resource="date_line_9" width="25" height="37" />
+        </BitmapFont>
+        <BitmapFont name="day_line">
+            <Character name="S" resource="day_line_s" width="18" height="28" />
+            <Character name="U" resource="day_line_u" width="20" height="28" />
+            <Character name="N" resource="day_line_n" width="20" height="28" />
+            <Character name="M" resource="day_line_m" width="24" height="28" />
+            <Character name="O" resource="day_line_o" width="20" height="28" />
+            <Character name="T" resource="day_line_t" width="16" height="28" />
+            <Character name="E" resource="day_line_e" width="16" height="28" />
+            <Character name="W" resource="day_line_w" width="26" height="28" />
+            <Character name="D" resource="day_line_d" width="20" height="28" />
+            <Character name="H" resource="day_line_h" width="21" height="28" />
+            <Character name="F" resource="day_line_f" width="16" height="28" />
+            <Character name="R" resource="day_line_r" width="20" height="28" />
+            <Character name="I" resource="day_line_i" width="11" height="28" />
+            <Character name="A" resource="day_line_a" width="19" height="28" />
         </BitmapFont>
         <BitmapFont name="date_digits">
             <Character name="0" resource="date_digit_0" width="18" height="26" />
@@ -190,32 +212,6 @@
             <Character name="8" resource="uv_extreme_8" width="24" height="36" />
             <Character name="9" resource="uv_extreme_9" width="24" height="36" />
             <Character name="-" resource="uv_extreme_minus" width="16" height="36" />
-        </BitmapFont>
-        <BitmapFont name="battery_percent">
-            <Character name="0" resource="battery_digit_0" width="22" height="32" />
-            <Character name="1" resource="battery_digit_1" width="17" height="32" />
-            <Character name="2" resource="battery_digit_2" width="21" height="32" />
-            <Character name="3" resource="battery_digit_3" width="21" height="32" />
-            <Character name="4" resource="battery_digit_4" width="21" height="32" />
-            <Character name="5" resource="battery_digit_5" width="21" height="32" />
-            <Character name="6" resource="battery_digit_6" width="22" height="32" />
-            <Character name="7" resource="battery_digit_7" width="17" height="32" />
-            <Character name="8" resource="battery_digit_8" width="21" height="32" />
-            <Character name="9" resource="battery_digit_9" width="22" height="32" />
-            <Character name="%" resource="battery_percent" width="33" height="32" />
-        </BitmapFont>
-        <BitmapFont name="battery_percent_low">
-            <Character name="0" resource="battery_digit_low_0" width="22" height="32" />
-            <Character name="1" resource="battery_digit_low_1" width="17" height="32" />
-            <Character name="2" resource="battery_digit_low_2" width="21" height="32" />
-            <Character name="3" resource="battery_digit_low_3" width="21" height="32" />
-            <Character name="4" resource="battery_digit_low_4" width="21" height="32" />
-            <Character name="5" resource="battery_digit_low_5" width="21" height="32" />
-            <Character name="6" resource="battery_digit_low_6" width="22" height="32" />
-            <Character name="7" resource="battery_digit_low_7" width="17" height="32" />
-            <Character name="8" resource="battery_digit_low_8" width="21" height="32" />
-            <Character name="9" resource="battery_digit_low_9" width="22" height="32" />
-            <Character name="%" resource="battery_percent_low" width="33" height="32" />
         </BitmapFont>
         <BitmapFont name="gauge_digits">
             <Character name="0" resource="gauge_digit_0" width="14" height="20" />
@@ -596,22 +592,22 @@
                 </Compare>
             </Condition>
         </Group>
-        <Group name="weather" x="145" y="319" width="160" height="90">
+        <Group name="weather" x="170" y="52" width="110" height="90">
             <Variant mode="AMBIENT" target="alpha" value="0" />
             <Condition>
                 <Expressions>
                     <Expression name="available">[WEATHER.IS_AVAILABLE]</Expression>
                 </Expressions>
                 <Compare expression="available">
-                    <Group name="weatherShown" x="0" y="0" width="160" height="90">
+                    <Group name="weatherShown" x="0" y="0" width="110" height="90">
                         <Condition>
                             <Expressions>
                                 <Expression name="isDay">[WEATHER.IS_DAY]</Expression>
                             </Expressions>
                             <Compare expression="isDay">
-                                <PartText x="58" y="0" width="44" height="44">
+                                <PartText x="29" y="38" width="52" height="52">
                                     <Text align="CENTER">
-                                        <BitmapFont family="weather_icons_day" size="44">
+                                        <BitmapFont family="weather_icons_day" size="52">
                                             <Template>%s<Parameter expression="[WEATHER.CONDITION] &lt;= 15 ? [WEATHER.CONDITION] : 0" />
                                             </Template>
                                         </BitmapFont>
@@ -619,9 +615,9 @@
                                 </PartText>
                             </Compare>
                             <Default>
-                                <PartText x="58" y="0" width="44" height="44">
+                                <PartText x="29" y="38" width="52" height="52">
                                     <Text align="CENTER">
-                                        <BitmapFont family="weather_icons_night" size="44">
+                                        <BitmapFont family="weather_icons_night" size="52">
                                             <Template>%s<Parameter expression="[WEATHER.CONDITION] &lt;= 15 ? [WEATHER.CONDITION] : 0" />
                                             </Template>
                                         </BitmapFont>
@@ -635,57 +631,46 @@
                                 <Expression name="cold">([WEATHER.TEMPERATURE_UNIT] == 2 ? [WEATHER.TEMPERATURE] : [WEATHER.TEMPERATURE] * 9 / 5 + 32) &lt; 40</Expression>
                             </Expressions>
                             <Compare expression="hot">
-                                <PartText x="0" y="46" width="160" height="21">
+                                <PartText x="0" y="-1" width="110" height="36">
                                     <Text align="CENTER">
-                                        <BitmapFont family="weather_temperature_hot" size="19">
-                                            <Template>%s°%s<Parameter expression="[WEATHER.TEMPERATURE]" />
-                                                <Parameter expression="[WEATHER.TEMPERATURE_UNIT] == 2 ? &quot;F&quot; : &quot;C&quot;" />
+                                        <BitmapFont family="weather_temperature_hot" size="34">
+                                            <Template>%s°<Parameter expression="[WEATHER.TEMPERATURE]" />
                                             </Template>
                                         </BitmapFont>
                                     </Text>
                                 </PartText>
                             </Compare>
                             <Compare expression="cold">
-                                <PartText x="0" y="46" width="160" height="21">
+                                <PartText x="0" y="-1" width="110" height="36">
                                     <Text align="CENTER">
-                                        <BitmapFont family="weather_temperature_cold" size="19">
-                                            <Template>%s°%s<Parameter expression="[WEATHER.TEMPERATURE]" />
-                                                <Parameter expression="[WEATHER.TEMPERATURE_UNIT] == 2 ? &quot;F&quot; : &quot;C&quot;" />
+                                        <BitmapFont family="weather_temperature_cold" size="34">
+                                            <Template>%s°<Parameter expression="[WEATHER.TEMPERATURE]" />
                                             </Template>
                                         </BitmapFont>
                                     </Text>
                                 </PartText>
                             </Compare>
                             <Default>
-                                <PartText x="0" y="46" width="160" height="21">
+                                <PartText x="0" y="-1" width="110" height="36">
                                     <Text align="CENTER">
-                                        <BitmapFont family="weather_temperature" size="19">
-                                            <Template>%s°%s<Parameter expression="[WEATHER.TEMPERATURE]" />
-                                                <Parameter expression="[WEATHER.TEMPERATURE_UNIT] == 2 ? &quot;F&quot; : &quot;C&quot;" />
+                                        <BitmapFont family="weather_temperature" size="34">
+                                            <Template>%s°<Parameter expression="[WEATHER.TEMPERATURE]" />
                                             </Template>
                                         </BitmapFont>
                                     </Text>
                                 </PartText>
                             </Default>
                         </Condition>
-                        <PartText x="0" y="66" width="160" height="24">
-                            <Text align="CENTER" ellipsis="TRUE" maxLines="1">
-                                <Font family="SYNC_TO_DEVICE" size="17" color="#A4A4A4" weight="MEDIUM">
-                                    <Template>%s<Parameter expression="[WEATHER.CONDITION_NAME]" />
-                                    </Template>
-                                </Font>
-                            </Text>
-                        </PartText>
                     </Group>
                 </Compare>
                 <Default>
-                    <Group name="weatherNone" x="0" y="0" width="160" height="90">
-                        <PartImage x="58" y="0" width="44" height="44">
+                    <Group name="weatherNone" x="0" y="0" width="110" height="90">
+                        <PartImage x="29" y="38" width="52" height="52">
                             <Image resource="weather_clear_day" />
                         </PartImage>
-                        <PartText x="0" y="46" width="160" height="21">
+                        <PartText x="0" y="-1" width="110" height="36">
                             <Text align="CENTER">
-                                <BitmapFont family="weather_temperature" size="19">
+                                <BitmapFont family="weather_temperature" size="34">
                                     <Template>--°</Template>
                                 </BitmapFont>
                             </Text>
@@ -694,9 +679,9 @@
                 </Default>
             </Condition>
         </Group>
-        <Group name="heartRate" x="43" y="169" width="75" height="76">
+        <Group name="heartRate" x="332" y="172" width="75" height="71">
             <Variant mode="AMBIENT" target="alpha" value="0" />
-            <PartImage x="0" y="1" width="27" height="25">
+            <PartImage x="39" y="1" width="27" height="25">
                 <Image resource="gauge_heart" />
             </PartImage>
             <Condition>
@@ -704,7 +689,7 @@
                     <Expression name="hasHeartRate">[HEART_RATE] &gt; 0</Expression>
                 </Expressions>
                 <Compare expression="hasHeartRate">
-                    <PartText x="1" y="37" width="75" height="38">
+                    <PartText x="1" y="32" width="75" height="38">
                         <Text align="CENTER">
                             <BitmapFont family="hr_digits" size="36">
                                 <Template>%s<Parameter expression="round([HEART_RATE])" />
@@ -714,7 +699,7 @@
                     </PartText>
                 </Compare>
                 <Default>
-                    <PartText x="1" y="37" width="75" height="38">
+                    <PartText x="1" y="32" width="75" height="38">
                         <Text align="CENTER">
                             <BitmapFont family="hr_digits" size="36">
                                 <Template>%s<Parameter expression="&quot;--&quot;" />
@@ -725,8 +710,16 @@
                 </Default>
             </Condition>
         </Group>
-        <Group name="dayName" x="242" y="218" width="127" height="15">
+        <Group name="dateLine" x="137" y="328" width="175" height="78">
             <Variant mode="AMBIENT" target="alpha" value="0" />
+            <PartText x="1" y="0" width="175" height="39">
+                <Text align="CENTER">
+                    <BitmapFont family="date_line" size="37">
+                        <Template>%s<Parameter expression="[DAY]" />
+                        </Template>
+                    </BitmapFont>
+                </Text>
+            </PartText>
             <Condition>
                 <Expressions>
                     <Expression name="day1">[DAY_OF_WEEK] == 1</Expression>
@@ -738,56 +731,80 @@
                     <Expression name="day7">[DAY_OF_WEEK] == 7</Expression>
                 </Expressions>
                 <Compare expression="day1">
-                    <PartImage x="36" y="0" width="55" height="15">
-                        <Image resource="day_sunday" />
-                    </PartImage>
+                    <PartText x="1" y="48" width="175" height="30">
+                        <Text align="CENTER">
+                            <BitmapFont family="day_line" size="28">
+                                <Template>%s<Parameter expression="&quot;SUN&quot;" />
+                                </Template>
+                            </BitmapFont>
+                        </Text>
+                    </PartText>
                 </Compare>
                 <Compare expression="day2">
-                    <PartImage x="35" y="0" width="58" height="15">
-                        <Image resource="day_monday" />
-                    </PartImage>
+                    <PartText x="1" y="48" width="175" height="30">
+                        <Text align="CENTER">
+                            <BitmapFont family="day_line" size="28">
+                                <Template>%s<Parameter expression="&quot;MON&quot;" />
+                                </Template>
+                            </BitmapFont>
+                        </Text>
+                    </PartText>
                 </Compare>
                 <Compare expression="day3">
-                    <PartImage x="33" y="0" width="62" height="15">
-                        <Image resource="day_tuesday" />
-                    </PartImage>
+                    <PartText x="1" y="48" width="175" height="30">
+                        <Text align="CENTER">
+                            <BitmapFont family="day_line" size="28">
+                                <Template>%s<Parameter expression="&quot;TUE&quot;" />
+                                </Template>
+                            </BitmapFont>
+                        </Text>
+                    </PartText>
                 </Compare>
                 <Compare expression="day4">
-                    <PartImage x="22" y="0" width="83" height="15">
-                        <Image resource="day_wednesday" />
-                    </PartImage>
+                    <PartText x="1" y="48" width="175" height="30">
+                        <Text align="CENTER">
+                            <BitmapFont family="day_line" size="28">
+                                <Template>%s<Parameter expression="&quot;WED&quot;" />
+                                </Template>
+                            </BitmapFont>
+                        </Text>
+                    </PartText>
                 </Compare>
                 <Compare expression="day5">
-                    <PartImage x="27" y="0" width="73" height="15">
-                        <Image resource="day_thursday" />
-                    </PartImage>
+                    <PartText x="1" y="48" width="175" height="30">
+                        <Text align="CENTER">
+                            <BitmapFont family="day_line" size="28">
+                                <Template>%s<Parameter expression="&quot;THU&quot;" />
+                                </Template>
+                            </BitmapFont>
+                        </Text>
+                    </PartText>
                 </Compare>
                 <Compare expression="day6">
-                    <PartImage x="40" y="0" width="48" height="15">
-                        <Image resource="day_friday" />
-                    </PartImage>
+                    <PartText x="1" y="48" width="175" height="30">
+                        <Text align="CENTER">
+                            <BitmapFont family="day_line" size="28">
+                                <Template>%s<Parameter expression="&quot;FRI&quot;" />
+                                </Template>
+                            </BitmapFont>
+                        </Text>
+                    </PartText>
                 </Compare>
                 <Compare expression="day7">
-                    <PartImage x="28" y="0" width="72" height="15">
-                        <Image resource="day_saturday" />
-                    </PartImage>
+                    <PartText x="1" y="48" width="175" height="30">
+                        <Text align="CENTER">
+                            <BitmapFont family="day_line" size="28">
+                                <Template>%s<Parameter expression="&quot;SAT&quot;" />
+                                </Template>
+                            </BitmapFont>
+                        </Text>
+                    </PartText>
                 </Compare>
             </Condition>
         </Group>
-        <Group name="date" x="175" y="177" width="100" height="28">
+        <Group name="uvIndex" x="38" y="169" width="75" height="76">
             <Variant mode="AMBIENT" target="alpha" value="0" />
-            <PartText x="1" y="0" width="100" height="28">
-                <Text align="CENTER">
-                    <BitmapFont family="date_digits" size="26">
-                        <Template>%s<Parameter expression="[DAY]" />
-                        </Template>
-                    </BitmapFont>
-                </Text>
-            </PartText>
-        </Group>
-        <Group name="uvIndex" x="332" y="169" width="75" height="76">
-            <Variant mode="AMBIENT" target="alpha" value="0" />
-            <PartImage x="41" y="1" width="34" height="25">
+            <PartImage x="0" y="1" width="34" height="25">
                 <Image resource="gauge_uv" />
             </PartImage>
             <Condition>
@@ -799,8 +816,8 @@
                     <Expression name="uv_extreme">([WEATHER.IS_AVAILABLE]) &amp;&amp; round([WEATHER.UV_INDEX]) &gt;= 11</Expression>
                 </Expressions>
                 <Compare expression="uv_low">
-                    <PartText x="0" y="37" width="75" height="38">
-                        <Text align="END">
+                    <PartText x="15" y="37" width="63" height="38">
+                        <Text align="START">
                             <BitmapFont family="uv_low_digits" size="36">
                                 <Template>%s<Parameter expression="round([WEATHER.UV_INDEX])" />
                                 </Template>
@@ -809,8 +826,8 @@
                     </PartText>
                 </Compare>
                 <Compare expression="uv_moderate">
-                    <PartText x="0" y="37" width="75" height="38">
-                        <Text align="END">
+                    <PartText x="15" y="37" width="63" height="38">
+                        <Text align="START">
                             <BitmapFont family="uv_moderate_digits" size="36">
                                 <Template>%s<Parameter expression="round([WEATHER.UV_INDEX])" />
                                 </Template>
@@ -819,8 +836,8 @@
                     </PartText>
                 </Compare>
                 <Compare expression="uv_high">
-                    <PartText x="0" y="37" width="75" height="38">
-                        <Text align="END">
+                    <PartText x="15" y="37" width="63" height="38">
+                        <Text align="START">
                             <BitmapFont family="uv_high_digits" size="36">
                                 <Template>%s<Parameter expression="round([WEATHER.UV_INDEX])" />
                                 </Template>
@@ -829,8 +846,8 @@
                     </PartText>
                 </Compare>
                 <Compare expression="uv_very_high">
-                    <PartText x="0" y="37" width="75" height="38">
-                        <Text align="END">
+                    <PartText x="15" y="37" width="63" height="38">
+                        <Text align="START">
                             <BitmapFont family="uv_very_high_digits" size="36">
                                 <Template>%s<Parameter expression="round([WEATHER.UV_INDEX])" />
                                 </Template>
@@ -839,8 +856,8 @@
                     </PartText>
                 </Compare>
                 <Compare expression="uv_extreme">
-                    <PartText x="0" y="37" width="75" height="38">
-                        <Text align="END">
+                    <PartText x="15" y="37" width="63" height="38">
+                        <Text align="START">
                             <BitmapFont family="uv_extreme_digits" size="36">
                                 <Template>%s<Parameter expression="round([WEATHER.UV_INDEX])" />
                                 </Template>
@@ -849,88 +866,10 @@
                     </PartText>
                 </Compare>
                 <Default>
-                    <PartText x="0" y="37" width="75" height="38">
-                        <Text align="END">
+                    <PartText x="15" y="37" width="63" height="38">
+                        <Text align="START">
                             <BitmapFont family="heart_rate_digits" size="36">
                                 <Template>%s<Parameter expression="&quot;--&quot;" />
-                                </Template>
-                            </BitmapFont>
-                        </Text>
-                    </PartText>
-                </Default>
-            </Condition>
-        </Group>
-        <Group name="battery" x="173" y="51" width="104" height="64">
-            <Variant mode="AMBIENT" target="alpha" value="0" />
-            <Condition>
-                <Expressions>
-                    <Expression name="low">[BATTERY_PERCENT] &lt; 20</Expression>
-                </Expressions>
-                <Compare expression="low">
-                    <Condition>
-                        <Expressions>
-                            <Expression name="lit1">[BATTERY_PERCENT] &gt; 0</Expression>
-                        </Expressions>
-                        <Compare expression="lit1">
-                            <PartImage x="26" y="40" width="52" height="24">
-                                <Image resource="battery_low_1" />
-                            </PartImage>
-                        </Compare>
-                        <Default>
-                            <PartImage x="26" y="40" width="52" height="24">
-                                <Image resource="battery_low_0" />
-                            </PartImage>
-                        </Default>
-                    </Condition>
-                    <PartText x="0" y="0" width="104" height="34">
-                        <Text align="CENTER">
-                            <BitmapFont family="battery_percent_low" size="32">
-                                <Template>%s%s<Parameter expression="[BATTERY_PERCENT]" />
-                                    <Parameter expression="&quot;%&quot;" />
-                                </Template>
-                            </BitmapFont>
-                        </Text>
-                    </PartText>
-                </Compare>
-                <Default>
-                    <Condition>
-                        <Expressions>
-                            <Expression name="lit5">[BATTERY_PERCENT] &gt; 80</Expression>
-                            <Expression name="lit4">[BATTERY_PERCENT] &gt; 60 &amp;&amp; [BATTERY_PERCENT] &lt;= 80</Expression>
-                            <Expression name="lit3">[BATTERY_PERCENT] &gt; 40 &amp;&amp; [BATTERY_PERCENT] &lt;= 60</Expression>
-                            <Expression name="lit2">[BATTERY_PERCENT] &gt; 20 &amp;&amp; [BATTERY_PERCENT] &lt;= 40</Expression>
-                        </Expressions>
-                        <Compare expression="lit5">
-                            <PartImage x="26" y="40" width="52" height="24">
-                                <Image resource="battery_5" />
-                            </PartImage>
-                        </Compare>
-                        <Compare expression="lit4">
-                            <PartImage x="26" y="40" width="52" height="24">
-                                <Image resource="battery_4" />
-                            </PartImage>
-                        </Compare>
-                        <Compare expression="lit3">
-                            <PartImage x="26" y="40" width="52" height="24">
-                                <Image resource="battery_3" />
-                            </PartImage>
-                        </Compare>
-                        <Compare expression="lit2">
-                            <PartImage x="26" y="40" width="52" height="24">
-                                <Image resource="battery_2" />
-                            </PartImage>
-                        </Compare>
-                        <Default>
-                            <PartImage x="26" y="40" width="52" height="24">
-                                <Image resource="battery_1" />
-                            </PartImage>
-                        </Default>
-                    </Condition>
-                    <PartText x="0" y="0" width="104" height="34">
-                        <Text align="CENTER">
-                            <BitmapFont family="battery_percent" size="32">
-                                <Template>%s%s<Parameter expression="[BATTERY_PERCENT]" />
-                                    <Parameter expression="&quot;%&quot;" />
                                 </Template>
                             </BitmapFont>
                         </Text>
@@ -968,6 +907,37 @@
                 <PartImage x="0" y="0" width="123" height="123">
                     <Image resource="calories_dial" />
                 </PartImage>
+                <Condition>
+                    <Expressions>
+                        <Expression name="bar0">clamp(((textLength([COMPLICATION.TEXT]) &gt; 4 ? clamp(subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 4), 0, 999999) * 1000 + clamp(subText([COMPLICATION.TEXT], textLength([COMPLICATION.TEXT]) - 3, textLength([COMPLICATION.TEXT])), 0, 999999) : clamp([COMPLICATION.TEXT], 0, 999999)) - 0) / 3000, 0, 1) &lt; 0.3</Expression>
+                        <Expression name="bar1">clamp(((textLength([COMPLICATION.TEXT]) &gt; 4 ? clamp(subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 4), 0, 999999) * 1000 + clamp(subText([COMPLICATION.TEXT], textLength([COMPLICATION.TEXT]) - 3, textLength([COMPLICATION.TEXT])), 0, 999999) : clamp([COMPLICATION.TEXT], 0, 999999)) - 0) / 3000, 0, 1) &gt;= 0.3 &amp;&amp; clamp(((textLength([COMPLICATION.TEXT]) &gt; 4 ? clamp(subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 4), 0, 999999) * 1000 + clamp(subText([COMPLICATION.TEXT], textLength([COMPLICATION.TEXT]) - 3, textLength([COMPLICATION.TEXT])), 0, 999999) : clamp([COMPLICATION.TEXT], 0, 999999)) - 0) / 3000, 0, 1) &lt; 0.9</Expression>
+                        <Expression name="bar2">clamp(((textLength([COMPLICATION.TEXT]) &gt; 4 ? clamp(subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 4), 0, 999999) * 1000 + clamp(subText([COMPLICATION.TEXT], textLength([COMPLICATION.TEXT]) - 3, textLength([COMPLICATION.TEXT])), 0, 999999) : clamp([COMPLICATION.TEXT], 0, 999999)) - 0) / 3000, 0, 1) &gt;= 0.9</Expression>
+                    </Expressions>
+                    <Compare expression="bar0">
+                        <PartDraw x="0" y="0" width="123" height="123">
+                            <Arc centerX="61.56" centerY="61.44" width="116.4" height="116.4" startAngle="-144" endAngle="-144" direction="CLOCKWISE">
+                                <Stroke color="#FF3B30" thickness="2.5" cap="BUTT" />
+                                <Transform target="endAngle" value="-144 + clamp(((textLength([COMPLICATION.TEXT]) &gt; 4 ? clamp(subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 4), 0, 999999) * 1000 + clamp(subText([COMPLICATION.TEXT], textLength([COMPLICATION.TEXT]) - 3, textLength([COMPLICATION.TEXT])), 0, 999999) : clamp([COMPLICATION.TEXT], 0, 999999)) - 0) / 3000, 0, 1) * 288" />
+                            </Arc>
+                        </PartDraw>
+                    </Compare>
+                    <Compare expression="bar1">
+                        <PartDraw x="0" y="0" width="123" height="123">
+                            <Arc centerX="61.56" centerY="61.44" width="116.4" height="116.4" startAngle="-144" endAngle="-144" direction="CLOCKWISE">
+                                <Stroke color="#FFD60A" thickness="2.5" cap="BUTT" />
+                                <Transform target="endAngle" value="-144 + clamp(((textLength([COMPLICATION.TEXT]) &gt; 4 ? clamp(subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 4), 0, 999999) * 1000 + clamp(subText([COMPLICATION.TEXT], textLength([COMPLICATION.TEXT]) - 3, textLength([COMPLICATION.TEXT])), 0, 999999) : clamp([COMPLICATION.TEXT], 0, 999999)) - 0) / 3000, 0, 1) * 288" />
+                            </Arc>
+                        </PartDraw>
+                    </Compare>
+                    <Compare expression="bar2">
+                        <PartDraw x="0" y="0" width="123" height="123">
+                            <Arc centerX="61.56" centerY="61.44" width="116.4" height="116.4" startAngle="-144" endAngle="-144" direction="CLOCKWISE">
+                                <Stroke color="#3DDC57" thickness="2.5" cap="BUTT" />
+                                <Transform target="endAngle" value="-144 + clamp(((textLength([COMPLICATION.TEXT]) &gt; 4 ? clamp(subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 4), 0, 999999) * 1000 + clamp(subText([COMPLICATION.TEXT], textLength([COMPLICATION.TEXT]) - 3, textLength([COMPLICATION.TEXT])), 0, 999999) : clamp([COMPLICATION.TEXT], 0, 999999)) - 0) / 3000, 0, 1) * 288" />
+                            </Arc>
+                        </PartDraw>
+                    </Compare>
+                </Condition>
                 <PartImage x="50" y="90" width="23" height="30">
                     <Image resource="gauge_flame" />
                 </PartImage>
@@ -1104,6 +1074,37 @@
                 <PartImage x="0" y="0" width="123" height="123">
                     <Image resource="calories_dial" />
                 </PartImage>
+                <Condition>
+                    <Expressions>
+                        <Expression name="bar0">clamp(([COMPLICATION.RANGED_VALUE_VALUE] - 0) / 3000, 0, 1) &lt; 0.3</Expression>
+                        <Expression name="bar1">clamp(([COMPLICATION.RANGED_VALUE_VALUE] - 0) / 3000, 0, 1) &gt;= 0.3 &amp;&amp; clamp(([COMPLICATION.RANGED_VALUE_VALUE] - 0) / 3000, 0, 1) &lt; 0.9</Expression>
+                        <Expression name="bar2">clamp(([COMPLICATION.RANGED_VALUE_VALUE] - 0) / 3000, 0, 1) &gt;= 0.9</Expression>
+                    </Expressions>
+                    <Compare expression="bar0">
+                        <PartDraw x="0" y="0" width="123" height="123">
+                            <Arc centerX="61.56" centerY="61.44" width="116.4" height="116.4" startAngle="-144" endAngle="-144" direction="CLOCKWISE">
+                                <Stroke color="#FF3B30" thickness="2.5" cap="BUTT" />
+                                <Transform target="endAngle" value="-144 + clamp(([COMPLICATION.RANGED_VALUE_VALUE] - 0) / 3000, 0, 1) * 288" />
+                            </Arc>
+                        </PartDraw>
+                    </Compare>
+                    <Compare expression="bar1">
+                        <PartDraw x="0" y="0" width="123" height="123">
+                            <Arc centerX="61.56" centerY="61.44" width="116.4" height="116.4" startAngle="-144" endAngle="-144" direction="CLOCKWISE">
+                                <Stroke color="#FFD60A" thickness="2.5" cap="BUTT" />
+                                <Transform target="endAngle" value="-144 + clamp(([COMPLICATION.RANGED_VALUE_VALUE] - 0) / 3000, 0, 1) * 288" />
+                            </Arc>
+                        </PartDraw>
+                    </Compare>
+                    <Compare expression="bar2">
+                        <PartDraw x="0" y="0" width="123" height="123">
+                            <Arc centerX="61.56" centerY="61.44" width="116.4" height="116.4" startAngle="-144" endAngle="-144" direction="CLOCKWISE">
+                                <Stroke color="#3DDC57" thickness="2.5" cap="BUTT" />
+                                <Transform target="endAngle" value="-144 + clamp(([COMPLICATION.RANGED_VALUE_VALUE] - 0) / 3000, 0, 1) * 288" />
+                            </Arc>
+                        </PartDraw>
+                    </Compare>
+                </Condition>
                 <PartImage x="50" y="90" width="23" height="30">
                     <Image resource="gauge_flame" />
                 </PartImage>
@@ -1172,6 +1173,37 @@
                 <PartImage x="0" y="0" width="123" height="123">
                     <Image resource="calories_dial" />
                 </PartImage>
+                <Condition>
+                    <Expressions>
+                        <Expression name="bar0">clamp(([COMPLICATION.GOAL_PROGRESS_VALUE] - 0) / 3000, 0, 1) &lt; 0.3</Expression>
+                        <Expression name="bar1">clamp(([COMPLICATION.GOAL_PROGRESS_VALUE] - 0) / 3000, 0, 1) &gt;= 0.3 &amp;&amp; clamp(([COMPLICATION.GOAL_PROGRESS_VALUE] - 0) / 3000, 0, 1) &lt; 0.9</Expression>
+                        <Expression name="bar2">clamp(([COMPLICATION.GOAL_PROGRESS_VALUE] - 0) / 3000, 0, 1) &gt;= 0.9</Expression>
+                    </Expressions>
+                    <Compare expression="bar0">
+                        <PartDraw x="0" y="0" width="123" height="123">
+                            <Arc centerX="61.56" centerY="61.44" width="116.4" height="116.4" startAngle="-144" endAngle="-144" direction="CLOCKWISE">
+                                <Stroke color="#FF3B30" thickness="2.5" cap="BUTT" />
+                                <Transform target="endAngle" value="-144 + clamp(([COMPLICATION.GOAL_PROGRESS_VALUE] - 0) / 3000, 0, 1) * 288" />
+                            </Arc>
+                        </PartDraw>
+                    </Compare>
+                    <Compare expression="bar1">
+                        <PartDraw x="0" y="0" width="123" height="123">
+                            <Arc centerX="61.56" centerY="61.44" width="116.4" height="116.4" startAngle="-144" endAngle="-144" direction="CLOCKWISE">
+                                <Stroke color="#FFD60A" thickness="2.5" cap="BUTT" />
+                                <Transform target="endAngle" value="-144 + clamp(([COMPLICATION.GOAL_PROGRESS_VALUE] - 0) / 3000, 0, 1) * 288" />
+                            </Arc>
+                        </PartDraw>
+                    </Compare>
+                    <Compare expression="bar2">
+                        <PartDraw x="0" y="0" width="123" height="123">
+                            <Arc centerX="61.56" centerY="61.44" width="116.4" height="116.4" startAngle="-144" endAngle="-144" direction="CLOCKWISE">
+                                <Stroke color="#3DDC57" thickness="2.5" cap="BUTT" />
+                                <Transform target="endAngle" value="-144 + clamp(([COMPLICATION.GOAL_PROGRESS_VALUE] - 0) / 3000, 0, 1) * 288" />
+                            </Arc>
+                        </PartDraw>
+                    </Compare>
+                </Condition>
                 <PartImage x="50" y="90" width="23" height="30">
                     <Image resource="gauge_flame" />
                 </PartImage>
@@ -1275,6 +1307,12 @@
                 <PartImage x="0" y="0" width="123" height="123">
                     <Image resource="elevation_dial" />
                 </PartImage>
+                <PartDraw x="0" y="0" width="123" height="123">
+                    <Arc centerX="61.44" centerY="61.44" width="116.4" height="116.4" startAngle="-144" endAngle="-144" direction="CLOCKWISE">
+                        <Stroke color="#FFFFFF" thickness="2.5" cap="BUTT" />
+                        <Transform target="endAngle" value="-144 + clamp(((textLength([COMPLICATION.TEXT]) &gt; 2 ? clamp(subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 2), -99999, 999999) : 0) - 0) / 10000, 0, 1) * 288" />
+                    </Arc>
+                </PartDraw>
                 <PartImage x="44" y="96" width="35" height="24">
                     <Image resource="gauge_mountain" />
                 </PartImage>
@@ -1458,6 +1496,37 @@
                 <PartImage x="0" y="0" width="123" height="123">
                     <Image resource="steps_dial" />
                 </PartImage>
+                <Condition>
+                    <Expressions>
+                        <Expression name="bar0">clamp(([COMPLICATION.GOAL_PROGRESS_VALUE] - 0) / 10000, 0, 1) &lt; 0.3</Expression>
+                        <Expression name="bar1">clamp(([COMPLICATION.GOAL_PROGRESS_VALUE] - 0) / 10000, 0, 1) &gt;= 0.3 &amp;&amp; clamp(([COMPLICATION.GOAL_PROGRESS_VALUE] - 0) / 10000, 0, 1) &lt; 0.9</Expression>
+                        <Expression name="bar2">clamp(([COMPLICATION.GOAL_PROGRESS_VALUE] - 0) / 10000, 0, 1) &gt;= 0.9</Expression>
+                    </Expressions>
+                    <Compare expression="bar0">
+                        <PartDraw x="0" y="0" width="123" height="123">
+                            <Arc centerX="61.56" centerY="61.56" width="116.4" height="116.4" startAngle="-144" endAngle="-144" direction="CLOCKWISE">
+                                <Stroke color="#FF3B30" thickness="2.5" cap="BUTT" />
+                                <Transform target="endAngle" value="-144 + clamp(([COMPLICATION.GOAL_PROGRESS_VALUE] - 0) / 10000, 0, 1) * 288" />
+                            </Arc>
+                        </PartDraw>
+                    </Compare>
+                    <Compare expression="bar1">
+                        <PartDraw x="0" y="0" width="123" height="123">
+                            <Arc centerX="61.56" centerY="61.56" width="116.4" height="116.4" startAngle="-144" endAngle="-144" direction="CLOCKWISE">
+                                <Stroke color="#FFD60A" thickness="2.5" cap="BUTT" />
+                                <Transform target="endAngle" value="-144 + clamp(([COMPLICATION.GOAL_PROGRESS_VALUE] - 0) / 10000, 0, 1) * 288" />
+                            </Arc>
+                        </PartDraw>
+                    </Compare>
+                    <Compare expression="bar2">
+                        <PartDraw x="0" y="0" width="123" height="123">
+                            <Arc centerX="61.56" centerY="61.56" width="116.4" height="116.4" startAngle="-144" endAngle="-144" direction="CLOCKWISE">
+                                <Stroke color="#3DDC57" thickness="2.5" cap="BUTT" />
+                                <Transform target="endAngle" value="-144 + clamp(([COMPLICATION.GOAL_PROGRESS_VALUE] - 0) / 10000, 0, 1) * 288" />
+                            </Arc>
+                        </PartDraw>
+                    </Compare>
+                </Condition>
                 <PartImage x="48" y="89" width="27" height="32">
                     <Image resource="gauge_steps" />
                 </PartImage>
@@ -1594,6 +1663,37 @@
                 <PartImage x="0" y="0" width="123" height="123">
                     <Image resource="steps_dial" />
                 </PartImage>
+                <Condition>
+                    <Expressions>
+                        <Expression name="bar0">clamp(([COMPLICATION.RANGED_VALUE_VALUE] - 0) / 10000, 0, 1) &lt; 0.3</Expression>
+                        <Expression name="bar1">clamp(([COMPLICATION.RANGED_VALUE_VALUE] - 0) / 10000, 0, 1) &gt;= 0.3 &amp;&amp; clamp(([COMPLICATION.RANGED_VALUE_VALUE] - 0) / 10000, 0, 1) &lt; 0.9</Expression>
+                        <Expression name="bar2">clamp(([COMPLICATION.RANGED_VALUE_VALUE] - 0) / 10000, 0, 1) &gt;= 0.9</Expression>
+                    </Expressions>
+                    <Compare expression="bar0">
+                        <PartDraw x="0" y="0" width="123" height="123">
+                            <Arc centerX="61.56" centerY="61.56" width="116.4" height="116.4" startAngle="-144" endAngle="-144" direction="CLOCKWISE">
+                                <Stroke color="#FF3B30" thickness="2.5" cap="BUTT" />
+                                <Transform target="endAngle" value="-144 + clamp(([COMPLICATION.RANGED_VALUE_VALUE] - 0) / 10000, 0, 1) * 288" />
+                            </Arc>
+                        </PartDraw>
+                    </Compare>
+                    <Compare expression="bar1">
+                        <PartDraw x="0" y="0" width="123" height="123">
+                            <Arc centerX="61.56" centerY="61.56" width="116.4" height="116.4" startAngle="-144" endAngle="-144" direction="CLOCKWISE">
+                                <Stroke color="#FFD60A" thickness="2.5" cap="BUTT" />
+                                <Transform target="endAngle" value="-144 + clamp(([COMPLICATION.RANGED_VALUE_VALUE] - 0) / 10000, 0, 1) * 288" />
+                            </Arc>
+                        </PartDraw>
+                    </Compare>
+                    <Compare expression="bar2">
+                        <PartDraw x="0" y="0" width="123" height="123">
+                            <Arc centerX="61.56" centerY="61.56" width="116.4" height="116.4" startAngle="-144" endAngle="-144" direction="CLOCKWISE">
+                                <Stroke color="#3DDC57" thickness="2.5" cap="BUTT" />
+                                <Transform target="endAngle" value="-144 + clamp(([COMPLICATION.RANGED_VALUE_VALUE] - 0) / 10000, 0, 1) * 288" />
+                            </Arc>
+                        </PartDraw>
+                    </Compare>
+                </Condition>
                 <PartImage x="48" y="89" width="27" height="32">
                     <Image resource="gauge_steps" />
                 </PartImage>
@@ -1730,6 +1830,37 @@
                 <PartImage x="0" y="0" width="123" height="123">
                     <Image resource="steps_dial" />
                 </PartImage>
+                <Condition>
+                    <Expressions>
+                        <Expression name="bar0">clamp(((textLength([COMPLICATION.TEXT]) &gt; 4 ? clamp(subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 4), 0, 999999) * 1000 + clamp(subText([COMPLICATION.TEXT], textLength([COMPLICATION.TEXT]) - 3, textLength([COMPLICATION.TEXT])), 0, 999999) : clamp([COMPLICATION.TEXT], 0, 999999)) - 0) / 10000, 0, 1) &lt; 0.3</Expression>
+                        <Expression name="bar1">clamp(((textLength([COMPLICATION.TEXT]) &gt; 4 ? clamp(subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 4), 0, 999999) * 1000 + clamp(subText([COMPLICATION.TEXT], textLength([COMPLICATION.TEXT]) - 3, textLength([COMPLICATION.TEXT])), 0, 999999) : clamp([COMPLICATION.TEXT], 0, 999999)) - 0) / 10000, 0, 1) &gt;= 0.3 &amp;&amp; clamp(((textLength([COMPLICATION.TEXT]) &gt; 4 ? clamp(subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 4), 0, 999999) * 1000 + clamp(subText([COMPLICATION.TEXT], textLength([COMPLICATION.TEXT]) - 3, textLength([COMPLICATION.TEXT])), 0, 999999) : clamp([COMPLICATION.TEXT], 0, 999999)) - 0) / 10000, 0, 1) &lt; 0.9</Expression>
+                        <Expression name="bar2">clamp(((textLength([COMPLICATION.TEXT]) &gt; 4 ? clamp(subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 4), 0, 999999) * 1000 + clamp(subText([COMPLICATION.TEXT], textLength([COMPLICATION.TEXT]) - 3, textLength([COMPLICATION.TEXT])), 0, 999999) : clamp([COMPLICATION.TEXT], 0, 999999)) - 0) / 10000, 0, 1) &gt;= 0.9</Expression>
+                    </Expressions>
+                    <Compare expression="bar0">
+                        <PartDraw x="0" y="0" width="123" height="123">
+                            <Arc centerX="61.56" centerY="61.56" width="116.4" height="116.4" startAngle="-144" endAngle="-144" direction="CLOCKWISE">
+                                <Stroke color="#FF3B30" thickness="2.5" cap="BUTT" />
+                                <Transform target="endAngle" value="-144 + clamp(((textLength([COMPLICATION.TEXT]) &gt; 4 ? clamp(subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 4), 0, 999999) * 1000 + clamp(subText([COMPLICATION.TEXT], textLength([COMPLICATION.TEXT]) - 3, textLength([COMPLICATION.TEXT])), 0, 999999) : clamp([COMPLICATION.TEXT], 0, 999999)) - 0) / 10000, 0, 1) * 288" />
+                            </Arc>
+                        </PartDraw>
+                    </Compare>
+                    <Compare expression="bar1">
+                        <PartDraw x="0" y="0" width="123" height="123">
+                            <Arc centerX="61.56" centerY="61.56" width="116.4" height="116.4" startAngle="-144" endAngle="-144" direction="CLOCKWISE">
+                                <Stroke color="#FFD60A" thickness="2.5" cap="BUTT" />
+                                <Transform target="endAngle" value="-144 + clamp(((textLength([COMPLICATION.TEXT]) &gt; 4 ? clamp(subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 4), 0, 999999) * 1000 + clamp(subText([COMPLICATION.TEXT], textLength([COMPLICATION.TEXT]) - 3, textLength([COMPLICATION.TEXT])), 0, 999999) : clamp([COMPLICATION.TEXT], 0, 999999)) - 0) / 10000, 0, 1) * 288" />
+                            </Arc>
+                        </PartDraw>
+                    </Compare>
+                    <Compare expression="bar2">
+                        <PartDraw x="0" y="0" width="123" height="123">
+                            <Arc centerX="61.56" centerY="61.56" width="116.4" height="116.4" startAngle="-144" endAngle="-144" direction="CLOCKWISE">
+                                <Stroke color="#3DDC57" thickness="2.5" cap="BUTT" />
+                                <Transform target="endAngle" value="-144 + clamp(((textLength([COMPLICATION.TEXT]) &gt; 4 ? clamp(subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 4), 0, 999999) * 1000 + clamp(subText([COMPLICATION.TEXT], textLength([COMPLICATION.TEXT]) - 3, textLength([COMPLICATION.TEXT])), 0, 999999) : clamp([COMPLICATION.TEXT], 0, 999999)) - 0) / 10000, 0, 1) * 288" />
+                            </Arc>
+                        </PartDraw>
+                    </Compare>
+                </Condition>
                 <PartImage x="48" y="89" width="27" height="32">
                     <Image resource="gauge_steps" />
                 </PartImage>
@@ -1873,119 +2004,153 @@
             <PartImage x="0" y="0" width="123" height="123">
                 <Image resource="battery_dial" />
             </PartImage>
-            <PartImage x="45" y="104" width="32" height="17">
-                <Image resource="gauge_battery" />
-            </PartImage>
-            <PartImage x="58" y="22" width="6" height="13">
-                <Image resource="unit_battery" />
-            </PartImage>
-            <PartText x="2" y="38" width="123" height="47">
-                <Text align="CENTER">
-                    <BitmapFont family="gauge_big0_digits" size="45">
-                        <Template>%s<Parameter expression="&quot;--&quot;" />
-                        </Template>
-                    </BitmapFont>
-                </Text>
-            </PartText>
+            <Condition>
+                <Expressions>
+                    <Expression name="bar0">clamp(([BATTERY_PERCENT] - 0) / 100, 0, 1) &lt; 0.2</Expression>
+                    <Expression name="bar1">clamp(([BATTERY_PERCENT] - 0) / 100, 0, 1) &gt;= 0.2</Expression>
+                </Expressions>
+                <Compare expression="bar0">
+                    <PartDraw x="0" y="0" width="123" height="123">
+                        <Arc centerX="61.44" centerY="61.56" width="116.4" height="116.4" startAngle="-144" endAngle="-144" direction="CLOCKWISE">
+                            <Stroke color="#FF3B30" thickness="2.5" cap="BUTT" />
+                            <Transform target="endAngle" value="-144 + clamp(([BATTERY_PERCENT] - 0) / 100, 0, 1) * 288" />
+                        </Arc>
+                    </PartDraw>
+                </Compare>
+                <Compare expression="bar1">
+                    <PartDraw x="0" y="0" width="123" height="123">
+                        <Arc centerX="61.44" centerY="61.56" width="116.4" height="116.4" startAngle="-144" endAngle="-144" direction="CLOCKWISE">
+                            <Stroke color="#FFFFFF" thickness="2.5" cap="BUTT" />
+                            <Transform target="endAngle" value="-144 + clamp(([BATTERY_PERCENT] - 0) / 100, 0, 1) * 288" />
+                        </Arc>
+                    </PartDraw>
+                </Compare>
+            </Condition>
+            <Condition>
+                <Expressions>
+                    <Expression name="low">[BATTERY_PERCENT] &lt; 20</Expression>
+                </Expressions>
+                <Compare expression="low">
+                    <Condition>
+                        <Expressions>
+                            <Expression name="lit1">[BATTERY_PERCENT] &gt; 0</Expression>
+                        </Expressions>
+                        <Compare expression="lit1">
+                            <PartImage x="39" y="101" width="44" height="20">
+                                <Image resource="battery_low_1" />
+                            </PartImage>
+                        </Compare>
+                        <Default>
+                            <PartImage x="39" y="101" width="44" height="20">
+                                <Image resource="battery_low_0" />
+                            </PartImage>
+                        </Default>
+                    </Condition>
+                </Compare>
+                <Default>
+                    <Condition>
+                        <Expressions>
+                            <Expression name="lit5">[BATTERY_PERCENT] &gt; 80</Expression>
+                            <Expression name="lit4">[BATTERY_PERCENT] &gt; 60 &amp;&amp; [BATTERY_PERCENT] &lt;= 80</Expression>
+                            <Expression name="lit3">[BATTERY_PERCENT] &gt; 40 &amp;&amp; [BATTERY_PERCENT] &lt;= 60</Expression>
+                            <Expression name="lit2">[BATTERY_PERCENT] &gt; 20 &amp;&amp; [BATTERY_PERCENT] &lt;= 40</Expression>
+                        </Expressions>
+                        <Compare expression="lit5">
+                            <PartImage x="39" y="101" width="44" height="20">
+                                <Image resource="battery_5" />
+                            </PartImage>
+                        </Compare>
+                        <Compare expression="lit4">
+                            <PartImage x="39" y="101" width="44" height="20">
+                                <Image resource="battery_4" />
+                            </PartImage>
+                        </Compare>
+                        <Compare expression="lit3">
+                            <PartImage x="39" y="101" width="44" height="20">
+                                <Image resource="battery_3" />
+                            </PartImage>
+                        </Compare>
+                        <Compare expression="lit2">
+                            <PartImage x="39" y="101" width="44" height="20">
+                                <Image resource="battery_2" />
+                            </PartImage>
+                        </Compare>
+                        <Default>
+                            <PartImage x="39" y="101" width="44" height="20">
+                                <Image resource="battery_1" />
+                            </PartImage>
+                        </Default>
+                    </Condition>
+                </Default>
+            </Condition>
+            <Condition>
+                <Expressions>
+                    <Expression name="size0">abs([BATTERY_PERCENT]) &lt; 1000</Expression>
+                    <Expression name="size1">abs([BATTERY_PERCENT]) &gt;= 1000 &amp;&amp; abs([BATTERY_PERCENT]) &lt; 10000</Expression>
+                    <Expression name="size2">abs([BATTERY_PERCENT]) &gt;= 10000</Expression>
+                </Expressions>
+                <Compare expression="size0">
+                    <Group x="0" y="0" width="123" height="123">
+                        <PartImage x="55" y="22" width="12" height="13">
+                            <Image resource="unit_battery" />
+                        </PartImage>
+                        <PartText x="2" y="38" width="123" height="47">
+                            <Text align="CENTER">
+                                <BitmapFont family="gauge_big0_digits" size="45">
+                                    <Template>%s<Parameter expression="[BATTERY_PERCENT]" />
+                                    </Template>
+                                </BitmapFont>
+                            </Text>
+                        </PartText>
+                    </Group>
+                </Compare>
+                <Compare expression="size1">
+                    <Group x="0" y="0" width="123" height="123">
+                        <PartImage x="55" y="27" width="12" height="13">
+                            <Image resource="unit_battery" />
+                        </PartImage>
+                        <PartText x="1" y="43" width="123" height="38">
+                            <Text align="CENTER">
+                                <BitmapFont family="gauge_big1_digits" size="36">
+                                    <Template>%s<Parameter expression="[BATTERY_PERCENT]" />
+                                    </Template>
+                                </BitmapFont>
+                            </Text>
+                        </PartText>
+                    </Group>
+                </Compare>
+                <Compare expression="size2">
+                    <Group x="0" y="0" width="123" height="123">
+                        <PartImage x="55" y="30" width="12" height="13">
+                            <Image resource="unit_battery" />
+                        </PartImage>
+                        <PartText x="1" y="46" width="123" height="32">
+                            <Text align="CENTER">
+                                <BitmapFont family="gauge_big2_digits" size="30">
+                                    <Template>%s<Parameter expression="[BATTERY_PERCENT]" />
+                                    </Template>
+                                </BitmapFont>
+                            </Text>
+                        </PartText>
+                    </Group>
+                </Compare>
+                <Default>
+                    <Group x="0" y="0" width="123" height="123">
+                        <PartImage x="55" y="22" width="12" height="13">
+                            <Image resource="unit_battery" />
+                        </PartImage>
+                        <PartText x="2" y="38" width="123" height="47">
+                            <Text align="CENTER">
+                                <BitmapFont family="gauge_big0_digits" size="45">
+                                    <Template>%s<Parameter expression="[BATTERY_PERCENT]" />
+                                    </Template>
+                                </BitmapFont>
+                            </Text>
+                        </PartText>
+                    </Group>
+                </Default>
+            </Condition>
         </Group>
-        <ComplicationSlot x="247" y="88" width="123" height="123" slotId="4" name="batterySlot" supportedTypes="SHORT_TEXT EMPTY" isCustomizable="FALSE">
-            <Variant mode="AMBIENT" target="alpha" value="0" />
-            <DefaultProviderPolicy defaultSystemProvider="EMPTY" defaultSystemProviderType="EMPTY" primaryProvider="io.github.ls6777.datadial.stats/io.github.ls6777.datadial.stats.BatteryTimeSource" primaryProviderType="SHORT_TEXT" />
-            <BoundingOval x="0" y="0" width="123" height="123" />
-            <Complication type="SHORT_TEXT">
-                <PartDraw x="0" y="0" width="123" height="123">
-                    <Ellipse x="0" y="0" width="123" height="123">
-                        <Fill color="#000000" />
-                    </Ellipse>
-                </PartDraw>
-                <PartImage x="0" y="0" width="123" height="123">
-                    <Image resource="battery_dial" />
-                </PartImage>
-                <PartImage x="45" y="104" width="32" height="17">
-                    <Image resource="gauge_battery" />
-                </PartImage>
-                <Condition>
-                    <Expressions>
-                        <Expression name="size0">abs(clamp(subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 1), 0, 9999)) &lt; 1000</Expression>
-                        <Expression name="size1">abs(clamp(subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 1), 0, 9999)) &gt;= 1000 &amp;&amp; abs(clamp(subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 1), 0, 9999)) &lt; 10000</Expression>
-                        <Expression name="size2">abs(clamp(subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 1), 0, 9999)) &gt;= 10000</Expression>
-                    </Expressions>
-                    <Compare expression="size0">
-                        <Group x="0" y="0" width="123" height="123">
-                            <PartImage x="58" y="22" width="6" height="13">
-                                <Image resource="unit_battery" />
-                            </PartImage>
-                            <PartText x="2" y="38" width="123" height="47">
-                                <Text align="CENTER">
-                                    <BitmapFont family="gauge_big0_digits" size="45">
-                                        <Template>%s<Parameter expression="subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 1)" />
-                                        </Template>
-                                    </BitmapFont>
-                                </Text>
-                            </PartText>
-                        </Group>
-                    </Compare>
-                    <Compare expression="size1">
-                        <Group x="0" y="0" width="123" height="123">
-                            <PartImage x="58" y="27" width="6" height="13">
-                                <Image resource="unit_battery" />
-                            </PartImage>
-                            <PartText x="1" y="43" width="123" height="38">
-                                <Text align="CENTER">
-                                    <BitmapFont family="gauge_big1_digits" size="36">
-                                        <Template>%s<Parameter expression="subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 1)" />
-                                        </Template>
-                                    </BitmapFont>
-                                </Text>
-                            </PartText>
-                        </Group>
-                    </Compare>
-                    <Compare expression="size2">
-                        <Group x="0" y="0" width="123" height="123">
-                            <PartImage x="58" y="30" width="6" height="13">
-                                <Image resource="unit_battery" />
-                            </PartImage>
-                            <PartText x="1" y="46" width="123" height="32">
-                                <Text align="CENTER">
-                                    <BitmapFont family="gauge_big2_digits" size="30">
-                                        <Template>%s<Parameter expression="subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 1)" />
-                                        </Template>
-                                    </BitmapFont>
-                                </Text>
-                            </PartText>
-                        </Group>
-                    </Compare>
-                    <Default>
-                        <Group x="0" y="0" width="123" height="123">
-                            <PartImage x="58" y="22" width="6" height="13">
-                                <Image resource="unit_battery" />
-                            </PartImage>
-                            <PartText x="2" y="38" width="123" height="47">
-                                <Text align="CENTER">
-                                    <BitmapFont family="gauge_big0_digits" size="45">
-                                        <Template>%s<Parameter expression="subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 1)" />
-                                        </Template>
-                                    </BitmapFont>
-                                </Text>
-                            </PartText>
-                        </Group>
-                    </Default>
-                </Condition>
-            </Complication>
-            <Complication type="EMPTY">
-                <PartImage x="58" y="22" width="6" height="13">
-                    <Image resource="unit_battery" />
-                </PartImage>
-                <PartText x="2" y="38" width="123" height="47">
-                    <Text align="CENTER">
-                        <BitmapFont family="gauge_big0_digits" size="45">
-                            <Template>%s<Parameter expression="&quot;--&quot;" />
-                            </Template>
-                        </BitmapFont>
-                    </Text>
-                </PartText>
-            </Complication>
-        </ComplicationSlot>
         <AnalogClock x="0" y="0" width="450" height="450" name="hands">
             <Variant mode="AMBIENT" target="alpha" value="0" />
             <HourHand resource="hand_hour" x="215" y="87" width="20" height="145" pivotX="0.5" pivotY="0.95" />
