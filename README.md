@@ -1,18 +1,18 @@
 # Night Dial for Wear OS
 
-Analog watch face for the Google Pixel Watch 5 (Wear OS 7). It runs on any round Wear OS 6 or
-later watch.
+Watch face for the Google Pixel Watch 5 (Wear OS 7). It runs on any round Wear OS 6 or later
+watch. It has no hands: the hour, minute and second are marked on the dial.
 
 It is built with the [Watch Face Format](https://developer.android.com/training/wearables/wff)
 (version 4), which Google requires for watch faces.
 
 <p align="center">
-  <img src="docs/night-dial.png" width="380" alt="Night Dial on the Wear OS 7 emulator">
-  <img src="docs/night-dial-ambient.png" width="380" alt="Night Dial in always-on mode">
+  <img src="docs/night-dial-face.png" width="380" alt="Night Dial on the Wear OS 7 emulator">
+  <img src="docs/night-dial-face-ambient.png" width="380" alt="Night Dial in always-on mode">
 </p>
 
 *The Wear OS 7 emulator. Left: the test build (`./build.sh test`) at its fixed time of
-8:18:18, with its sample readings (72°F and clear, UV 7, 80% battery, 23 hours left, 8,250
+8:10:18, with its sample readings (72°F and clear, UV 7, 80% battery, 23 hours left, 8,250
 steps, 1,850 calories, 8,250 ft, a heart rate of 72, Friday the 20th of March). Right:
 always-on mode.*
 
@@ -21,10 +21,14 @@ always-on mode.*
 - **Dial:** an orange ring at the edge of the face: a dot for every minute, larger at the
   hours, and a triangle pointing inward at 12, 3, 6 and 9. Small orange hour numerals 1 to
   12 sit just inside it.
-- **Hands:** slim dark hour and minute hands with straight sides that widen out from the
-  hub to a point, a gray outline, a bordered orange insert and a gray center bar; a light
-  gray seconds hand with a counterweight, ending just inside the ring; and a small black
-  hub with three gray rings.
+- **Hour:** a solid white box with round corners behind the current hour's orange
+  numeral.
+- **Minute:** a small solid white square with round corners across the ring at the current
+  minute, on a black backing that covers the dot under it. It moves a minute at a time.
+- **Second:** a white dot, larger than the hour dots, over the ring's dot at the current
+  second (at 12, 3, 6 and 9, the ring's triangle in white instead). It has a thin black
+  outline and sits over everything else there, the minute square and the month band
+  included.
 - **Readings:** the values (gauges, temperature, heart rate, UV and date) are in white
   Oswald and show "--" without data.
 - **Weather:** at the top, just below the 12, from the watch's weather data: the
@@ -32,7 +36,7 @@ always-on mode.*
   watch's own setting), and below it an orange icon for the condition (night versions
   after dark). Without weather data, the sun and "--°".
 - **Heart rate:** left of the 3: a red heart above the rate, from the watch's heart rate
-  sensor.
+  sensor. The rate is right-aligned, so two digits sit as close to the 3 as three.
 - **UV index:** right of the 9, mirroring the heart rate: an orange "UV" above the index,
   in the WHO scale's colors (green, yellow, orange, red, violet).
 - **Date:** above the 6: the day of the month, and below it the day's first three letters
@@ -55,16 +59,17 @@ always-on mode.*
   - **Battery** (1:30): the battery percentage, with "%" above, from the watch. The bar is
     white, red below 20%. Below the number is an orange battery with a segment lit for
     every 20% (rounded up), red below 20%.
-- **Battery time:** a smaller ring around the hub: the hours of battery left below the hub
-  with a small battery under them, and "hours" above the hub. The bar is full at 60 hours,
-  white, red below 8 hours. The hours come from DataDial Stats, which measures how fast the
-  battery has been draining since it was last unplugged (DataDial 1.0.4 or later); while
-  charging, or before it has seen the battery drop a couple of percent, "--".
+- **Battery time:** a smaller ring in the middle of the face, laid out like the other
+  gauges: the hours of battery left in the middle, "hours" above them and a small battery
+  low in the ring's opening. The bar is full at 60 hours, white, red below 8 hours. The
+  hours come from DataDial Stats, which measures how fast the battery has been draining
+  since it was last unplugged (DataDial 1.0.4 or later); while charging, or before it has
+  seen the battery drop a couple of percent, "--".
 - **Month:** a light gray band on the ring over the current month's numeral (1 for January
   to 12 for December), from the minute dot before it to the one after, with "Month" in
   black along it.
-- **Always-on mode:** the dimmed ring and numerals, and the hour and minute hands with
-  their orange hollowed out to an outline; no seconds hand, readings, gauges or month.
+- **Always-on mode:** the dimmed ring, numerals, hour box and minute square; no second
+  dot, readings, gauges or month.
 
 ## How it's built
 
@@ -83,7 +88,7 @@ size. Edit the script, not the generated files.
 | `watchface/src/main/res/xml/watch_face_info.xml` | Preview image and picker settings |
 | `watchface/src/main/res/values/strings.xml` | Names shown in the picker and editor |
 | `watchface/src/main/res/drawable/preview.png` | Picker and store preview (an emulator capture of the test build) |
-| `docs/night-dial.png`, `docs/night-dial-ambient.png` | The pictures above (emulator captures of the test build, awake and in always-on mode) |
+| `docs/night-dial-face.png`, `docs/night-dial-face-ambient.png` | The pictures above (emulator captures of the test build, awake and in always-on mode) |
 
 ## Build
 
@@ -93,12 +98,12 @@ Python 3 with Pillow.
 ```sh
 ./build.sh          # generate and build the debug APK
 ./build.sh run      # also install it on the watch or emulator and make it the active face
-./build.sh test     # the same with the hands frozen and sample weather, UV, battery, date, month, heart rate, steps, calories, elevation and battery time, to check the layout
+./build.sh test     # the same with the time frozen and sample weather, UV, battery, date, month, heart rate, steps, calories, elevation and battery time, to check the layout
 ./build.sh release  # release bundle (.aab) for Google Play (set up release signing first)
 ./build.sh log      # the watch face runtime's log: XML and expression errors show up here
 ```
 
-`./build.sh test` writes the normal XML back when it's done, so the frozen hands never stay
+`./build.sh test` writes the normal XML back when it's done, so the frozen time never stays
 in the source. Run `./build.sh run` afterwards to put the live face back on the watch.
 
 The project also opens in Android Studio, which checks the watch face XML as you edit it.

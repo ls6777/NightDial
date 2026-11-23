@@ -4,7 +4,7 @@
 #   ./build.sh          generate the watch face XML and images, build the debug APK
 #   ./build.sh run      also install it on the connected watch or emulator and
 #                       make it the active watch face
-#   ./build.sh test     like run, but with the hands frozen at TEST_TIME (see
+#   ./build.sh test     like run, but with the time frozen at TEST_TIME (see
 #                       tools/generate.py); the normal XML is written back after
 #   ./build.sh release  generate and build the release bundle (.aab) for Google Play
 #   ./build.sh log      show the watch face runtime's log (WFF errors show up here)

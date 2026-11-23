@@ -53,68 +53,31 @@ TRIANGLE = (11.0, 10.0)
 #: digits are narrowed, to the reference's proportions.
 NUMERALS = dict(height=20.0, gap=9.0, stroke=0.17, tracking=0.08, condense=0.9)
 NUMERAL_FONT = ROOT / "tools" / "fonts" / "VarelaRound-Regular.ttf"
+#: The hour marker, in place of an hour hand: a solid white box with round
+#: corners behind the current hour's numeral (1 to 12), the orange numeral
+#: on top. The space between the numeral and the box's line, the line's
+#: width and the corners' radius, in watch face units; the box is at least
+#: as wide as it is tall, so the narrow "1" still gets a square.
+HOUR_BOX = dict(pad=4.0, stroke=2.0, radius=4.0, color="#FFFFFF")
 
-#: Hands. Each is a length (a fraction of the radius) and outlines given as
-#: (distance, half-width) points down one side, from the tail to the tip,
-#: mirrored for the other side. A distance is a fraction of the hand's
-#: length from the center (negative for a tail) and a half-width is in
-#: watch face units.
-#:
-#: The hands are measured from the reference face, scaled by 1.43 watch
-#: face units per reference pixel, which puts the minute hand's tip just
-#: inside the dial ring as in the reference.
-#:
-#: The hour and minute hands, measured from the 960 px reference and scaled
-#: by 0.547 units per pixel (the minute hand's tip sits as close to the dial
-#: ring as in the reference). Every edge is a straight line.
-#:
-#: - outline: its sides run straight from under the hub to the shoulder,
-#:   then straight to the point; (distance, half-width) at the hub end, at
-#:   the shoulder and at the tip.
-#: - insert: the orange, its sides parallel to the outline's, inside the
-#:   outline's line, a black gap and its own gray border (`lines`: their
-#:   widths). Distances of its flat hub end, its shoulder and its point.
-#: - center: a bar down the middle from the hub to the insert, and on from
-#:   the insert's point into the hand's: two bright gray lines with a dim
-#:   seam between them. Its width and the seam's; the hour hand's is the
-#:   thicker.
-HOUR_HAND = dict(
-    length=0.608,
-    outline=((-0.04, 10.1), (0.836, 17.9), (1.0, 0.0)),
-    lines=dict(outline=2.6, gap=3.4, border=2.6),
-    insert=(0.352, 0.84, 0.902),
-    center=dict(width=6.2, seam=1.2),
-)
-MINUTE_HAND = dict(
-    length=0.914,
-    outline=((-0.03, 9.25), (0.862, 15.0), (1.0, 0.0)),
-    lines=dict(outline=2.4, gap=2.5, border=2.5),
-    insert=(0.332, 0.856, 0.910),
-    center=dict(width=4.8, seam=1.0),
-)
-#: How wide the hour and minute hands are drawn, as a fraction of the
-#: reference's widths above (their lengths stay): narrower, so they cover
-#: less of the gauges. Every width scales: the outline, its lines, the gap,
-#: the insert and the center bar.
-HAND_WIDTH = 0.5
-#: The hour and minute hands' colors: the outline, the insert's border, and
-#: the center bar's lines and seam, as measured from the reference.
-HAND_LINE_COLORS = dict(outline="#333333", border="#373737", center="#4C4C4C",
-                        seam="#1E1E1E")
-#: The seconds hand: a light gray needle with a blunt end, stopping just
-#: inside the dial ring's triangles (at 0.938 of the radius), and a
-#: counterweight that widens away from the hub.
-SECOND_HAND = dict(
-    length=0.92,
-    outline=((-0.394, 5.0), (-0.193, 3.6), (-0.096, 2.5), (-0.021, 2.2), (0.0, 1.8),
-             (1.0, 1.6)),
-)
-#: Center hub: a near-black disc with three thin gray rings, (radius, ring width)
-#: in watch face units: the reference's, scaled to 0.6 to go with the
-#: narrower hands (HAND_WIDTH), still covering their ends.
-HUB_SCALE = 0.6
-HUB_RINGS = tuple((r * HUB_SCALE, w * HUB_SCALE)
-                  for r, w in ((17.2, 2.1), (13.6, 2.1), (8.6, 2.1)))
+#: The minute marker, in place of a minute hand: a solid white box with
+#: round corners across the dial ring at the current minute, on a black
+#: backing that covers the ring's dot or triangle under it and sets it off
+#: from the month marker and the hour box. Its inner end's distance inside
+#: the ring and its outer end's outside it, its width, its corners'
+#: radius, and its backing's edge, in watch face units. The backing stops
+#: short of the hour numerals' outer edge.
+MINUTE_NOTCH = dict(inner=9.0, outer=7.0, width=16.0, radius=2.0, edge=1.6,
+                    color="#FFFFFF", backing="#000000")
+
+#: The second marker, in place of a seconds hand: a white dot over the
+#: dial ring's dot at the current second, larger than the hour dots
+#: (its radius, in watch face units), or the ring's triangle in white at
+#: 12, 3, 6 and 9; either with a thin black outline (its width), so it
+#: shows over everything else there (the month marker, the minute box).
+SECOND_MARK_COLOR = "#FFFFFF"
+SECOND_DOT = 4.4
+SECOND_EDGE = 1.2
 
 #: Alpha of the dial marks in always-on mode.
 AMBIENT_ALPHA = 154
@@ -132,12 +95,6 @@ GAUGE_GRAY = "#A4A4A4"
 VALUE_COLOR = "#FFFFFF"
 #: A reached goal's green (DataDial's): the steps once they reach the goal.
 GOAL_COLOR = "#3DDC57"
-#: The hour and minute hands' near-black body, also the hub's fill, and
-#: the hub's rings.
-HAND_BODY = "#050505"
-HAND_EDGE_COLOR = "#363636"
-#: The seconds hand.
-SECOND_GRAY = "#BCBCBC"
 
 
 def polar(degrees, distance):
@@ -183,10 +140,11 @@ def ambient_only(parent):
 # ---------------------------------------------------------------- the scene
 
 
-def dial(scene):
+def dial(scene, hour=None):
     """The orange ring at the edge of the face: a dot for every minute,
-    larger at the hours, and a triangle pointing inward at 12, 3, 6 and 9.
-    Dimmed in always-on mode."""
+    larger at the hours, and a triangle pointing inward at 12, 3, 6 and 9;
+    the hour marker over it (see hour_mark, which takes `hour`) and the
+    hour numerals over that. Dimmed in always-on mode."""
     group = el(scene, "Group", name="dial", x=0, y=0, width=SIZE, height=SIZE)
     el(group, "Variant", mode="AMBIENT", target="alpha", value=AMBIENT_ALPHA)
     draw = el(group, "PartDraw", x=0, y=0, width=SIZE, height=SIZE)
@@ -204,36 +162,41 @@ def dial(scene):
         tri = el(group, "PartImage", angle=float(i * 90), pivotX=0.5, pivotY=0.5,
                  **box(x, y, w, h))
         el(tri, "Image", resource="marker_triangle")
+    hour_mark(scene, hour)
+    group = el(scene, "Group", name="numerals", x=0, y=0, width=SIZE, height=SIZE)
+    el(group, "Variant", mode="AMBIENT", target="alpha", value=AMBIENT_ALPHA)
     numerals = el(group, "PartImage", x=0, y=0, width=SIZE, height=SIZE)
     el(numerals, "Image", resource="numerals")
 
 
-def hand_parts(clock, kind, resource, angle=None):
-    """One hand image, its pivot at the dial center (see render_hand). With
-    an angle, a still image at that angle instead of a moving hand."""
-    w, top, bottom = HAND_IMAGES[resource]
-    b = dict(x=round(C - w / 2), y=round(C - top), width=w, height=top + bottom,
-             pivotX=0.5, pivotY=top / (top + bottom))
-    if angle is None:
-        return el(clock, kind, resource=resource, **b)
-    hand = el(clock, "PartImage", angle=float(angle), **b)
-    el(hand, "Image", resource=resource)
-    return hand
-
-
-def hub(parent):
-    """Center hub over the hands: a near-black disc with three thin gray rings.
-    The same in always-on mode."""
-    outer = HUB_RINGS[0][0] + HUB_RINGS[0][1]
-    b = box(C, C, 2 * outer + 2, 2 * outer + 2)
-    draw = el(parent, "PartDraw", name="hub", **b)
-    hx, hy = C - b["x"], C - b["y"]
-    e = el(draw, "Ellipse", x=hx - outer, y=hy - outer, width=2 * outer, height=2 * outer)
-    el(e, "Fill", color=HAND_BODY)
-    for radius, width in HUB_RINGS:
-        e = el(draw, "Ellipse", x=hx - radius, y=hy - radius,
-               width=2 * radius, height=2 * radius)
-        el(e, "Stroke", color=HAND_EDGE_COLOR, thickness=width)
+def second_mark(parent, second=None):
+    """The second marker (see SECOND_MARK_COLOR): a white dot over the
+    dial ring's dot at the current second, or its triangle in white every
+    fifteenth, each outlined in black, drawn at 12 in a group turned a
+    second's 6 degrees at a time. Over everything else on the face;
+    hidden in always-on mode. second is a fixed second (0 to 59) to mark
+    instead, for the test build."""
+    source = "[SECOND]" if second is None else str(second)
+    group = el(parent, "Group", name="secondMark", x=0, y=0, width=SIZE, height=SIZE,
+               angle=0.0 if second is None else float(second * 6))
+    ambient_hide(group)
+    if second is None:
+        el(group, "Transform", target="angle", value="[SECOND] * 6")
+    shown = el(group, "Condition")
+    exprs = el(shown, "Expressions")
+    el(exprs, "Expression", name="quarter").text = f"{source} % 15 == 0"
+    w, h = SECOND_TRIANGLE_IMAGE
+    x, y = polar(0, R * RING)
+    tri = el(el(shown, "Compare", expression="quarter"), "PartImage", **box(x, y, w, h))
+    el(tri, "Image", resource="marker_triangle_white")
+    # The dot: a black disc `edge` larger, the white over it.
+    outer = SECOND_DOT + SECOND_EDGE
+    b = box(x, y, 2 * outer + 2, 2 * outer + 2)
+    draw = el(el(shown, "Default"), "PartDraw", **b)
+    for radius, color in ((outer, "#000000"), (SECOND_DOT, SECOND_MARK_COLOR)):
+        dot = el(draw, "Ellipse", x=x - radius - b["x"], y=y - radius - b["y"],
+                 width=2 * radius, height=2 * radius)
+        el(dot, "Fill", color=color)
 
 
 def month_mark(parent, sample=None):
@@ -255,29 +218,54 @@ def month_mark(parent, sample=None):
         el(part, "Image", resource=f"month_mark_{n}")
 
 
-def analog_clock(parent, frozen=None):
-    """The hour, minute and seconds hands while awake; the hour and minute
-    hands with their orange hollowed out, and no seconds, in always-on mode. frozen is an (hour,
-    minute, second) to draw the awake hands at instead of the time, for the
-    test build."""
-    if frozen is None:
-        clock = el(parent, "AnalogClock", x=0, y=0, width=SIZE, height=SIZE, name="hands")
-        angles = (None, None, None)
-    else:
-        clock = el(parent, "Group", x=0, y=0, width=SIZE, height=SIZE, name="hands")
-        h, m, s = frozen
-        angles = ((h % 12) * 30 + m / 2 + s / 120, m * 6 + s / 10, s * 6)
-    ambient_hide(clock)
-    for kind, resource, angle in zip(("HourHand", "MinuteHand", "SecondHand"),
-                                     ("hand_hour", "hand_minute", "hand_second"), angles):
-        hand_parts(clock, kind, resource, angle=angle)
+def hour_box_bounds(hour):
+    """The hour marker's box (see HOUR_BOX) around the hour's numeral, as
+    (x, y, width, height) in watch face units, to the middle of its line."""
+    x, y, w, h = NUMERAL_BOXES[hour]
+    pad = HOUR_BOX["pad"] + HOUR_BOX["stroke"] / 2
+    bw, bh = max(w, h) + 2 * pad, h + 2 * pad
+    return x - bw / 2, y - bh / 2, bw, bh
 
-    sleep = el(parent, "AnalogClock", x=0, y=0, width=SIZE, height=SIZE,
-               name="sleepHands", alpha=0)
-    ambient_only(sleep)
-    hand_parts(sleep, "HourHand", "hand_hour_ambient")
-    hand_parts(sleep, "MinuteHand", "hand_minute_ambient")
-    hub(parent)
+
+def hour_mark(parent, hour=None):
+    """The hour marker (see HOUR_BOX) behind the current hour's numeral,
+    in place of an hour hand. Dimmed with the dial in always-on mode.
+    hour is a fixed hour (1 to 12) to mark instead, for the test build."""
+    source = "[HOUR_1_12]" if hour is None else str(hour)
+    group = el(parent, "Group", name="hourMark", x=0, y=0, width=SIZE, height=SIZE)
+    el(group, "Variant", mode="AMBIENT", target="alpha", value=AMBIENT_ALPHA)
+    shown = el(group, "Condition")
+    exprs = el(shown, "Expressions")
+    for n in range(1, 13):
+        el(exprs, "Expression", name=f"hour{n}").text = f"{source} == {n}"
+    half = HOUR_BOX["stroke"] / 2
+    for n in range(1, 13):
+        x, y, w, h = hour_box_bounds(n)
+        x0, y0 = math.floor(x - half), math.floor(y - half)
+        x1, y1 = math.ceil(x + w + half), math.ceil(y + h + half)
+        draw = el(el(shown, "Compare", expression=f"hour{n}"), "PartDraw",
+                  x=x0, y=y0, width=x1 - x0, height=y1 - y0)
+        rect = el(draw, "RoundRectangle", x=x - x0, y=y - y0, width=w, height=h,
+                  cornerRadiusX=HOUR_BOX["radius"], cornerRadiusY=HOUR_BOX["radius"])
+        el(rect, "Fill", color=HOUR_BOX["color"])
+        el(rect, "Stroke", color=HOUR_BOX["color"], thickness=HOUR_BOX["stroke"])
+
+
+def minute_mark(parent, minute=None):
+    """The minute marker (see MINUTE_NOTCH): a white box across the dial
+    ring at the current minute, turned a minute's 6 degrees at a time about
+    the dial center, over the month marker and the hour box. Dimmed with
+    the dial in always-on mode. minute is a fixed minute (0 to 59) to mark
+    instead, for the test build."""
+    group = el(parent, "Group", name="minuteMark", x=0, y=0, width=SIZE, height=SIZE)
+    el(group, "Variant", mode="AMBIENT", target="alpha", value=AMBIENT_ALPHA)
+    # The image runs from the notch down to the dial center, its pivot.
+    w, top = NOTCH_IMAGE
+    part = el(group, "PartImage", x=round(C - w / 2), y=round(C - top), width=w, height=top,
+              pivotX=0.5, pivotY=1.0, angle=0.0 if minute is None else float(minute * 6))
+    if minute is None:
+        el(part, "Transform", target="angle", value="[MINUTE] * 6")
+    el(part, "Image", resource="minute_notch")
 
 
 def bitmap_fonts(face):
@@ -486,8 +474,9 @@ def gauge_value_layout(spec, cy, tier=0):
     big-number gauge (see BIG_VALUE), its value at size `tier` centered on
     the gauge center, and its icon at the bottom, its bottom edge
     BIG_VALUE's `icon_bottom` below the center; for a gauge with its own
-    digits (`value_height`), its value's top `value_top` below the center
-    and its icon `icon_gap` below the value."""
+    digits (`value_height`), its value centered on the gauge center (or
+    its top `value_top` below it) and its icon `icon_gap` below the
+    value."""
     if spec.get("big"):
         vh = GAUGE_IMAGES["big_digits"][tier]["0"][1]
         ih = GAUGE_IMAGES[spec["icon"]][1] if "icon" in spec else 0
@@ -495,7 +484,8 @@ def gauge_value_layout(spec, cy, tier=0):
                 BIG_VALUE["sizes"][tier][1], cy + BIG_VALUE["icon_bottom"] - ih)
     if "value_height" in spec:
         family = f"{spec['name']}_digits"
-        top, vh = cy + spec["value_top"], GAUGE_IMAGES[family]["0"][1]
+        vh = GAUGE_IMAGES[family]["0"][1]
+        top = cy + spec["value_top"] if "value_top" in spec else cy - vh / 2
         return (top, vh, family, family, spec["value_height"],
                 top + vh + spec["icon_gap"] if "icon" in spec else None)
     return (cy + GAUGE["hub"][0][0] + GAUGE["value"]["gap"], GAUGE_IMAGES["digits"]["0"][1],
@@ -715,7 +705,8 @@ def gauge_complication(scene, spec, bounds, center):
 def heart_rate(scene, sample=None):
     """The heart rate (see HEART_RATE) by the 3, a column like the
     battery's: the red heart above the rate (at the column's right), in its
-    digits, or "--" without a reading (the watch gives an empty value,
+    digits, right-aligned so a two-digit rate sits as close to the 3 as a
+    three-digit one, or "--" without a reading (the watch gives an empty value,
     which counts as 0).
     Hidden in always-on mode. sample maps data sources to fixed values (see
     TEST_SOURCES)."""
@@ -739,13 +730,15 @@ def heart_rate(scene, sample=None):
     heart = el(group, "PartImage", x=round(width - iw - HEART_RATE["heart_in"]), y=round(heart_top) - top, width=iw,
                height=ih)
     el(heart, "Image", resource="gauge_heart")
-    # Centered; each digit image ends in the digits' spacing.
+    # Right-aligned, its ink ending at the column's right edge: each digit
+    # image ends in the digits' spacing, so the box reaches past it by that.
     trailing = GAUGE_FONT["tracking"] * HEART_RATE["value"]
     shown = el(group, "Condition")
     el(el(shown, "Expressions"), "Expression", name="hasHeartRate").text = f"{hr} > 0"
     for branch, value in ((el(shown, "Compare", expression="hasHeartRate"), f"round({hr})"),
                           (el(shown, "Default"), '"--"')):
-        t = bitmap_text_part(branch, value_top - top, width, dh, x=round(trailing / 2))
+        t = bitmap_text_part(branch, value_top - top, width, dh, align="END",
+                             x=round(trailing))
         template(el(t, "BitmapFont", family="hr_digits", size=dh), "%s", value)
 
 
@@ -801,7 +794,7 @@ def day_date(scene, sample=None):
     # edge and where a two-digit UV index starts (then moved right a
     # little); the date above the hub, centered between it and the top
     # gauges' row, where they come closest to each other.
-    hub = HUB_RINGS[0][0] + HUB_RINGS[0][1]
+    hub = DAY_DATE["hub"]
     rows = sorted({round(gauge_center(spec)[1], 3) for spec in GAUGES})
     name_top = C - nh / 2
     date_top = ((C - hub) + rows[0]) / 2 - digit_h / 2 + DAY_DATE["date_down"]
@@ -958,8 +951,9 @@ def watch_face(test=False):
     el(face, "Metadata", key="PREVIEW_TIME", value=f"{h:02d}:{m:02d}:{s:02d}")
     bitmap_fonts(face)
     scene = el(face, "Scene", backgroundColor="#000000")
-    dial(scene)
+    dial(scene, hour=(TEST_TIME[0] - 1) % 12 + 1 if test else None)
     month_mark(scene, sample=TEST_SOURCES if test else None)
+    minute_mark(scene, minute=TEST_TIME[1] if test else None)
     weather(scene, sample=TEST_WEATHER if test else None)
     heart_rate(scene, sample=TEST_SOURCES if test else None)
     if DAY_DATE["shown"]:
@@ -968,7 +962,7 @@ def watch_face(test=False):
     uv_index(scene, sample=TEST_WEATHER if test else None)
     for spec in GAUGES:
         gauge(scene, spec, sample=TEST_SOURCES if test else None)
-    analog_clock(scene, frozen=TEST_TIME if test else None)
+    second_mark(scene, second=TEST_TIME[2] if test else None)
     return face
 
 
@@ -986,7 +980,7 @@ DRAW_SCALE = 32
 MASTER_SCALE = 8
 MASTERS = ROOT / "build" / "masters"
 #: Each hand image's width, and its height above and below the dial center,
-#: in watch face units (set by render_hand).
+#: in watch face units (set by HandCanvas).
 HAND_IMAGES = {}
 
 
@@ -998,7 +992,7 @@ def rgb(color):
 class HandCanvas:
     """A supersampled image of a hand pointing up, the dial center `top`
     units below its top edge, sized to the hand's outline. Points are
-    (distance, half-width) as in HOUR_HAND."""
+    (distance, half-width) as in GAUGE's `pointer`."""
 
     def __init__(self, name, hand):
         self.name = name
@@ -1041,113 +1035,85 @@ class HandCanvas:
             DRAWABLE / f"{self.name}.png")
 
 
-def inset(points, delta):
-    """A convex polygon of (x, y) points moved inward by delta on every
-    side: each edge shifted along its normal, the corners where the shifted
-    edges meet."""
-    n = len(points)
-    area = sum(points[i][0] * points[(i + 1) % n][1] - points[(i + 1) % n][0] * points[i][1]
-               for i in range(n))
-    sign = 1 if area > 0 else -1  # inward is to the left of a counterclockwise edge
-    lines = []
-    for i in range(n):
-        (x0, y0), (x1, y1) = points[i], points[(i + 1) % n]
-        length = math.hypot(x1 - x0, y1 - y0)
-        nx, ny = -(y1 - y0) / length * sign, (x1 - x0) / length * sign
-        lines.append(((x0 + nx * delta, y0 + ny * delta), (x1 - x0, y1 - y0)))
-    out = []
-    for i in range(n):
-        (p, r), (q, s) = lines[i - 1], lines[i]
-        t = ((q[0] - p[0]) * s[1] - (q[1] - p[1]) * s[0]) / (r[0] * s[1] - r[1] * s[0])
-        out.append((p[0] + t * r[0], p[1] + t * r[1]))
-    return out
-
-
-def clip_below(points, y0):
-    """The part of a polygon at or above y0 (Sutherland-Hodgman)."""
-    out = []
-    for i in range(len(points)):
-        a, b = points[i - 1], points[i]
-        if (a[1] >= y0) != (b[1] >= y0):
-            t = (y0 - a[1]) / (b[1] - a[1])
-            out.append((a[0] + t * (b[0] - a[0]), y0))
-        if b[1] >= y0:
-            out.append(b)
-    return out
-
-
-def render_hand(name, hand, ambient=False):
-    """An hour or minute hand (see HOUR_HAND), every edge a straight line.
-    In always-on mode the same hand with the orange hollowed out, leaving
-    an orange line as wide as the insert's border around the black. Its
-    widths are scaled by HAND_WIDTH."""
-    w = HAND_WIDTH
-    hand = dict(hand, outline=tuple((d, hw * w) for d, hw in hand["outline"]),
-                lines={key: v * w for key, v in hand["lines"].items()},
-                center={key: v * w for key, v in hand["center"].items()})
-    c = HandCanvas(name, hand)
-    k, ln = c.k, c.ln
-    (d0, hw0), (ds, hws), (dt, _) = hand["outline"]
-    outline = [(-hw0, d0 * ln), (-hws, ds * ln), (0.0, dt * ln), (hws, ds * ln), (hw0, d0 * ln)]
-
-    # The orange's sides: the outline's sides moved in by the outline's
-    # line, the gap and the border, from the insert's hub end out.
-    lines = hand["lines"]
-    start, shoulder, tip = (d * ln for d in hand["insert"])
-    sides = clip_below(inset(outline, lines["outline"] + lines["gap"] + lines["border"]), start)
-    # The orange: those sides out to its own shoulder, then a point; its
-    # gray border around it, outside it.
-    right = [p for p in sides if p[0] > 1e-6]
-    (xa, ya), (xb, yb) = min(right, key=lambda p: p[1]), max(right, key=lambda p: p[0])
-    xs = xa + (xb - xa) * min(1.0, (shoulder - ya) / (yb - ya))
-    insert = [(-xa, start), (-xs, shoulder), (0.0, tip), (xs, shoulder), (xa, start)]
-    border = inset(insert, -lines["border"])
-
-    def width(key):
-        """One of the hand's line widths in image pixels."""
-        return round(lines[key] * k)
-
-    def center_bar(line, seam):
-        """The center bar: from the hub to under the insert, and from under
-        the insert's point into the hand's, trimmed to the outline."""
-        layer = Image.new("RGBA", c.img.size, (0, 0, 0, 0))
-        draw = ImageDraw.Draw(layer)
-        for half, color in ((hand["center"]["width"] / 2, line),
-                            (hand["center"]["seam"] / 2, seam)):
-            for y0, y1 in ((d0 * ln, start + 1.0), (tip - 1.0, dt * ln)):
-                draw.polygon(c.pixels([(-half, y0), (-half, y1), (half, y1), (half, y0)]),
-                             fill=rgb(color))
-        mask = Image.new("L", c.img.size, 0)
-        ImageDraw.Draw(mask).polygon(c.pixels(outline), fill=255)
-        c.img.paste(layer, mask=Image.composite(layer.getchannel("A"), mask, mask))
-
-    c.draw.polygon(c.pixels(outline), fill=rgb(HAND_BODY))
-    center_bar(HAND_LINE_COLORS["center"], HAND_LINE_COLORS["seam"])
-    c.draw.polygon(c.pixels(border), fill=rgb(HAND_LINE_COLORS["border"]))
-    c.draw.polygon(c.pixels(insert), fill=rgb(ORANGE))
-    if ambient:
-        c.draw.polygon(c.pixels(inset(insert, lines["border"])), fill=rgb(HAND_BODY))
-    c.draw.polygon(c.pixels(outline), outline=rgb(HAND_LINE_COLORS["outline"]),
-                   width=width("outline"))
-    c.save()
-
-
-def render_second_hand():
-    """The seconds hand: a light gray needle and counterweight."""
-    c = HandCanvas("hand_second", SECOND_HAND)
-    c.draw.polygon(c.polygon(SECOND_HAND["outline"]), fill=rgb(SECOND_GRAY))
-    c.save()
-
-
-def render_triangle():
-    """The dial ring's triangle marker: orange, pointing down (inward at 12),
-    with a slightly rounded look from supersampling."""
+def render_triangle(name="marker_triangle", color=ORANGE):
+    """The dial ring's triangle marker: pointing down (inward at 12), with a
+    slightly rounded look from supersampling, in `color`."""
     w, h = (math.ceil(v) for v in TRIANGLE)
     k = DRAW_SCALE
     img = Image.new("RGBA", (w * k, h * k), (0, 0, 0, 0))
-    ImageDraw.Draw(img).polygon([(0, 0), (w * k, 0), (w * k / 2, h * k)],
-                                fill=(0xFF, 0x80, 0x00, 255))
-    img.resize((w * SCALE, h * SCALE), Image.LANCZOS).save(DRAWABLE / "marker_triangle.png")
+    ImageDraw.Draw(img).polygon([(0, 0), (w * k, 0), (w * k / 2, h * k)], fill=rgb(color))
+    img.resize((w * SCALE, h * SCALE), Image.LANCZOS).save(DRAWABLE / f"{name}.png")
+
+
+#: The second marker's triangle image's width and height, in watch face
+#: units (set by render_second_triangle).
+SECOND_TRIANGLE_IMAGE = ()
+
+
+def render_second_triangle():
+    """The second marker's triangle (see SECOND_MARK_COLOR): the dial
+    ring's triangle in white, outlined in black SECOND_EDGE wide (a black
+    triangle grown by that on every side, scaled about its incenter, under
+    it), centered in its image as the ring's triangle is in its own:
+    marker_triangle_white.png."""
+    global SECOND_TRIANGLE_IMAGE
+    w, h = (math.ceil(v) for v in TRIANGLE)
+    tri = [(0.0, 0.0), (float(w), 0.0), (w / 2, float(h))]
+    side = math.hypot(w / 2, h)
+    perimeter = 2 * side + w
+    ix, iy = (side * 0 + side * w + w * w / 2) / perimeter, (w * h) / perimeter
+    r = w * h / perimeter  # the inradius: area / half the perimeter
+    k = (r + SECOND_EDGE) / r
+    outline = [(ix + (x - ix) * k, iy + (y - iy) * k) for x, y in tri]
+    # Room for the outline on every side, the triangle still centered.
+    margin = math.ceil(max(max(-x, x - w, -y, y - h) for x, y in outline))
+    SECOND_TRIANGLE_IMAGE = (w + 2 * margin, h + 2 * margin)
+    k = DRAW_SCALE
+    img = Image.new("RGBA", tuple(v * k for v in SECOND_TRIANGLE_IMAGE), (0, 0, 0, 0))
+    draw = ImageDraw.Draw(img)
+    for shape, color in ((outline, "#000000"), (tri, SECOND_MARK_COLOR)):
+        draw.polygon([((x + margin) * k, (y + margin) * k) for x, y in shape], fill=rgb(color))
+    img.resize(tuple(v * SCALE for v in SECOND_TRIANGLE_IMAGE), Image.LANCZOS).save(
+        DRAWABLE / "marker_triangle_white.png")
+
+
+#: The minute notch image's width, and its height from its top to the dial
+#: center, in watch face units (set by render_minute_notch).
+NOTCH_IMAGE = ()
+
+
+def minute_notch_boxes():
+    """The minute notch at 12 (see MINUTE_NOTCH): its black backing and the
+    white box on it, each as ((x0, y0, x1, y1), corner radius) on the face
+    in watch face units. The backing is the box grown by `edge` on every
+    side."""
+    n = MINUTE_NOTCH
+    ring = R * RING
+    box_ = (C - n["width"] / 2, C - ring - n["outer"], C + n["width"] / 2, C - ring + n["inner"])
+    e = n["edge"]
+    backing = (box_[0] - e, box_[1] - e, box_[2] + e, box_[3] + e)
+    return (backing, n["radius"] + e), (box_, n["radius"])
+
+
+def render_minute_notch():
+    """The minute notch (see MINUTE_NOTCH) at 12, drawn large and scaled
+    down, in an image that runs from it down to the dial center (the
+    pivot it turns about): minute_notch.png."""
+    global NOTCH_IMAGE
+    (backing, br), (white, wr) = minute_notch_boxes()
+    w = 2 * math.ceil(C - backing[0] + 1)  # even, to center
+    y0 = math.floor(backing[1])
+    NOTCH_IMAGE = (w, round(C - y0))
+    k = DRAW_SCALE
+    img = Image.new("RGBA", (w * k, NOTCH_IMAGE[1] * k), (0, 0, 0, 0))
+    draw = ImageDraw.Draw(img)
+    x0 = C - w / 2
+    for (bx0, by0, bx1, by1), radius, color in ((backing, br, MINUTE_NOTCH["backing"]),
+                                               (white, wr, MINUTE_NOTCH["color"])):
+        draw.rounded_rectangle([(bx0 - x0) * k, (by0 - y0) * k, (bx1 - x0) * k, (by1 - y0) * k],
+                               radius=radius * k, fill=rgb(color))
+    img.resize((w * SCALE, NOTCH_IMAGE[1] * SCALE), Image.LANCZOS).save(
+        DRAWABLE / "minute_notch.png")
 
 
 def render_glyphs(text, height, color=ORANGE):
@@ -1746,11 +1712,13 @@ def render_battery():
 #:   outer edge and the ticks (placed like the hour numerals).
 #: - arc: the scale's span in degrees, its low end at the left, unless a
 #:   gauge sets its own.
-#: - pointer: its outline as in SECOND_HAND (distances as fractions of its
-#:   length), the reference's: straight sides widening from the hub to a
+#: - pointer: its outline as (distance, half-width) points down one side,
+#:   from the tail to the tip, mirrored for the other side (distances as
+#:   fractions of its length, half-widths in watch face units), the
+#:   reference's: straight sides widening from the hub to a
 #:   shoulder at 0.71 of its length, then straight to a sharp point, its
-#:   tail hidden under the hub. Like the seconds hand it runs over the
-#:   labels, to `gap` short of the ticks.
+#:   tail hidden under the hub. It runs over the labels, to `gap` short
+#:   of the ticks.
 #: - hub: discs as (radius, color), outermost first, each drawn over the
 #:   last: light gray rings with a dark one between, as in the reference.
 #: - value: the value's digit height, its gap below the hub and its font weight
@@ -1827,13 +1795,12 @@ GAUGE_FONT = dict(file=ROOT / "tools" / "fonts" / "Oswald-Variable.ttf",
 #:   below BATTERY_LOW's limit, and the
 #:   battery icon below, a segment lit per 20% (red when low). From the
 #:   watch itself: no complication.
-#: - battery_time, a ring around the watch's hub (`center`, its own
+#: - battery_time, a ring in the middle of the face (`center`, its own
 #:   smaller `ring`): the battery's hours left, the bar full at 60 h, a
-#:   tick every 3 h, white, red below 8 h; the hours in the ring's gap
-#:   below the hub, in its own digits (`value_top`, `value_height`), and
-#:   "hours" small inside the ring's top (`unit_top`: its top's distance
-#:   above the center), and a small battery below the hours (`icon_gap`
-#:   below them); no pointer or hub of its own.
+#:   tick every 3 h, white, red below 8 h; like the big-number gauges, the
+#:   hours centered in the ring, in its own digits (`value_height`), with
+#:   "hours" small above them and a small battery below them (`icon_gap`
+#:   below them); no pointer or hub.
 #:   Wear OS gives watch faces no time left, so it comes from DataDial
 #:   Stats' complication, "--" without it.
 #: Google Health's steps on the watch, as DataDial uses them: today's
@@ -1967,9 +1934,8 @@ BATTERY_GAUGE = dict(
     review=dict(pointer=80, value="80"),
 )
 BATTERY_TIME_GAUGE = dict(
-    name="battery_time", center=True, ring=(40.0, 4.4, 1.8), value_top=25.0,
-    value_height=28.0, unit_label="hours", unit_top=35.0, icon="battery_small",
-    icon_gap=3.0,
+    name="battery_time", center=True, ring=(40.0, 4.4, 1.8),
+    value_height=28.0, unit_label="hours", icon="battery_small", icon_gap=12.0,
     scale=(0, 60), arc=288.0, ticks=list(range(0, 61, 3)), labels=[],
     bar_colors=((8 / 60, BATTERY_LOW["color"]), (None, VALUE_COLOR)),
     pointer="clamp([BATTERY_HOURS], 0, 60)",
@@ -1998,7 +1964,7 @@ GAUGE_ICON_GAP = 7.0
 #: 5 below the bottom gauges' icons, the date between the bottom gauges'
 #: rings. The date's capital height, the day's (smaller), the day's gap
 #: above the 6 and the gap between the two, in watch face units.
-DATE_LINE = dict(height=36.0, day=26.0, gap=4.0, spacing=11.0)
+DATE_LINE = dict(height=36.0, day=26.0, gap=9.0, spacing=11.0)
 #: The date's digits and the day's letters, their image names, and each
 #: one's image size (set by render_day_names).
 DATE_LINE_CHARS = {str(n): str(n) for n in range(10)}
@@ -2011,8 +1977,9 @@ DAY_LINE_GLYPHS = {}
 #: month above the hub, centered between it and the top gauges. The name's
 #: capital height, the date's digit height, the date's box width, and how
 #: far the name sits right of its midpoint and the date below its, in
-#: watch face units; and whether they're on the face (off for now).
-DAY_DATE = dict(name=13.0, date=24.0, width=100.0, name_right=5.0, date_down=10.0,
+#: watch face units; the radius it keeps clear around the center (the old
+#: hub's); and whether they're on the face (off for now).
+DAY_DATE = dict(hub=11.6, name=13.0, date=24.0, width=100.0, name_right=5.0, date_down=10.0,
                 shown=False)
 #: The date's digits' image sizes in pixels (set by render_day_names).
 DATE_GLYPHS = {}
@@ -2027,7 +1994,7 @@ DAY_IMAGES = {}
 #: `lift` above level with the 3, the heart's gap above the rate and how
 #: far inside the column's right edge it ends, the UV icon's gap above the
 #: index, the rate's digit height, and the UV index's.
-HEART_RATE = dict(inset=6.0, lift=2.0, heart_gap=7.0, heart_in=9.0, icon_gap=12.0,
+HEART_RATE = dict(inset=11.0, lift=2.0, heart_gap=7.0, heart_in=9.0, icon_gap=12.0,
                   value=34.0, digits=34.0)
 HEART_ICON = dict(width=26.0, color=TEMPERATURE_COLORS["hot"])
 #: The UV index readout, just right of the 9, the heart rate's mirror image
@@ -2176,11 +2143,13 @@ def render_gauge_dial(gauge):
     red = GAUGE["redline"]
     size = math.ceil(2 * (inner + length + 1))
     if "value_height" in gauge:
-        # Room for a value below the ring (the gauge's box is its dial's).
+        # Room for the value and icon if they reach below the ring (the
+        # gauge's box is its dial's).
         vh = GAUGE_IMAGES[f"{gauge['name']}_digits"]["0"][1] / SCALE
+        bottom = gauge.get("value_top", -vh / 2) + vh
         if "icon" in gauge:
-            vh += gauge["icon_gap"] + GAUGE_IMAGES[gauge["icon"]][1] / SCALE
-        size = max(size, math.ceil(2 * (gauge["value_top"] + vh + 2)))
+            bottom += gauge["icon_gap"] + GAUGE_IMAGES[gauge["icon"]][1] / SCALE
+        size = max(size, math.ceil(2 * (bottom + 2)))
     k = DRAW_SCALE
     img = Image.new("RGBA", (size * k,) * 2, (0, 0, 0, 0))
     draw = ImageDraw.Draw(img)
@@ -2511,6 +2480,8 @@ def render_gauges():
 def render_images():
     DRAWABLE.mkdir(parents=True, exist_ok=True)
     render_triangle()
+    render_second_triangle()
+    render_minute_notch()
     render_numerals()
     render_month_marks()
     render_weather_icons()
@@ -2518,19 +2489,12 @@ def render_images():
     render_heart_rate_glyphs()
     render_battery()
     render_gauges()
-    render_hand("hand_hour", HOUR_HAND)
-    render_hand("hand_hour_ambient", HOUR_HAND, ambient=True)
-    render_hand("hand_minute", MINUTE_HAND)
-    render_hand("hand_minute_ambient", MINUTE_HAND, ambient=True)
-    render_second_hand()
 
 
 #: The test build's time (hour, minute, second), also the picker preview's:
-#: the hands clear of the readings, the hour hand between the calories and
-#: the UV index, the minute hand between the heart rate and the elevation,
-#: and the seconds hand along it (the battery-time ring's label and hours,
-#: above and below the hub, leave no room nearer 12 or 6).
-TEST_TIME = (8, 18, 18)
+#: the hour marker on the 8, the minute marker on the hour dot by the 2,
+#: and the second marker on a minute dot by the 4.
+TEST_TIME = (8, 10, 18)
 #: The test build's weather, in place of the watch's (the emulator often
 #: has none): the WEATHER data sources' values, unit 2 being Fahrenheit.
 TEST_WEATHER = dict(IS_AVAILABLE=1, IS_DAY=1, CONDITION=1, TEMPERATURE=72,
@@ -2551,7 +2515,7 @@ def write_xml(test=False):
     note = "Generated by tools/generate.py. Edit that script, not this file."
     if test:
         # No double hyphens: they aren't allowed in an XML comment.
-        note = "TEST BUILD with frozen hands (generate.py test option). Don't ship this."
+        note = "TEST BUILD with a frozen time (generate.py test option). Don't ship this."
     header = f"<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<!-- {note} -->\n"
     out.write_text(header + body + "\n", encoding="utf-8", newline="\n")
 
