@@ -88,109 +88,121 @@
             <Character name="F" resource="weather_temp_cold_f" width="11" height="19" />
             <Character name="C" resource="weather_temp_cold_c" width="13" height="19" />
         </BitmapFont>
+        <BitmapFont name="date_digits">
+            <Character name="0" resource="date_digit_0" width="18" height="26" />
+            <Character name="1" resource="date_digit_1" width="13" height="26" />
+            <Character name="2" resource="date_digit_2" width="16" height="26" />
+            <Character name="3" resource="date_digit_3" width="16" height="26" />
+            <Character name="4" resource="date_digit_4" width="16" height="26" />
+            <Character name="5" resource="date_digit_5" width="16" height="26" />
+            <Character name="6" resource="date_digit_6" width="17" height="26" />
+            <Character name="7" resource="date_digit_7" width="14" height="26" />
+            <Character name="8" resource="date_digit_8" width="17" height="26" />
+            <Character name="9" resource="date_digit_9" width="17" height="26" />
+        </BitmapFont>
         <BitmapFont name="heart_rate_digits">
-            <Character name="0" resource="heart_rate_0" width="18" height="26" />
-            <Character name="1" resource="heart_rate_1" width="13" height="26" />
-            <Character name="2" resource="heart_rate_2" width="16" height="26" />
-            <Character name="3" resource="heart_rate_3" width="16" height="26" />
-            <Character name="4" resource="heart_rate_4" width="16" height="26" />
-            <Character name="5" resource="heart_rate_5" width="16" height="26" />
-            <Character name="6" resource="heart_rate_6" width="17" height="26" />
-            <Character name="7" resource="heart_rate_7" width="14" height="26" />
-            <Character name="8" resource="heart_rate_8" width="17" height="26" />
-            <Character name="9" resource="heart_rate_9" width="17" height="26" />
-            <Character name="-" resource="heart_rate_minus" width="11" height="26" />
+            <Character name="0" resource="heart_rate_0" width="21" height="30" />
+            <Character name="1" resource="heart_rate_1" width="16" height="30" />
+            <Character name="2" resource="heart_rate_2" width="20" height="30" />
+            <Character name="3" resource="heart_rate_3" width="20" height="30" />
+            <Character name="4" resource="heart_rate_4" width="20" height="30" />
+            <Character name="5" resource="heart_rate_5" width="20" height="30" />
+            <Character name="6" resource="heart_rate_6" width="21" height="30" />
+            <Character name="7" resource="heart_rate_7" width="17" height="30" />
+            <Character name="8" resource="heart_rate_8" width="20" height="30" />
+            <Character name="9" resource="heart_rate_9" width="21" height="30" />
+            <Character name="-" resource="heart_rate_minus" width="14" height="30" />
         </BitmapFont>
         <BitmapFont name="uv_low_digits">
-            <Character name="0" resource="uv_low_0" width="18" height="26" />
-            <Character name="1" resource="uv_low_1" width="13" height="26" />
-            <Character name="2" resource="uv_low_2" width="16" height="26" />
-            <Character name="3" resource="uv_low_3" width="16" height="26" />
-            <Character name="4" resource="uv_low_4" width="16" height="26" />
-            <Character name="5" resource="uv_low_5" width="16" height="26" />
-            <Character name="6" resource="uv_low_6" width="17" height="26" />
-            <Character name="7" resource="uv_low_7" width="14" height="26" />
-            <Character name="8" resource="uv_low_8" width="17" height="26" />
-            <Character name="9" resource="uv_low_9" width="17" height="26" />
-            <Character name="-" resource="uv_low_minus" width="11" height="26" />
+            <Character name="0" resource="uv_low_0" width="21" height="30" />
+            <Character name="1" resource="uv_low_1" width="16" height="30" />
+            <Character name="2" resource="uv_low_2" width="20" height="30" />
+            <Character name="3" resource="uv_low_3" width="20" height="30" />
+            <Character name="4" resource="uv_low_4" width="20" height="30" />
+            <Character name="5" resource="uv_low_5" width="20" height="30" />
+            <Character name="6" resource="uv_low_6" width="21" height="30" />
+            <Character name="7" resource="uv_low_7" width="17" height="30" />
+            <Character name="8" resource="uv_low_8" width="20" height="30" />
+            <Character name="9" resource="uv_low_9" width="21" height="30" />
+            <Character name="-" resource="uv_low_minus" width="14" height="30" />
         </BitmapFont>
         <BitmapFont name="uv_moderate_digits">
-            <Character name="0" resource="uv_moderate_0" width="18" height="26" />
-            <Character name="1" resource="uv_moderate_1" width="13" height="26" />
-            <Character name="2" resource="uv_moderate_2" width="16" height="26" />
-            <Character name="3" resource="uv_moderate_3" width="16" height="26" />
-            <Character name="4" resource="uv_moderate_4" width="16" height="26" />
-            <Character name="5" resource="uv_moderate_5" width="16" height="26" />
-            <Character name="6" resource="uv_moderate_6" width="17" height="26" />
-            <Character name="7" resource="uv_moderate_7" width="14" height="26" />
-            <Character name="8" resource="uv_moderate_8" width="17" height="26" />
-            <Character name="9" resource="uv_moderate_9" width="17" height="26" />
-            <Character name="-" resource="uv_moderate_minus" width="11" height="26" />
+            <Character name="0" resource="uv_moderate_0" width="21" height="30" />
+            <Character name="1" resource="uv_moderate_1" width="16" height="30" />
+            <Character name="2" resource="uv_moderate_2" width="20" height="30" />
+            <Character name="3" resource="uv_moderate_3" width="20" height="30" />
+            <Character name="4" resource="uv_moderate_4" width="20" height="30" />
+            <Character name="5" resource="uv_moderate_5" width="20" height="30" />
+            <Character name="6" resource="uv_moderate_6" width="21" height="30" />
+            <Character name="7" resource="uv_moderate_7" width="17" height="30" />
+            <Character name="8" resource="uv_moderate_8" width="20" height="30" />
+            <Character name="9" resource="uv_moderate_9" width="21" height="30" />
+            <Character name="-" resource="uv_moderate_minus" width="14" height="30" />
         </BitmapFont>
         <BitmapFont name="uv_high_digits">
-            <Character name="0" resource="uv_high_0" width="18" height="26" />
-            <Character name="1" resource="uv_high_1" width="13" height="26" />
-            <Character name="2" resource="uv_high_2" width="16" height="26" />
-            <Character name="3" resource="uv_high_3" width="16" height="26" />
-            <Character name="4" resource="uv_high_4" width="16" height="26" />
-            <Character name="5" resource="uv_high_5" width="16" height="26" />
-            <Character name="6" resource="uv_high_6" width="17" height="26" />
-            <Character name="7" resource="uv_high_7" width="14" height="26" />
-            <Character name="8" resource="uv_high_8" width="17" height="26" />
-            <Character name="9" resource="uv_high_9" width="17" height="26" />
-            <Character name="-" resource="uv_high_minus" width="11" height="26" />
+            <Character name="0" resource="uv_high_0" width="21" height="30" />
+            <Character name="1" resource="uv_high_1" width="16" height="30" />
+            <Character name="2" resource="uv_high_2" width="20" height="30" />
+            <Character name="3" resource="uv_high_3" width="20" height="30" />
+            <Character name="4" resource="uv_high_4" width="20" height="30" />
+            <Character name="5" resource="uv_high_5" width="20" height="30" />
+            <Character name="6" resource="uv_high_6" width="21" height="30" />
+            <Character name="7" resource="uv_high_7" width="17" height="30" />
+            <Character name="8" resource="uv_high_8" width="20" height="30" />
+            <Character name="9" resource="uv_high_9" width="21" height="30" />
+            <Character name="-" resource="uv_high_minus" width="14" height="30" />
         </BitmapFont>
         <BitmapFont name="uv_very_high_digits">
-            <Character name="0" resource="uv_very_high_0" width="18" height="26" />
-            <Character name="1" resource="uv_very_high_1" width="13" height="26" />
-            <Character name="2" resource="uv_very_high_2" width="16" height="26" />
-            <Character name="3" resource="uv_very_high_3" width="16" height="26" />
-            <Character name="4" resource="uv_very_high_4" width="16" height="26" />
-            <Character name="5" resource="uv_very_high_5" width="16" height="26" />
-            <Character name="6" resource="uv_very_high_6" width="17" height="26" />
-            <Character name="7" resource="uv_very_high_7" width="14" height="26" />
-            <Character name="8" resource="uv_very_high_8" width="17" height="26" />
-            <Character name="9" resource="uv_very_high_9" width="17" height="26" />
-            <Character name="-" resource="uv_very_high_minus" width="11" height="26" />
+            <Character name="0" resource="uv_very_high_0" width="21" height="30" />
+            <Character name="1" resource="uv_very_high_1" width="16" height="30" />
+            <Character name="2" resource="uv_very_high_2" width="20" height="30" />
+            <Character name="3" resource="uv_very_high_3" width="20" height="30" />
+            <Character name="4" resource="uv_very_high_4" width="20" height="30" />
+            <Character name="5" resource="uv_very_high_5" width="20" height="30" />
+            <Character name="6" resource="uv_very_high_6" width="21" height="30" />
+            <Character name="7" resource="uv_very_high_7" width="17" height="30" />
+            <Character name="8" resource="uv_very_high_8" width="20" height="30" />
+            <Character name="9" resource="uv_very_high_9" width="21" height="30" />
+            <Character name="-" resource="uv_very_high_minus" width="14" height="30" />
         </BitmapFont>
         <BitmapFont name="uv_extreme_digits">
-            <Character name="0" resource="uv_extreme_0" width="18" height="26" />
-            <Character name="1" resource="uv_extreme_1" width="13" height="26" />
-            <Character name="2" resource="uv_extreme_2" width="16" height="26" />
-            <Character name="3" resource="uv_extreme_3" width="16" height="26" />
-            <Character name="4" resource="uv_extreme_4" width="16" height="26" />
-            <Character name="5" resource="uv_extreme_5" width="16" height="26" />
-            <Character name="6" resource="uv_extreme_6" width="17" height="26" />
-            <Character name="7" resource="uv_extreme_7" width="14" height="26" />
-            <Character name="8" resource="uv_extreme_8" width="17" height="26" />
-            <Character name="9" resource="uv_extreme_9" width="17" height="26" />
-            <Character name="-" resource="uv_extreme_minus" width="11" height="26" />
+            <Character name="0" resource="uv_extreme_0" width="21" height="30" />
+            <Character name="1" resource="uv_extreme_1" width="16" height="30" />
+            <Character name="2" resource="uv_extreme_2" width="20" height="30" />
+            <Character name="3" resource="uv_extreme_3" width="20" height="30" />
+            <Character name="4" resource="uv_extreme_4" width="20" height="30" />
+            <Character name="5" resource="uv_extreme_5" width="20" height="30" />
+            <Character name="6" resource="uv_extreme_6" width="21" height="30" />
+            <Character name="7" resource="uv_extreme_7" width="17" height="30" />
+            <Character name="8" resource="uv_extreme_8" width="20" height="30" />
+            <Character name="9" resource="uv_extreme_9" width="21" height="30" />
+            <Character name="-" resource="uv_extreme_minus" width="14" height="30" />
         </BitmapFont>
         <BitmapFont name="battery_percent">
-            <Character name="0" resource="weather_temp_0" width="13" height="19" />
-            <Character name="1" resource="weather_temp_1" width="10" height="19" />
-            <Character name="2" resource="weather_temp_2" width="13" height="19" />
-            <Character name="3" resource="weather_temp_3" width="13" height="19" />
-            <Character name="4" resource="weather_temp_4" width="13" height="19" />
-            <Character name="5" resource="weather_temp_5" width="12" height="19" />
-            <Character name="6" resource="weather_temp_6" width="13" height="19" />
-            <Character name="7" resource="weather_temp_7" width="10" height="19" />
-            <Character name="8" resource="weather_temp_8" width="13" height="19" />
-            <Character name="9" resource="weather_temp_9" width="13" height="19" />
-            <Character name="%" resource="battery_percent" width="20" height="19" />
+            <Character name="0" resource="battery_digit_0" width="16" height="24" />
+            <Character name="1" resource="battery_digit_1" width="12" height="24" />
+            <Character name="2" resource="battery_digit_2" width="15" height="24" />
+            <Character name="3" resource="battery_digit_3" width="15" height="24" />
+            <Character name="4" resource="battery_digit_4" width="15" height="24" />
+            <Character name="5" resource="battery_digit_5" width="15" height="24" />
+            <Character name="6" resource="battery_digit_6" width="16" height="24" />
+            <Character name="7" resource="battery_digit_7" width="12" height="24" />
+            <Character name="8" resource="battery_digit_8" width="15" height="24" />
+            <Character name="9" resource="battery_digit_9" width="16" height="24" />
+            <Character name="%" resource="battery_percent" width="24" height="24" />
         </BitmapFont>
         <BitmapFont name="battery_percent_low">
-            <Character name="0" resource="weather_temp_hot_0" width="13" height="19" />
-            <Character name="1" resource="weather_temp_hot_1" width="10" height="19" />
-            <Character name="2" resource="weather_temp_hot_2" width="13" height="19" />
-            <Character name="3" resource="weather_temp_hot_3" width="13" height="19" />
-            <Character name="4" resource="weather_temp_hot_4" width="13" height="19" />
-            <Character name="5" resource="weather_temp_hot_5" width="12" height="19" />
-            <Character name="6" resource="weather_temp_hot_6" width="13" height="19" />
-            <Character name="7" resource="weather_temp_hot_7" width="10" height="19" />
-            <Character name="8" resource="weather_temp_hot_8" width="13" height="19" />
-            <Character name="9" resource="weather_temp_hot_9" width="13" height="19" />
-            <Character name="%" resource="battery_percent_low" width="20" height="19" />
+            <Character name="0" resource="battery_digit_low_0" width="16" height="24" />
+            <Character name="1" resource="battery_digit_low_1" width="12" height="24" />
+            <Character name="2" resource="battery_digit_low_2" width="15" height="24" />
+            <Character name="3" resource="battery_digit_low_3" width="15" height="24" />
+            <Character name="4" resource="battery_digit_low_4" width="15" height="24" />
+            <Character name="5" resource="battery_digit_low_5" width="15" height="24" />
+            <Character name="6" resource="battery_digit_low_6" width="16" height="24" />
+            <Character name="7" resource="battery_digit_low_7" width="12" height="24" />
+            <Character name="8" resource="battery_digit_low_8" width="15" height="24" />
+            <Character name="9" resource="battery_digit_low_9" width="16" height="24" />
+            <Character name="%" resource="battery_percent_low" width="24" height="24" />
         </BitmapFont>
         <BitmapFont name="gauge_digits">
             <Character name="0" resource="gauge_digit_0" width="14" height="20" />
@@ -206,6 +218,23 @@
             <Character name="-" resource="gauge_digit_minus" width="9" height="20" />
             <Character name="f" resource="gauge_digit_f" width="5" height="20" />
             <Character name="t" resource="gauge_digit_t" width="5" height="20" />
+            <Character name="h" resource="gauge_digit_h" width="7" height="20" />
+        </BitmapFont>
+        <BitmapFont name="gauge_digits_goal">
+            <Character name="0" resource="gauge_digit_goal_0" width="14" height="20" />
+            <Character name="1" resource="gauge_digit_goal_1" width="11" height="20" />
+            <Character name="2" resource="gauge_digit_goal_2" width="13" height="20" />
+            <Character name="3" resource="gauge_digit_goal_3" width="13" height="20" />
+            <Character name="4" resource="gauge_digit_goal_4" width="13" height="20" />
+            <Character name="5" resource="gauge_digit_goal_5" width="13" height="20" />
+            <Character name="6" resource="gauge_digit_goal_6" width="14" height="20" />
+            <Character name="7" resource="gauge_digit_goal_7" width="11" height="20" />
+            <Character name="8" resource="gauge_digit_goal_8" width="13" height="20" />
+            <Character name="9" resource="gauge_digit_goal_9" width="14" height="20" />
+            <Character name="-" resource="gauge_digit_goal_minus" width="9" height="20" />
+            <Character name="f" resource="gauge_digit_goal_f" width="5" height="20" />
+            <Character name="t" resource="gauge_digit_goal_t" width="5" height="20" />
+            <Character name="h" resource="gauge_digit_goal_h" width="7" height="20" />
         </BitmapFont>
     </BitmapFonts>
     <Scene backgroundColor="#000000">
@@ -574,9 +603,9 @@
                 </Default>
             </Condition>
         </Group>
-        <Group name="heartRate" x="50" y="211" width="90" height="28">
+        <Group name="heartRate" x="50" y="209" width="90" height="32">
             <Variant mode="AMBIENT" target="alpha" value="0" />
-            <PartImage x="0" y="6" width="17" height="16">
+            <PartImage x="0" y="8" width="17" height="16">
                 <Image resource="gauge_heart" />
             </PartImage>
             <Condition>
@@ -584,9 +613,9 @@
                     <Expression name="hasHeartRate">[HEART_RATE] &gt; 0</Expression>
                 </Expressions>
                 <Compare expression="hasHeartRate">
-                    <PartText x="22" y="0" width="68" height="28">
+                    <PartText x="22" y="0" width="68" height="32">
                         <Text align="START">
-                            <BitmapFont family="heart_rate_digits" size="26">
+                            <BitmapFont family="heart_rate_digits" size="30">
                                 <Template>%s<Parameter expression="round([HEART_RATE])" />
                                 </Template>
                             </BitmapFont>
@@ -594,9 +623,9 @@
                     </PartText>
                 </Compare>
                 <Default>
-                    <PartText x="22" y="0" width="68" height="28">
+                    <PartText x="22" y="0" width="68" height="32">
                         <Text align="START">
-                            <BitmapFont family="heart_rate_digits" size="26">
+                            <BitmapFont family="heart_rate_digits" size="30">
                                 <Template>%s<Parameter expression="&quot;--&quot;" />
                                 </Template>
                             </BitmapFont>
@@ -605,9 +634,69 @@
                 </Default>
             </Condition>
         </Group>
-        <Group name="uvIndex" x="319" y="211" width="81" height="28">
+        <Group name="dayName" x="242" y="218" width="103" height="15">
             <Variant mode="AMBIENT" target="alpha" value="0" />
-            <PartImage x="59" y="6" width="22" height="16">
+            <Condition>
+                <Expressions>
+                    <Expression name="day1">[DAY_OF_WEEK] == 1</Expression>
+                    <Expression name="day2">[DAY_OF_WEEK] == 2</Expression>
+                    <Expression name="day3">[DAY_OF_WEEK] == 3</Expression>
+                    <Expression name="day4">[DAY_OF_WEEK] == 4</Expression>
+                    <Expression name="day5">[DAY_OF_WEEK] == 5</Expression>
+                    <Expression name="day6">[DAY_OF_WEEK] == 6</Expression>
+                    <Expression name="day7">[DAY_OF_WEEK] == 7</Expression>
+                </Expressions>
+                <Compare expression="day1">
+                    <PartImage x="24" y="0" width="55" height="15">
+                        <Image resource="day_sunday" />
+                    </PartImage>
+                </Compare>
+                <Compare expression="day2">
+                    <PartImage x="22" y="0" width="58" height="15">
+                        <Image resource="day_monday" />
+                    </PartImage>
+                </Compare>
+                <Compare expression="day3">
+                    <PartImage x="20" y="0" width="62" height="15">
+                        <Image resource="day_tuesday" />
+                    </PartImage>
+                </Compare>
+                <Compare expression="day4">
+                    <PartImage x="10" y="0" width="83" height="15">
+                        <Image resource="day_wednesday" />
+                    </PartImage>
+                </Compare>
+                <Compare expression="day5">
+                    <PartImage x="15" y="0" width="73" height="15">
+                        <Image resource="day_thursday" />
+                    </PartImage>
+                </Compare>
+                <Compare expression="day6">
+                    <PartImage x="27" y="0" width="48" height="15">
+                        <Image resource="day_friday" />
+                    </PartImage>
+                </Compare>
+                <Compare expression="day7">
+                    <PartImage x="15" y="0" width="72" height="15">
+                        <Image resource="day_saturday" />
+                    </PartImage>
+                </Compare>
+            </Condition>
+        </Group>
+        <Group name="date" x="175" y="177" width="100" height="28">
+            <Variant mode="AMBIENT" target="alpha" value="0" />
+            <PartText x="1" y="0" width="100" height="28">
+                <Text align="CENTER">
+                    <BitmapFont family="date_digits" size="26">
+                        <Template>%s<Parameter expression="[DAY]" />
+                        </Template>
+                    </BitmapFont>
+                </Text>
+            </PartText>
+        </Group>
+        <Group name="uvIndex" x="310" y="209" width="90" height="32">
+            <Variant mode="AMBIENT" target="alpha" value="0" />
+            <PartImage x="68" y="8" width="22" height="16">
                 <Image resource="gauge_uv" />
             </PartImage>
             <Condition>
@@ -619,9 +708,9 @@
                     <Expression name="uv_extreme">([WEATHER.IS_AVAILABLE]) &amp;&amp; round([WEATHER.UV_INDEX]) &gt;= 11</Expression>
                 </Expressions>
                 <Compare expression="uv_low">
-                    <PartText x="0" y="0" width="56" height="28">
+                    <PartText x="0" y="0" width="65" height="32">
                         <Text align="END">
-                            <BitmapFont family="uv_low_digits" size="26">
+                            <BitmapFont family="uv_low_digits" size="30">
                                 <Template>%s<Parameter expression="round([WEATHER.UV_INDEX])" />
                                 </Template>
                             </BitmapFont>
@@ -629,9 +718,9 @@
                     </PartText>
                 </Compare>
                 <Compare expression="uv_moderate">
-                    <PartText x="0" y="0" width="56" height="28">
+                    <PartText x="0" y="0" width="65" height="32">
                         <Text align="END">
-                            <BitmapFont family="uv_moderate_digits" size="26">
+                            <BitmapFont family="uv_moderate_digits" size="30">
                                 <Template>%s<Parameter expression="round([WEATHER.UV_INDEX])" />
                                 </Template>
                             </BitmapFont>
@@ -639,9 +728,9 @@
                     </PartText>
                 </Compare>
                 <Compare expression="uv_high">
-                    <PartText x="0" y="0" width="56" height="28">
+                    <PartText x="0" y="0" width="65" height="32">
                         <Text align="END">
-                            <BitmapFont family="uv_high_digits" size="26">
+                            <BitmapFont family="uv_high_digits" size="30">
                                 <Template>%s<Parameter expression="round([WEATHER.UV_INDEX])" />
                                 </Template>
                             </BitmapFont>
@@ -649,9 +738,9 @@
                     </PartText>
                 </Compare>
                 <Compare expression="uv_very_high">
-                    <PartText x="0" y="0" width="56" height="28">
+                    <PartText x="0" y="0" width="65" height="32">
                         <Text align="END">
-                            <BitmapFont family="uv_very_high_digits" size="26">
+                            <BitmapFont family="uv_very_high_digits" size="30">
                                 <Template>%s<Parameter expression="round([WEATHER.UV_INDEX])" />
                                 </Template>
                             </BitmapFont>
@@ -659,9 +748,9 @@
                     </PartText>
                 </Compare>
                 <Compare expression="uv_extreme">
-                    <PartText x="0" y="0" width="56" height="28">
+                    <PartText x="0" y="0" width="65" height="32">
                         <Text align="END">
-                            <BitmapFont family="uv_extreme_digits" size="26">
+                            <BitmapFont family="uv_extreme_digits" size="30">
                                 <Template>%s<Parameter expression="round([WEATHER.UV_INDEX])" />
                                 </Template>
                             </BitmapFont>
@@ -669,9 +758,9 @@
                     </PartText>
                 </Compare>
                 <Default>
-                    <PartText x="0" y="0" width="56" height="28">
+                    <PartText x="0" y="0" width="65" height="32">
                         <Text align="END">
-                            <BitmapFont family="heart_rate_digits" size="26">
+                            <BitmapFont family="heart_rate_digits" size="30">
                                 <Template>%s<Parameter expression="&quot;--&quot;" />
                                 </Template>
                             </BitmapFont>
@@ -680,7 +769,7 @@
                 </Default>
             </Condition>
         </Group>
-        <Group name="battery" x="181" y="58" width="88" height="44">
+        <Group name="battery" x="181" y="51" width="88" height="50">
             <Variant mode="AMBIENT" target="alpha" value="0" />
             <Condition>
                 <Expressions>
@@ -702,9 +791,9 @@
                             </PartImage>
                         </Default>
                     </Condition>
-                    <PartText x="0" y="24" width="88" height="21">
+                    <PartText x="0" y="24" width="88" height="26">
                         <Text align="CENTER">
-                            <BitmapFont family="battery_percent_low" size="19">
+                            <BitmapFont family="battery_percent_low" size="24">
                                 <Template>%s%s<Parameter expression="[BATTERY_PERCENT]" />
                                     <Parameter expression="&quot;%&quot;" />
                                 </Template>
@@ -746,9 +835,9 @@
                             </PartImage>
                         </Default>
                     </Condition>
-                    <PartText x="0" y="24" width="88" height="21">
+                    <PartText x="0" y="24" width="88" height="26">
                         <Text align="CENTER">
-                            <BitmapFont family="battery_percent" size="19">
+                            <BitmapFont family="battery_percent" size="24">
                                 <Template>%s%s<Parameter expression="[BATTERY_PERCENT]" />
                                     <Parameter expression="&quot;%&quot;" />
                                 </Template>
@@ -758,28 +847,7 @@
                 </Default>
             </Condition>
         </Group>
-        <Group name="dateGauge" x="247" y="80" width="123" height="123">
-            <Variant mode="AMBIENT" target="alpha" value="0" />
-            <PartImage x="0" y="0" width="123" height="123">
-                <Image resource="date_dial" />
-            </PartImage>
-            <PartText x="1" y="69" width="123" height="22">
-                <Text align="CENTER">
-                    <BitmapFont family="gauge_digits" size="20">
-                        <Template>%s<Parameter expression="[DAY]" />
-                        </Template>
-                    </BitmapFont>
-                </Text>
-            </PartText>
-            <PartImage x="56" y="7" width="10" height="62" pivotX="0.5" pivotY="0.89">
-                <Image resource="gauge_pointer" />
-                <Transform target="angle" value="-120 + ([DAY_OF_WEEK] - 1 - 0) * 240 / 6" />
-            </PartImage>
-            <PartImage x="54" y="55" width="14" height="14">
-                <Image resource="gauge_hub" />
-            </PartImage>
-        </Group>
-        <Group name="caloriesGauge" x="80" y="247" width="123" height="123">
+        <Group name="caloriesGauge" x="80" y="239" width="123" height="123">
             <Variant mode="AMBIENT" target="alpha" value="0" />
             <PartImage x="0" y="0" width="123" height="123">
                 <Image resource="calories_dial" />
@@ -803,7 +871,7 @@
                 <Image resource="gauge_hub" />
             </PartImage>
         </Group>
-        <ComplicationSlot x="80" y="247" width="123" height="123" slotId="1" name="caloriesSlot" supportedTypes="SHORT_TEXT RANGED_VALUE GOAL_PROGRESS EMPTY" isCustomizable="FALSE">
+        <ComplicationSlot x="80" y="239" width="123" height="123" slotId="1" name="caloriesSlot" supportedTypes="SHORT_TEXT RANGED_VALUE GOAL_PROGRESS EMPTY" isCustomizable="FALSE">
             <Variant mode="AMBIENT" target="alpha" value="0" />
             <DefaultProviderPolicy defaultSystemProvider="EMPTY" defaultSystemProviderType="EMPTY" primaryProvider="com.fitbit.FitbitMobile/com.google.android.wearable.fitbit.mainapp.complications.offloadable.calories.OffloadableCaloriesComplicationDataSourceService" primaryProviderType="SHORT_TEXT" />
             <BoundingOval x="0" y="0" width="123" height="123" />
@@ -926,7 +994,7 @@
                 </PartImage>
             </Complication>
         </ComplicationSlot>
-        <Group name="elevationGauge" x="247" y="247" width="123" height="123">
+        <Group name="elevationGauge" x="247" y="239" width="123" height="123">
             <Variant mode="AMBIENT" target="alpha" value="0" />
             <PartImage x="0" y="0" width="123" height="123">
                 <Image resource="elevation_dial" />
@@ -950,7 +1018,7 @@
                 <Image resource="gauge_hub" />
             </PartImage>
         </Group>
-        <ComplicationSlot x="247" y="247" width="123" height="123" slotId="2" name="elevationSlot" supportedTypes="SHORT_TEXT EMPTY" isCustomizable="FALSE">
+        <ComplicationSlot x="247" y="239" width="123" height="123" slotId="2" name="elevationSlot" supportedTypes="SHORT_TEXT EMPTY" isCustomizable="FALSE">
             <Variant mode="AMBIENT" target="alpha" value="0" />
             <DefaultProviderPolicy defaultSystemProvider="EMPTY" defaultSystemProviderType="EMPTY" primaryProvider="io.github.ls6777.datadial.stats/io.github.ls6777.datadial.stats.ElevationSource" primaryProviderType="SHORT_TEXT" />
             <BoundingOval x="0" y="0" width="123" height="123" />
@@ -1000,7 +1068,7 @@
                 </PartImage>
             </Complication>
         </ComplicationSlot>
-        <Group name="stepsGauge" x="80" y="80" width="123" height="123">
+        <Group name="stepsGauge" x="80" y="88" width="123" height="123">
             <Variant mode="AMBIENT" target="alpha" value="0" />
             <PartImage x="0" y="0" width="123" height="123">
                 <Image resource="steps_dial" />
@@ -1024,7 +1092,7 @@
                 <Image resource="gauge_hub" />
             </PartImage>
         </Group>
-        <ComplicationSlot x="80" y="80" width="123" height="123" slotId="3" name="stepsSlot" supportedTypes="GOAL_PROGRESS RANGED_VALUE SHORT_TEXT EMPTY" isCustomizable="FALSE">
+        <ComplicationSlot x="80" y="88" width="123" height="123" slotId="3" name="stepsSlot" supportedTypes="GOAL_PROGRESS RANGED_VALUE SHORT_TEXT EMPTY" isCustomizable="FALSE">
             <Variant mode="AMBIENT" target="alpha" value="0" />
             <DefaultProviderPolicy defaultSystemProvider="EMPTY" defaultSystemProviderType="EMPTY" primaryProvider="com.fitbit.FitbitMobile/com.fitbit.complications.offloadable.steps.OffloadableStepsComplicationDataSourceService" primaryProviderType="GOAL_PROGRESS" />
             <BoundingOval x="0" y="0" width="123" height="123" />
@@ -1040,14 +1108,31 @@
                 <PartImage x="54" y="97" width="16" height="18">
                     <Image resource="gauge_steps" />
                 </PartImage>
-                <PartText x="1" y="69" width="123" height="22">
-                    <Text align="CENTER">
-                        <BitmapFont family="gauge_digits" size="20">
-                            <Template>%s<Parameter expression="round([COMPLICATION.GOAL_PROGRESS_VALUE])" />
-                            </Template>
-                        </BitmapFont>
-                    </Text>
-                </PartText>
+                <Condition>
+                    <Expressions>
+                        <Expression name="goalMet">[COMPLICATION.GOAL_PROGRESS_TARGET_VALUE] &gt; 0 &amp;&amp; [COMPLICATION.GOAL_PROGRESS_VALUE] &gt;= [COMPLICATION.GOAL_PROGRESS_TARGET_VALUE]</Expression>
+                    </Expressions>
+                    <Compare expression="goalMet">
+                        <PartText x="1" y="69" width="123" height="22">
+                            <Text align="CENTER">
+                                <BitmapFont family="gauge_digits_goal" size="20">
+                                    <Template>%s<Parameter expression="round([COMPLICATION.GOAL_PROGRESS_VALUE])" />
+                                    </Template>
+                                </BitmapFont>
+                            </Text>
+                        </PartText>
+                    </Compare>
+                    <Default>
+                        <PartText x="1" y="69" width="123" height="22">
+                            <Text align="CENTER">
+                                <BitmapFont family="gauge_digits" size="20">
+                                    <Template>%s<Parameter expression="round([COMPLICATION.GOAL_PROGRESS_VALUE])" />
+                                    </Template>
+                                </BitmapFont>
+                            </Text>
+                        </PartText>
+                    </Default>
+                </Condition>
                 <PartImage x="57" y="7" width="10" height="62" pivotX="0.5" pivotY="0.89">
                     <Image resource="gauge_pointer" />
                     <Transform target="angle" value="-144 + (clamp([COMPLICATION.GOAL_PROGRESS_VALUE], 0, 20000) - 0) * 288 / 20000" />
@@ -1068,14 +1153,31 @@
                 <PartImage x="54" y="97" width="16" height="18">
                     <Image resource="gauge_steps" />
                 </PartImage>
-                <PartText x="1" y="69" width="123" height="22">
-                    <Text align="CENTER">
-                        <BitmapFont family="gauge_digits" size="20">
-                            <Template>%s<Parameter expression="round([COMPLICATION.RANGED_VALUE_VALUE])" />
-                            </Template>
-                        </BitmapFont>
-                    </Text>
-                </PartText>
+                <Condition>
+                    <Expressions>
+                        <Expression name="goalMet">[COMPLICATION.RANGED_VALUE_MAX] &gt; 0 &amp;&amp; [COMPLICATION.RANGED_VALUE_VALUE] &gt;= [COMPLICATION.RANGED_VALUE_MAX]</Expression>
+                    </Expressions>
+                    <Compare expression="goalMet">
+                        <PartText x="1" y="69" width="123" height="22">
+                            <Text align="CENTER">
+                                <BitmapFont family="gauge_digits_goal" size="20">
+                                    <Template>%s<Parameter expression="round([COMPLICATION.RANGED_VALUE_VALUE])" />
+                                    </Template>
+                                </BitmapFont>
+                            </Text>
+                        </PartText>
+                    </Compare>
+                    <Default>
+                        <PartText x="1" y="69" width="123" height="22">
+                            <Text align="CENTER">
+                                <BitmapFont family="gauge_digits" size="20">
+                                    <Template>%s<Parameter expression="round([COMPLICATION.RANGED_VALUE_VALUE])" />
+                                    </Template>
+                                </BitmapFont>
+                            </Text>
+                        </PartText>
+                    </Default>
+                </Condition>
                 <PartImage x="57" y="7" width="10" height="62" pivotX="0.5" pivotY="0.89">
                     <Image resource="gauge_pointer" />
                     <Transform target="angle" value="-144 + (clamp([COMPLICATION.RANGED_VALUE_VALUE], 0, 20000) - 0) * 288 / 20000" />
@@ -1143,6 +1245,80 @@
                     <Transform target="angle" value="-144 + (0 - 0) * 288 / 20000" />
                 </PartImage>
                 <PartImage x="55" y="55" width="14" height="14">
+                    <Image resource="gauge_hub" />
+                </PartImage>
+            </Complication>
+        </ComplicationSlot>
+        <Group name="batteryGauge" x="247" y="88" width="123" height="123">
+            <Variant mode="AMBIENT" target="alpha" value="0" />
+            <PartImage x="0" y="0" width="123" height="123">
+                <Image resource="battery_dial" />
+            </PartImage>
+            <PartImage x="50" y="97" width="22" height="12">
+                <Image resource="gauge_battery" />
+            </PartImage>
+            <PartText x="1" y="69" width="123" height="22">
+                <Text align="CENTER">
+                    <BitmapFont family="gauge_digits" size="20">
+                        <Template>%s<Parameter expression="&quot;--&quot;" />
+                        </Template>
+                    </BitmapFont>
+                </Text>
+            </PartText>
+            <PartImage x="56" y="7" width="10" height="62" pivotX="0.5" pivotY="0.89">
+                <Image resource="gauge_pointer" />
+                <Transform target="angle" value="-144 + (0 - 0) * 288 / 60" />
+            </PartImage>
+            <PartImage x="54" y="55" width="14" height="14">
+                <Image resource="gauge_hub" />
+            </PartImage>
+        </Group>
+        <ComplicationSlot x="247" y="88" width="123" height="123" slotId="4" name="batterySlot" supportedTypes="SHORT_TEXT EMPTY" isCustomizable="FALSE">
+            <Variant mode="AMBIENT" target="alpha" value="0" />
+            <DefaultProviderPolicy defaultSystemProvider="EMPTY" defaultSystemProviderType="EMPTY" primaryProvider="io.github.ls6777.datadial.stats/io.github.ls6777.datadial.stats.BatteryTimeSource" primaryProviderType="SHORT_TEXT" />
+            <BoundingOval x="0" y="0" width="123" height="123" />
+            <Complication type="SHORT_TEXT">
+                <PartDraw x="0" y="0" width="123" height="123">
+                    <Ellipse x="0" y="0" width="123" height="123">
+                        <Fill color="#000000" />
+                    </Ellipse>
+                </PartDraw>
+                <PartImage x="0" y="0" width="123" height="123">
+                    <Image resource="battery_dial" />
+                </PartImage>
+                <PartImage x="50" y="97" width="22" height="12">
+                    <Image resource="gauge_battery" />
+                </PartImage>
+                <PartText x="1" y="69" width="123" height="22">
+                    <Text align="CENTER">
+                        <BitmapFont family="gauge_digits" size="20">
+                            <Template>%s<Parameter expression="[COMPLICATION.TEXT]" />
+                            </Template>
+                        </BitmapFont>
+                    </Text>
+                </PartText>
+                <PartImage x="56" y="7" width="10" height="62" pivotX="0.5" pivotY="0.89">
+                    <Image resource="gauge_pointer" />
+                    <Transform target="angle" value="-144 + (clamp(clamp(subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 1), 0, 9999), 0, 60) - 0) * 288 / 60" />
+                </PartImage>
+                <PartImage x="54" y="55" width="14" height="14">
+                    <Image resource="gauge_hub" />
+                </PartImage>
+            </Complication>
+            <Complication type="EMPTY">
+                <PartText x="1" y="69" width="123" height="22">
+                    <Text align="CENTER">
+                        <BitmapFont family="gauge_digits" size="20">
+                            <Template>%s<Parameter expression="&quot;--&quot;" />
+                            </Template>
+                        </BitmapFont>
+                    </Text>
+                </PartText>
+                <PartImage x="56" y="7" width="10" height="62" pivotX="0.5" pivotY="0.89">
+                    <Image resource="gauge_pointer" />
+                    <Transform target="angle" value="-144 + (0 - 0) * 288 / 60" />
+                </PartImage>
+                <PartImage x="54" y="55" width="14" height="14">
                     <Image resource="gauge_hub" />
                 </PartImage>
             </Complication>

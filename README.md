@@ -20,8 +20,10 @@ It is built with the [Watch Face Format](https://developer.android.com/training/
   hub to a point, a gray outline, a bordered orange insert and a gray center bar; a light
   gray seconds hand with a counterweight, ending just inside the ring; and a small black
   hub with three gray rings.
-- **Readings:** the values (gauges, battery, temperature, heart rate and UV) are in gray
-  Oswald, like the gauges' labels, and show "--" without data.
+- **Readings:** the values (gauges, battery, temperature, heart rate, UV and date) are in
+  gray Oswald, like the gauges' labels, and show "--" without data.
+- **Date:** the day of the month above the hub, and the day's full name (SUNDAY to
+  SATURDAY) right of it, between the hub and the UV index.
 - **Weather:** above the 6, between the bottom gauges, from the watch's weather data: an
   orange icon for the condition (night versions after dark), the temperature (red above
   90°F, blue below 40°F) and the condition's name. Without weather data, the sun and "--°".
@@ -31,13 +33,17 @@ It is built with the [Watch Face Format](https://developer.android.com/training/
   colors (green, yellow, orange, red, violet) and an orange "UV".
 - **Battery:** at the top, between the gauges: an orange battery with a segment lit for
   every 20% (rounded up), and the percentage below it. Both turn red below 20%.
-- **Date:** a gauge in the 1:30 segment: gray tick marks and day names, SUN to SAT, around
-  an arc open at the bottom, an orange pointer at today's on a light gray hub, and the day
-  of the month below the hub.
-- **Steps:** a gauge in the 10:30 segment, from 0 to 20,000 (labels in thousands) around a
-  wider arc: the pointer stops at 20,000, while today's steps below the hub show the full
-  count, with orange footprints below them. They come from the Google Health app's steps
-  complication, as on DataDial; without it, "--" and the pointer at 0.
+- **Battery time:** a gauge in the 1:30 segment: gray tick marks and labels around an arc
+  open at the bottom, an orange pointer on a light gray hub, and the hours of battery left
+  below the hub (with a small "h"), from 0 to 60 h, with a red band through the ticks from
+  0 to 9 h. The pointer stops at 60. The hours come from DataDial Stats, which measures how
+  fast the battery has been draining since it was last unplugged; while charging, or
+  before it has seen the battery drop a couple of percent, "--" and the pointer at 0.
+- **Steps:** a matching gauge in the 10:30 segment, from 0 to 20,000 (labels in thousands):
+  the pointer stops at 20,000, while today's steps below the hub show the full count, in
+  green once they reach the step goal, with orange footprints below them. They come from
+  the Google Health app's steps complication, as on DataDial; without it, "--" and the
+  pointer at 0.
 - **Calories:** a matching gauge in the 7:30 segment, from 0 to 5000 (labels in thousands):
   the pointer stops at 5000, while today's calories below the hub show the full count, with
   an orange flame below them. Watch Face Format can't read calories itself, so they come
@@ -81,7 +87,7 @@ Python 3 with Pillow.
 ```sh
 ./build.sh          # generate and build the debug APK
 ./build.sh run      # also install it on the watch or emulator and make it the active face
-./build.sh test     # the same with the hands frozen and sample weather, UV, battery, date, month, heart rate, steps, calories and elevation, to check the layout
+./build.sh test     # the same with the hands frozen and sample weather, UV, battery, date, month, heart rate, steps, calories, elevation and battery time, to check the layout
 ./build.sh release  # release bundle (.aab) for Google Play (set up release signing first)
 ./build.sh log      # the watch face runtime's log: XML and expression errors show up here
 ```

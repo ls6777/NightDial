@@ -126,6 +126,8 @@ ORANGE = "#FF8000"
 #: values (as measured from the gauge reference), and the battery
 #: percentage, temperature, weather name, heart rate and their "--".
 GAUGE_GRAY = "#A4A4A4"
+#: A reached goal's green (DataDial's): the steps once they reach the goal.
+GOAL_COLOR = "#3DDC57"
 #: The hour and minute hands' near-black body, also the hub's fill, and
 #: the hub's rings.
 HAND_BODY = "#050505"
@@ -292,27 +294,33 @@ def bitmap_fonts(face):
             w, h = TEMPERATURE_GLYPHS[name]
             el(font, "Character", name=ch, resource=f"weather_temp{temperature_set(key)}_{name}",
                width=w, height=h)
+    # The date's digits.
+    font = el(fonts, "BitmapFont", name="date_digits")
+    for d, (w, h) in DATE_GLYPHS.items():
+        el(font, "Character", name=d, resource=f"date_digit_{d}", width=w, height=h)
     # The heart rate's and UV index's digits, a font per color.
     for prefix in readout_sets():
         font = el(fonts, "BitmapFont", name=f"{prefix}_digits")
         for ch, name in HEART_RATE_CHARS.items():
             w, h = HEART_RATE_GLYPHS[ch]
             el(font, "Character", name=ch, resource=f"{prefix}_{name}", width=w, height=h)
-    # The battery percentage: the gray temperature digits and a "%", and
-    # for a low battery the red (hot) ones.
-    for low, digits in (("", ""), ("_low", "_hot")):
+    # The battery percentage: its gray digits and "%", and for a low
+    # battery its red ones.
+    for low in ("", "_low"):
         font = el(fonts, "BitmapFont", name=f"battery_percent{low}")
         for d in range(10):
-            w, h = TEMPERATURE_GLYPHS[str(d)]
-            el(font, "Character", name=str(d), resource=f"weather_temp{digits}_{d}",
+            w, h = BATTERY_IMAGES["digits"][str(d)]
+            el(font, "Character", name=str(d), resource=f"battery_digit{low}_{d}",
                width=w, height=h)
         w, h = BATTERY_IMAGES["percent"]
         el(font, "Character", name="%", resource=f"battery_percent{low}", width=w, height=h)
     # The gauges' values: their gray digits.
-    font = el(fonts, "BitmapFont", name="gauge_digits")
-    for ch, (w, h) in GAUGE_IMAGES["digits"].items():
-        el(font, "Character", name=ch, resource=f"gauge_digit_{GAUGE_CHARS[ch]}",
-           width=w, height=h)
+    for family, prefix in (("gauge_digits", "gauge_digit"),
+                           ("gauge_digits_goal", "gauge_digit_goal")):
+        font = el(fonts, "BitmapFont", name=family)
+        for ch, (w, h) in GAUGE_IMAGES["digits"].items():
+            el(font, "Character", name=ch, resource=f"{prefix}_{GAUGE_CHARS[ch]}",
+               width=w, height=h)
 
 
 def text_part(parent, y, width, height, align="CENTER", x=0, **text):
@@ -367,13 +375,13 @@ def battery(scene, sample=None):
     BATTERY_LOW's limit. Hidden in always-on mode. sample is a fixed percentage to show instead (see TEST_BATTERY),
     for the test build."""
     level = str(sample) if sample is not None else "[BATTERY_PERCENT]"
-    (iw, ih), temp = BATTERY_IMAGES["icon"], WEATHER["temperature"]
+    (iw, ih), digit_h = BATTERY_IMAGES["icon"], BATTERY_IMAGES["digits"]["0"][1]
     # Centered on BATTERY's x, the percentage's top at its text_y.
     cx, text_y = BATTERY["x"], BATTERY["text_y"]
     top = round(text_y - BATTERY["gap"] - ih)
     width = 2 * iw
     group = el(scene, "Group", name="battery", x=round(cx - width / 2), y=top,
-               width=width, height=math.ceil(text_y + temp + 1 - top))
+               width=width, height=math.ceil(text_y + digit_h + 1 - top))
     ambient_hide(group)
 
     # Red below the low limit, orange from it up: the battery images and the
@@ -406,9 +414,8 @@ def battery(scene, sample=None):
 
         # The percentage ("%" as a parameter: a literal one would be a
         # format code).
-        t = bitmap_text_part(branch, text_y - top, width, TEMPERATURE_GLYPHS["0"][1])
-        template(el(t, "BitmapFont", family=f"battery_percent{suffix}",
-                    size=TEMPERATURE_GLYPHS["0"][1]), "%s%s",
+        t = bitmap_text_part(branch, text_y - top, width, digit_h)
+        template(el(t, "BitmapFont", family=f"battery_percent{suffix}", size=digit_h), "%s%s",
                  level, '"%"')
 
 
@@ -417,7 +424,7 @@ def gauge(scene, spec, sample=None):
     value on the scale, the hub over it, its value below the hub and its
     icon below that. Hidden in always-on mode. A gauge with a complication
     takes its value from the complication slot (see gauge_complication).
-    sample maps data sources ("[DAY]") to fixed values to show instead (see
+    sample maps data sources ("[MONTH]") to fixed values to show instead (see
     TEST_SOURCES), for the test build, which has no complication slot."""
     def expression(e):
         """An expression with the sample's values for its data sources."""
@@ -452,7 +459,8 @@ def gauge(scene, spec, sample=None):
                       sampled(spec["pointer"].replace(c["source"], kind["number"])),
                       sampled(kind["value"]),
                       sampled(kind["available"]) if "available" in kind else None,
-                      sampled(kind.get("fallback", '"--"')))
+                      sampled(kind.get("fallback", '"--"')),
+                      sampled(kind["goal"]) if "goal" in kind else None)
     else:
         gauge_reading(group, spec, size, (cx, cy), expression(spec["pointer"]),
                       expression(spec["value"]),
@@ -476,12 +484,13 @@ def gauge_face(parent, spec, size, center, cover=False):
 
 
 def gauge_reading(parent, spec, size, center, pointer, value, available=None,
-                  fallback='"--"'):
+                  fallback='"--"', goal=None):
     """A gauge's moving parts under parent: the expression `value` in
     digits below the hub (or `fallback`, "--" unless given, while
-    `available` is false, or always with no `value`), the pointer over it
-    turned to the expression `pointer` on its scale, and the hub. center is
-    the gauge center in parent."""
+    `available` is false, or always with no `value`; in green while the
+    expression `goal` is true), the pointer over it turned to the
+    expression `pointer` on its scale, and the hub. center is the gauge
+    center in parent."""
     cx, cy = center
     # The value, centered below the hub, under the pointer (which sweeps
     # over it, as over the labels). Each digit image ends in the digits'
@@ -495,15 +504,21 @@ def gauge_reading(parent, spec, size, center, pointer, value, available=None,
     # tops), in a box with room to spare.
     image_h = GAUGE_IMAGES["digits"]["0"][1]
 
-    def value_text(under, shown):
+    def value_text(under, shown, family="gauge_digits"):
         """The value's text part under `under`, showing `shown`."""
         text = el(under, "PartText", x=round(trailing / 2), y=round(top_y) - 1, width=size,
                   height=image_h + 2)
         t = el(text, "Text", align="CENTER")
-        template(el(t, "BitmapFont", family="gauge_digits", size=image_h), "%s", shown)
+        template(el(t, "BitmapFont", family=family, size=image_h), "%s", shown)
 
+    assert goal is None or available is None, "a goal with a fallback isn't drawn"
     if value is None:
         value_text(parent, '"--"')
+    elif goal is not None:
+        met = el(parent, "Condition")
+        el(el(met, "Expressions"), "Expression", name="goalMet").text = goal
+        value_text(el(met, "Compare", expression="goalMet"), value, "gauge_digits_goal")
+        value_text(el(met, "Default"), value)
     elif available is None:
         value_text(parent, value)
     else:
@@ -555,7 +570,7 @@ def gauge_complication(scene, spec, bounds, center):
         gauge_face(comp, spec, size, center, cover=True)
         gauge_reading(comp, spec, size, center,
                       spec["pointer"].replace(c["source"], k["number"]), k["value"],
-                      k.get("available"), k.get("fallback", '"--"'))
+                      k.get("available"), k.get("fallback", '"--"'), k.get("goal"))
     gauge_reading(el(slot, "Complication", type="EMPTY"), spec, size, center,
                   str(spec["scale"][0]), None)
 
@@ -585,6 +600,69 @@ def heart_rate(scene, sample=None):
         template(el(t, "BitmapFont", family="heart_rate_digits", size=digit_h), "%s", value)
 
 
+def day_date(scene, sample=None):
+    """The day of the week and the date (see DAY_DATE), in the gauges'
+    gray: the day's name just right of the hub and the day of the month
+    above the hub, between it and the top gauges. Hidden in always-on mode. sample maps data sources to fixed
+    values (see TEST_SOURCES)."""
+    def source(name):
+        return str((sample or {}).get(name, name))
+
+    nw, nh = DAY_IMAGES["SUNDAY"]
+    digit_h = DATE_GLYPHS["0"][1]
+    width = DAY_DATE["width"]
+    # The name right of the hub, level with it, centered between the hub's
+    # edge and where a two-digit UV index starts (then moved right a
+    # little); the date above the hub, centered between it and the top
+    # gauges' row, where they come closest to each other.
+    hub = HUB_RINGS[0][0] + HUB_RINGS[0][1]
+    rows = sorted({round(gauge_center(spec)[1], 3) for spec in GAUGES})
+    name_top = C - nh / 2
+    date_top = ((C - hub) + rows[0]) / 2 - digit_h / 2 + DAY_DATE["date_down"]
+    name_left = C + hub + DAY_DATE["name_right"]  # the centered box, moved right
+    name_w = uv_layout()["two_digits_left"] - (C + hub)
+    group = el(scene, "Group", name="dayName", x=round(name_left), y=round(name_top),
+               width=round(name_w), height=nh)
+    ambient_hide(group)
+    # The day's name: an image per day ([DAY_OF_WEEK] is 1 for Sunday), each
+    # its own exact value, so the Compares never overlap.
+    day = el(group, "Condition")
+    exprs = el(day, "Expressions")
+    for n, name in enumerate(DAY_NAMES, start=1):
+        el(exprs, "Expression", name=f"day{n}").text = f"{source('[DAY_OF_WEEK]')} == {n}"
+    for n, name in enumerate(DAY_NAMES, start=1):
+        w, h = DAY_IMAGES[name]
+        part = el(el(day, "Compare", expression=f"day{n}"), "PartImage",
+                  x=round((name_w - w) / 2), y=0, width=w, height=h)
+        el(part, "Image", resource=f"day_{name.lower()}")
+    # The date, centered; each digit image ends in the digits' spacing.
+    group = el(scene, "Group", name="date", x=round(C - width / 2), y=round(date_top) - 1,
+               width=round(width), height=digit_h + 2)
+    ambient_hide(group)
+    trailing = GAUGE_FONT["tracking"] * DAY_DATE["date"]
+    t = bitmap_text_part(group, 1, width, digit_h, x=round(trailing / 2))
+    template(el(t, "BitmapFont", family="date_digits", size=digit_h), "%s", source("[DAY]"))
+
+
+def uv_layout():
+    """Where the UV index's parts go, in watch face units on the face: the
+    icon's right edge ("icon_right", as far left of the 3 as the heart's
+    left edge is right of the 9), and where a two-digit index's ink starts
+    ("two_digits_left")."""
+    iw = GAUGE_IMAGES["gauge_uv"][0]
+    x9, _, w9, _ = NUMERAL_BOXES[9]
+    x3, _, w3, _ = NUMERAL_BOXES[3]
+    icon_right = (x3 - w3 / 2) - (HEART_RATE["left"] - (x9 + w9 / 2))
+    # The digits are right-aligned against the icon, the last one's
+    # trailing spacing past the gap. A two-digit index starts with a 1 (UV
+    # rarely passes 14), whose stroke starts right of its image's edge.
+    trailing = NUMERALS["tracking"] * HEART_RATE["digits"]
+    one = Image.open(DRAWABLE / "heart_rate_1.png").getchannel("A").getbbox()[0] / SCALE
+    return dict(icon_right=icon_right,
+                two_digits_left=icon_right - iw - UV["gap"] + trailing
+                - HEART_RATE_GLYPHS["1"][0] - HEART_RATE_GLYPHS["0"][0] + one)
+
+
 def uv_index(scene, sample=None):
     """The UV index (see UV), the heart rate's mirror image: the index in
     the heart rate's digits, colored by its WHO level (see UV_LEVELS), or
@@ -601,9 +679,7 @@ def uv_index(scene, sample=None):
     height = max(ih, digit_h + 2)
     # The icon's right edge as far left of the 3 as the heart's left edge
     # is right of the 9.
-    x9, _, w9, _ = NUMERAL_BOXES[9]
-    x3, _, w3, _ = NUMERAL_BOXES[3]
-    icon_right = (x3 - w3 / 2) - (HEART_RATE["left"] - (x9 + w9 / 2))
+    icon_right = uv_layout()["icon_right"]
     # The index, right-aligned against the icon: its box ends past the gap
     # by the last digit's trailing spacing, and holds up to three digits.
     trailing = NUMERALS["tracking"] * HEART_RATE["digits"]
@@ -712,6 +788,7 @@ def watch_face(test=False):
     month_mark(scene, sample=TEST_SOURCES if test else None)
     weather(scene, sample=TEST_WEATHER if test else None)
     heart_rate(scene, sample=TEST_SOURCES if test else None)
+    day_date(scene, sample=TEST_SOURCES if test else None)
     uv_index(scene, sample=TEST_WEATHER if test else None)
     battery(scene, sample=TEST_BATTERY if test else None)
     for spec in GAUGES:
@@ -1388,16 +1465,17 @@ def render_temperature_glyphs():
 
 #: The battery level: an orange battery outline with a terminal nub on the
 #: right and a row of segments inside, one per 20%, and the percentage
-#: below it in the temperature's digits and size. In watch face units: the
+#: below it. In watch face units: the
 #: body's width and height, its outline's width and corner radius, the nub's
 #: width and height, the space between the outline and the segments, the
-#: gaps between segments, the percentage's gap below the battery, and on
-#: the face the display's center line and the percentage's top.
+#: gaps between segments, the percentage's gap below the battery, on the
+#: face the display's center line and the percentage's top, and the
+#: percentage's digit height (in the gauges' value font).
 #:
 #: On the face it is at the top, between the two gauges. Hidden in
 #: always-on mode.
 BATTERY = dict(body=(38.0, 18.0), line=2.2, radius=4.0, nub=(3.2, 7.0), pad=1.8,
-               segments=5, segment_gap=1.6, gap=5.0, x=225.0, text_y=83.0)
+               segments=5, segment_gap=1.6, gap=5.0, x=225.0, text_y=76.0, digits=22.0)
 #: Below this percentage the battery and its percentage are red (the hot
 #: temperature's red): the "_low" images and the hot temperature digits.
 BATTERY_LOW = dict(limit=20, color=TEMPERATURE_COLORS["hot"])
@@ -1443,17 +1521,22 @@ def render_battery_icon(filled, low=False):
 
 
 def render_battery_percent(low=False):
-    """The percentage's "%" in the temperature digits' font and size:
-    battery_percent.png, or battery_percent_low.png in the low battery's
-    red. Returns the master. Unlike the digits it has no spacing after it:
-    it always comes last, and the spacing would shift the centered
-    percentage left of the battery above it."""
-    name = f"battery_percent{'_low' if low else ''}"
-    master, size = render_value_glyph("%", WEATHER["temperature"],
-                                      BATTERY_LOW["color"] if low else GAUGE_GRAY, name,
-                                      trailing=False)
-    BATTERY_IMAGES["percent"] = size
-    return master
+    """The percentage's digits and "%" in the gauges' value font, BATTERY's
+    digit height: battery_digit_<n>.png and battery_percent.png, or with
+    "_low" in the low battery's red. Unlike the digits the "%" has no
+    spacing after it: it always comes last, and the spacing would shift
+    the centered percentage left of the battery above it. Returns the
+    masters by character."""
+    suffix = "_low" if low else ""
+    color = BATTERY_LOW["color"] if low else GAUGE_GRAY
+    masters = {}
+    BATTERY_IMAGES["digits"] = {}
+    for d in "0123456789":
+        masters[d], BATTERY_IMAGES["digits"][d] = render_value_glyph(
+            d, BATTERY["digits"], color, f"battery_digit{suffix}_{d}")
+    masters["%"], BATTERY_IMAGES["percent"] = render_value_glyph(
+        "%", BATTERY["digits"], color, f"battery_percent{suffix}", trailing=False)
+    return masters
 
 
 def battery_segments(level):
@@ -1471,13 +1554,9 @@ def render_battery():
              for n in range(battery_segments(limit), BATTERY["segments"] + 1)}
     low_icons = {n: render_battery_icon(n, low=True)
                  for n in range(battery_segments(limit - 1) + 1)}
-    percent, low_percent = render_battery_percent(), render_battery_percent(low=True)
+    digits, low_digits = render_battery_percent(), render_battery_percent(low=True)
     # The review sheet: the battery over its percentage, at sample levels,
     # built from the master images, on black.
-    digits = {str(d): Image.open(MASTERS / f"weather_temp_{d}.png") for d in range(10)}
-    digits["%"] = percent
-    low_digits = {str(d): Image.open(MASTERS / f"weather_temp_hot_{d}.png") for d in range(10)}
-    low_digits["%"] = low_percent
     gap = round(BATTERY["gap"] * MASTER_SCALE)
     samples = (100, 80, 55, 38, 20, 12, 5)
     cells = []
@@ -1511,7 +1590,9 @@ def render_battery():
 #: upright inside them, an orange pointer on a light gray hub, and a gray
 #: value below the hub. In watch face units:
 #:
-#: - distance: each gauge center's distance from the dial center.
+#: - distance: each gauge center's distance from the dial center, and
+#:   shift: how far each then moves toward the middle row, the top two
+#:   down and the bottom two up.
 #: - ticks: (inner radius, length, width) of the tick marks.
 #: - labels: the labels' capital height, and the gap between each label's
 #:   outer edge and the ticks (placed like the hour numerals).
@@ -1528,8 +1609,12 @@ def render_battery():
 #:   (regular, also for the readouts' values); and the units' letters ("ft"),
 #:   small: their height as a fraction of the digits', centered on them.
 #: - unit: the unit label's capital height (beside the hub).
+#: - redline: for a gauge with a `redline` (its low and high values), a red
+#:   band through the middle of its ticks over that stretch, under them,
+#:   like an engine's redline: its width and its color.
 GAUGE = dict(
     distance=118.0,
+    shift=8.0,
     ticks=(56.0, 4.4, 1.8),
     labels=dict(height=12.0, gap=3.0),
     arc=240.0,
@@ -1538,6 +1623,7 @@ GAUGE = dict(
          (0.8, "#222222")),
     value=dict(height=19.0, gap=2.0, weight=400, unit=0.55),
     unit=7.0,
+    redline=dict(width=2.0, color="#FF3B30"),
 )
 #: The gauges' font, for their labels and values: Oswald (SIL Open Font
 #: License, tools/fonts/), tall, narrow and crisp, unlike the numerals'
@@ -1547,7 +1633,6 @@ GAUGE = dict(
 GAUGE_FONT = dict(file=ROOT / "tools" / "fonts" / "Oswald-Variable.ttf",
                   weight=400, tracking=0.08)
 
-DAY_NAMES = ("SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT")
 #: The gauges. Each has a name (its dial image is <name>_dial.png), its
 #: angle on the face (clockwise from 12), its scale's low and high values
 #: (and its own arc, if not GAUGE's),
@@ -1564,13 +1649,18 @@ DAY_NAMES = ("SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT")
 #: fallback, by default "--", shows instead), and `test` the type the test
 #: build shows, with `sample`'s values for that type's data sources.
 #:
-#: - date, in the 1:30 segment: the days of the week, SUN to SAT, a tick at
-#:   each and one between each, the pointer at today's ([DAY_OF_WEEK] is 1
-#:   for Sunday), and the day of the month.
+#: - battery, in the 1:30 segment: the battery's hours left from 0 to 60
+#:   over the same arc, a tick every 3 and a label every 12, a redline
+#:   over the first four ticks (0 to 9 hours), the pointer held at 60
+#:   above it, and the hours with a small "h". Wear OS gives
+#:   watch faces no time left, so it comes from DataDial Stats' battery
+#:   time complication, which measures how fast the battery drains; "--"
+#:   while it has none (charging, or no drain measured yet).
 #: - steps, in the 10:30 segment: today's steps from 0 to 20000 over the
 #:   pulse reference's wider arc (its ends at 144 degrees either side of
 #:   12), a tick every 1000 and a label every 4000 (in thousands, "x1000"
-#:   beside the hub), the pointer held at 20000 above it, and the steps.
+#:   beside the hub), the pointer held at 20000 above it, and the steps,
+#:   green once they reach the step goal.
 #:   They come from Google Health's steps complication, as on DataDial (a
 #:   goal progress value; ranged values and short text also work), "--"
 #:   without it.
@@ -1587,12 +1677,6 @@ DAY_NAMES = ("SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT")
 #:   below 0) while the number shows the real value, and the feet with
 #:   "ft". Wear OS gives watch faces no elevation, so it comes from
 #:   DataDial Stats' complication, as on DataDial, "--" without it.
-DATE_GAUGE = dict(
-    name="date", angle=45.0, scale=(0, 6),
-    ticks=[i / 2 for i in range(13)], labels=list(enumerate(DAY_NAMES)),
-    pointer="[DAY_OF_WEEK] - 1", value="[DAY]",
-    review=dict(pointer=5, value="20"),
-)
 #: Google Health's steps on the watch, as DataDial uses them: today's
 #: steps toward the step goal, as a goal progress value.
 GOOGLE_HEALTH_STEPS = ("com.fitbit.FitbitMobile/"
@@ -1628,6 +1712,13 @@ def text_number(text):
 #: which this face doesn't read.)
 DATADIAL_ELEVATION = ("io.github.ls6777.datadial.stats/"
                       "io.github.ls6777.datadial.stats.ElevationSource")
+
+
+#: DataDial Stats' battery time: the hours of battery left at the rate it
+#: has been draining, as short text with "h" after them ("23h"), and no
+#: data while charging or before it has measured a rate.
+DATADIAL_BATTERY_TIME = ("io.github.ls6777.datadial.stats/"
+                         "io.github.ls6777.datadial.stats.BatteryTimeSource")
 
 
 def elevation_number(text):
@@ -1688,31 +1779,72 @@ STEPS_GAUGE = dict(
     complication=dict(
         slot=3, source="[STEPS]", provider=GOOGLE_HEALTH_STEPS, provider_type="GOAL_PROGRESS",
         types={
-            "GOAL_PROGRESS": dict(number="[COMPLICATION.GOAL_PROGRESS_VALUE]",
-                                  value="round([COMPLICATION.GOAL_PROGRESS_VALUE])"),
-            "RANGED_VALUE": dict(number="[COMPLICATION.RANGED_VALUE_VALUE]",
-                                 value="round([COMPLICATION.RANGED_VALUE_VALUE])"),
-            # As the calories: without the thousands separator.
+            # Green once the steps reach the goal (or the range's top).
+            "GOAL_PROGRESS": dict(
+                number="[COMPLICATION.GOAL_PROGRESS_VALUE]",
+                value="round([COMPLICATION.GOAL_PROGRESS_VALUE])",
+                goal="[COMPLICATION.GOAL_PROGRESS_TARGET_VALUE] > 0 && "
+                     "[COMPLICATION.GOAL_PROGRESS_VALUE] >= "
+                     "[COMPLICATION.GOAL_PROGRESS_TARGET_VALUE]"),
+            "RANGED_VALUE": dict(
+                number="[COMPLICATION.RANGED_VALUE_VALUE]",
+                value="round([COMPLICATION.RANGED_VALUE_VALUE])",
+                goal="[COMPLICATION.RANGED_VALUE_MAX] > 0 && "
+                     "[COMPLICATION.RANGED_VALUE_VALUE] >= [COMPLICATION.RANGED_VALUE_MAX]"),
+            # As the calories: without the thousands separator (and no goal).
             "SHORT_TEXT": dict(number=text_number("[COMPLICATION.TEXT]"),
                                value=f'round({text_number("[COMPLICATION.TEXT]")})',
                                available="textLength([COMPLICATION.TEXT]) > 3",
                                fallback="[COMPLICATION.TEXT]"),
         },
-        test="GOAL_PROGRESS", sample={"[COMPLICATION.GOAL_PROGRESS_VALUE]": 8250}),
+        test="GOAL_PROGRESS", sample={"[COMPLICATION.GOAL_PROGRESS_VALUE]": 8250,
+                                      "[COMPLICATION.GOAL_PROGRESS_TARGET_VALUE]": 10000}),
     review=dict(pointer=8250, value="8250"),
 )
 #: The gauges, in the order their complication slots were added: the
 #: runtime matches a watch's saved slot choices by their order, so a new
 #: slot goes last.
-GAUGES = (DATE_GAUGE, CALORIE_GAUGE, ELEVATION_GAUGE, STEPS_GAUGE)
+BATTERY_GAUGE = dict(
+    name="battery", angle=45.0, scale=(0, 60), arc=288.0,
+    ticks=list(range(0, 61, 3)), labels=[(v, str(v)) for v in range(0, 61, 12)],
+    redline=(0, 9),
+    pointer="clamp([BATTERY_HOURS], 0, 60)", icon="gauge_battery",
+    complication=dict(
+        slot=4, source="[BATTERY_HOURS]", provider=DATADIAL_BATTERY_TIME,
+        provider_type="SHORT_TEXT",
+        types={
+            # The text as it is ("23h"); the hours are the text without its
+            # "h", through clamp() to make them a number.
+            "SHORT_TEXT": dict(
+                number="clamp(subText([COMPLICATION.TEXT], 0, "
+                       "textLength([COMPLICATION.TEXT]) - 1), 0, 9999)",
+                value="[COMPLICATION.TEXT]"),
+        },
+        test="SHORT_TEXT", sample={"[COMPLICATION.TEXT]": '"23h"'}),
+    review=dict(pointer=23, value="23h"),
+)
+GAUGES = (CALORIE_GAUGE, ELEVATION_GAUGE, STEPS_GAUGE, BATTERY_GAUGE)
 #: The gap between a gauge's value and its icon, in watch face units.
 GAUGE_ICON_GAP = 7.0
+#: The day of the week and the date, in the middle, in the gauges' value
+#: font, gray: the day's full name right of the hub and level with it,
+#: centered between the hub and a two-digit UV index, and the day of the
+#: month above the hub, centered between it and the top gauges. The name's
+#: capital height, the date's digit height, the date's box width, and how
+#: far the name sits right of its midpoint and the date below its, in
+#: watch face units.
+DAY_DATE = dict(name=13.0, date=24.0, width=100.0, name_right=5.0, date_down=10.0)
+#: The date's digits' image sizes in pixels (set by render_day_names).
+DATE_GLYPHS = {}
+DAY_NAMES = ("SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY")
+#: Each day name's image size in pixels (set by render_day_names).
+DAY_IMAGES = {}
 #: The heart rate readout, just right of the 9 and level with it: a red
 #: heart (the low battery's red) and the rate after it in the
 #: hour numerals' style, gray, larger than the temperature's. The
 #: heart's left edge, the gap between the heart and the rate, the
 #: readout's box width and the rate's digit height, in watch face units.
-HEART_RATE = dict(left=50.0, gap=5.0, width=90.0, digits=24.0)
+HEART_RATE = dict(left=50.0, gap=5.0, width=90.0, digits=28.0)
 HEART_ICON = dict(width=16.0, color=TEMPERATURE_COLORS["hot"])
 #: The UV index readout, just left of the 3 and level with it, the heart
 #: rate's mirror image: the index, colored by the WHO scale, then
@@ -1743,6 +1875,11 @@ def ellipse_path(cx, cy, rx, ry):
 #: flame with a smaller one cut out of its core (even-odd); the mountain
 #: is two peaks, its snowcap the same color.
 SVG_ICONS = {
+    # A battery, its body a third full (DataDial Stats' battery time icon).
+    "gauge_battery": dict(height=10.0, paths=(
+        ("M2 7H19V17H2ZM4 9H17V15H4Z", "evenodd"),
+        ("M19.5 10H22V14H19.5Z", "nonzero"),
+        ("M5 10H11V14H5Z", "nonzero"))),
     "gauge_steps": dict(height=16.0, paths=tuple(
         (ellipse_path(*e), "nonzero")
         for e in ((7.5, 7.5, 3.2, 5), (7.5, 15.8, 2.5, 2.3), (16.5, 10.5, 3.2, 5),
@@ -1762,7 +1899,8 @@ SVG_ICONS = {
         ("M9 6 11.2 10.1 10 11 9 9.8 7.9 11 6.8 10.1Z", "nonzero"))),
 }
 #: The gauges' value characters and their image names.
-GAUGE_CHARS = {**{str(n): str(n) for n in range(10)}, "-": "minus", "f": "f", "t": "t"}
+GAUGE_CHARS = {**{str(n): str(n) for n in range(10)}, "-": "minus", "f": "f", "t": "t",
+               "h": "h"}
 #: The gauges' image sizes and the pointer's length (set by
 #: render_gauges): "<name>_dial" and "hub" (pixels square), "digits" (each
 #: digit's (width, height) in pixels) and "pointer" (watch face units).
@@ -1807,8 +1945,11 @@ def render_gauge_text(text, height, color=GAUGE_GRAY, trailing=False, weight=Non
 
 
 def gauge_center(gauge):
-    """A gauge's center on the face."""
-    return polar(gauge["angle"], GAUGE["distance"])
+    """A gauge's center on the face: `distance` out along its angle, then
+    `shift` toward the face's middle row (the top ones down, the bottom
+    ones up)."""
+    x, y = polar(gauge["angle"], GAUGE["distance"])
+    return x, y + (GAUGE["shift"] if y < C else -GAUGE["shift"])
 
 
 def gauge_arc(gauge):
@@ -1823,14 +1964,31 @@ def gauge_angle(gauge, value):
 
 
 def render_gauge_dial(gauge):
-    """A gauge's tick marks and labels: one image the size of the gauge,
-    <name>_dial.png. Returns the master and its size in units."""
+    """A gauge's tick marks and labels, and its redline if it has one: one
+    image the size of the gauge, <name>_dial.png. Returns the master and
+    its size in units."""
     inner, length, width = GAUGE["ticks"]
+    red = GAUGE["redline"]
     size = math.ceil(2 * (inner + length + 1))
     k = DRAW_SCALE
     img = Image.new("RGBA", (size * k,) * 2, (0, 0, 0, 0))
     draw = ImageDraw.Draw(img)
     c = size / 2
+    if "redline" in gauge:
+        # An arc band across the ticks' middle, from the first tick's outer
+        # side to the last's, drawn first so the ticks lie over it.
+        lo, hi = gauge["redline"]
+        r0 = inner + length / 2 - red["width"] / 2
+        r1 = r0 + red["width"]
+        half = math.degrees(width / 2 / r0)
+        a0, a1 = gauge_angle(gauge, lo) - half, gauge_angle(gauge, hi) + half
+        steps = 48
+        arc = [a0 + (a1 - a0) * i / steps for i in range(steps + 1)]
+        band = ([(c + r1 * math.sin(math.radians(a)), c - r1 * math.cos(math.radians(a)))
+                 for a in arc] +
+                [(c + r0 * math.sin(math.radians(a)), c - r0 * math.cos(math.radians(a)))
+                 for a in reversed(arc)])
+        draw.polygon([(x * k, y * k) for x, y in band], fill=rgb(red["color"]))
     for value in gauge["ticks"]:
         # A flat-ended bar along the radius: (along, across) corners.
         a = math.radians(gauge_angle(gauge, value))
@@ -1893,7 +2051,8 @@ def render_gauge_hub():
 
 def render_gauge_digits():
     """The values' characters (GAUGE_CHARS) in the gauges' font, each with
-    its spacing after it: gauge_digit_<name>.png. Letters (a unit, "ft")
+    its spacing after it: gauge_digit_<name>.png, and in the goal's green,
+    gauge_digit_goal_<name>.png. Letters (a unit, "ft")
     are small, centered in an image as tall as a digit's. The watch's
     images are drawn straight at their pixel size, for crisp text (drawn
     large and scaled down, their edges came out soft), and the masters at
@@ -1920,7 +2079,22 @@ def render_gauge_digits():
         img.save(DRAWABLE / f"gauge_digit_{name}.png")
         GAUGE_IMAGES["digits"][ch] = img.size
         masters[ch] = master
+        # The same in the goal's green (see GOAL_COLOR).
+        green = Image.new("RGBA", img.size, rgb(GOAL_COLOR))
+        green.putalpha(img.getchannel("A"))
+        green.save(DRAWABLE / f"gauge_digit_goal_{name}.png")
     return masters
+
+
+def render_day_names():
+    """The day names (DAY_NAMES) and the date's digits in the gauges' value
+    font, gray: day_<name>.png and date_digit_<n>.png."""
+    for name in DAY_NAMES:
+        _, DAY_IMAGES[name] = render_value_glyph(name, DAY_DATE["name"], GAUGE_GRAY,
+                                                 f"day_{name.lower()}", trailing=False)
+    for d in "0123456789":
+        _, DATE_GLYPHS[d] = render_value_glyph(d, DAY_DATE["date"], GAUGE_GRAY,
+                                               f"date_digit_{d}")
 
 
 def render_heart_icon():
@@ -2052,6 +2226,7 @@ def render_gauges():
     digits = render_gauge_digits()
     icons = {n: render_svg_icon(n) for n in SVG_ICONS}
     render_heart_icon()
+    render_day_names()
     pointer = Image.open(MASTERS / "gauge_pointer.png")
     w, top, _ = HAND_IMAGES["gauge_pointer"]
     k = MASTER_SCALE
@@ -2109,7 +2284,7 @@ TEST_WEATHER = dict(IS_AVAILABLE=1, IS_DAY=1, CONDITION=1, TEMPERATURE=72,
 TEST_BATTERY = 80
 #: The test build's date and heart rate, in place of the watch's: Friday
 #: 20 March ([DAY_OF_WEEK] is 1 for Sunday) and a heart rate of 72. (The
-#: steps, calorie and elevation gauges' samples are in GAUGES.)
+#: gauges' samples are in GAUGES.)
 TEST_SOURCES = {"[DAY_OF_WEEK]": 6, "[DAY]": 20, "[MONTH]": 3, "[HEART_RATE]": 72}
 
 
