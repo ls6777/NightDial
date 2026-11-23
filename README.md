@@ -7,12 +7,12 @@ It is built with the [Watch Face Format](https://developer.android.com/training/
 (version 4), which Google requires for watch faces.
 
 <p align="center">
-  <img src="docs/face.png" width="380" alt="Night Dial on the Wear OS 7 emulator">
-  <img src="docs/face-ambient.png" width="380" alt="Night Dial in always-on mode">
+  <img src="docs/night-dial.png" width="380" alt="Night Dial on the Wear OS 7 emulator">
+  <img src="docs/night-dial-ambient.png" width="380" alt="Night Dial in always-on mode">
 </p>
 
 *The Wear OS 7 emulator. Left: the test build (`./build.sh test`) at its fixed time of
-8:20:22, with its sample readings (72°F and clear, UV 7, 80% battery, 23 hours left, 8,250
+8:18:18, with its sample readings (72°F and clear, UV 7, 80% battery, 23 hours left, 8,250
 steps, 1,850 calories, 8,250 ft, a heart rate of 72, Friday the 20th of March). Right:
 always-on mode.*
 
@@ -25,36 +25,41 @@ always-on mode.*
   hub to a point, a gray outline, a bordered orange insert and a gray center bar; a light
   gray seconds hand with a counterweight, ending just inside the ring; and a small black
   hub with three gray rings.
-- **Readings:** the values (gauges, battery, temperature, heart rate, UV and date) are in
-  gray Oswald and show "--" without data.
-- **Date:** the day of the month above the hub, and the day's full name (SUNDAY to
-  SATURDAY) right of it, between the hub and the UV index.
-- **Weather:** above the 6, between the bottom gauges, from the watch's weather data: an
-  orange icon for the condition (night versions after dark), the temperature (red above
-  90°F, blue below 40°F) and the condition's name. Without weather data, the sun and "--°".
-- **Heart rate:** right of the 9: a red heart above the rate, from the watch's heart rate
+- **Readings:** the values (gauges, temperature, heart rate, UV and date) are in white
+  Oswald and show "--" without data.
+- **Weather:** at the top, just below the 12, from the watch's weather data: the
+  temperature (red above 90°F, blue below 40°F) with a small degree sign and no unit (the
+  watch's own setting), and below it an orange icon for the condition (night versions
+  after dark). Without weather data, the sun and "--°".
+- **Heart rate:** left of the 3: a red heart above the rate, from the watch's heart rate
   sensor.
-- **UV index:** left of the 3, mirroring the heart rate: an orange "UV" above the index, in
-  the WHO scale's colors (green, yellow, orange, red, violet).
-- **Battery:** at the top: the percentage, and below it an orange battery with a segment
-  lit for every 20% (rounded up). Both turn red below 20%.
-- **Gauges:** four rings of gray tick marks, open at the bottom, each with its value large
-  in the middle and its orange icon below. The value is as large as fits its digits: up to
-  three digits at the largest size, four and five smaller, so 25,000 steps still fit. A
-  unit, if any, sits small above the value.
-  - **Battery time** (1:30): the hours of battery left, with an "h" above and a red band
-    through the ticks from 0 to 9 h. They come from DataDial Stats, which measures how fast
-    the battery has been draining since it was last unplugged (DataDial 1.0.4 or later);
-    while charging, or before it has seen the battery drop a couple of percent, "--".
-  - **Steps** (10:30): today's steps, in green once they reach the step goal, with
-    footprints. They come from the Google Health app's steps complication, as on DataDial.
-  - **Calories** (7:30): today's calories, with a flame. Watch Face Format can't read
-    calories itself, so they come from the Google Health app's calories complication, as on
-    DataDial.
-  - **Elevation** (4:30): the elevation in feet, with "ft" above and a mountain. It comes
-    from DataDial's companion app, DataDial Stats (barometric elevation), which must be
-    installed on the watch. DataDial Stats sends meters in regions that use metric units,
-    which this gauge doesn't read.
+- **UV index:** right of the 9, mirroring the heart rate: an orange "UV" above the index,
+  in the WHO scale's colors (green, yellow, orange, red, violet).
+- **Date:** above the 6: the day of the month, and below it the day's first three letters
+  (SUN to SAT).
+- **Gauges:** four rings of gray tick marks, open at the bottom, each with a progress bar
+  through the middle of its ticks, its value large in the middle and its orange icon
+  below. The value is as large as fits its digits: up to three digits at the largest
+  size, four and five smaller, so 25,000 steps still fit. A unit, if any, sits small above
+  the value.
+  - **Steps** (10:30): today's steps, with footprints, the bar full at 10,000: red below
+    30%, yellow to 90%, green from there. The number turns green once it reaches the step
+    goal. They come from the Google Health app's steps complication, as on DataDial.
+  - **Calories** (7:30): today's calories, with a flame, the bar full at 3,000, in the same
+    colors. Watch Face Format can't read calories itself, so they come from the Google
+    Health app's calories complication, as on DataDial.
+  - **Elevation** (4:30): the elevation in feet, with "ft" above and a mountain, the bar
+    full at 10,000 ft, in white. It comes from DataDial's companion app, DataDial Stats
+    (barometric elevation), which must be installed on the watch. DataDial Stats sends
+    meters in regions that use metric units, which this gauge doesn't read.
+  - **Battery** (1:30): the battery percentage, with "%" above, from the watch. The bar is
+    white, red below 20%. Below the number is an orange battery with a segment lit for
+    every 20% (rounded up), red below 20%.
+- **Battery time:** a smaller ring around the hub: the hours of battery left below the hub
+  with a small battery under them, and "hours" above the hub. The bar is full at 60 hours,
+  white, red below 8 hours. The hours come from DataDial Stats, which measures how fast the
+  battery has been draining since it was last unplugged (DataDial 1.0.4 or later); while
+  charging, or before it has seen the battery drop a couple of percent, "--".
 - **Month:** a light gray band on the ring over the current month's numeral (1 for January
   to 12 for December), from the minute dot before it to the one after, with "Month" in
   black along it.
@@ -78,7 +83,7 @@ size. Edit the script, not the generated files.
 | `watchface/src/main/res/xml/watch_face_info.xml` | Preview image and picker settings |
 | `watchface/src/main/res/values/strings.xml` | Names shown in the picker and editor |
 | `watchface/src/main/res/drawable/preview.png` | Picker and store preview (an emulator capture of the test build) |
-| `docs/face.png`, `docs/face-ambient.png` | The pictures above (emulator captures of the test build, awake and in always-on mode) |
+| `docs/night-dial.png`, `docs/night-dial-ambient.png` | The pictures above (emulator captures of the test build, awake and in always-on mode) |
 
 ## Build
 

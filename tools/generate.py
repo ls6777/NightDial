@@ -328,6 +328,13 @@ def bitmap_fonts(face):
         for ch, (w, h) in GAUGE_IMAGES["digits"].items():
             el(font, "Character", name=ch, resource=f"{prefix}_{GAUGE_CHARS[ch]}",
                width=w, height=h)
+    # A gauge's own digits (`value_height`).
+    for gauge in GAUGES:
+        if "value_height" in gauge:
+            font = el(fonts, "BitmapFont", name=f"{gauge['name']}_digits")
+            for ch, (w, h) in GAUGE_IMAGES[f"{gauge['name']}_digits"].items():
+                el(font, "Character", name=ch, resource=f"{gauge['name']}_digit_{BIG_CHARS[ch]}",
+                   width=w, height=h)
     # The big-number gauges' values, a font per size.
     for tier, sizes in enumerate(GAUGE_IMAGES["big_digits"]):
         for family, prefix in ((f"gauge_big{tier}_digits", f"gauge_big{tier}_digit"),
@@ -478,12 +485,19 @@ def gauge_value_layout(spec, cy, tier=0):
     height, icon top), in watch face units. Below the hub as usual; for a
     big-number gauge (see BIG_VALUE), its value at size `tier` centered on
     the gauge center, and its icon at the bottom, its bottom edge
-    BIG_VALUE's `icon_bottom` below the center."""
+    BIG_VALUE's `icon_bottom` below the center; for a gauge with its own
+    digits (`value_height`), its value's top `value_top` below the center
+    and its icon `icon_gap` below the value."""
     if spec.get("big"):
         vh = GAUGE_IMAGES["big_digits"][tier]["0"][1]
         ih = GAUGE_IMAGES[spec["icon"]][1] if "icon" in spec else 0
         return (cy - vh / 2, vh, f"gauge_big{tier}_digits", f"gauge_big{tier}_digits_goal",
                 BIG_VALUE["sizes"][tier][1], cy + BIG_VALUE["icon_bottom"] - ih)
+    if "value_height" in spec:
+        family = f"{spec['name']}_digits"
+        top, vh = cy + spec["value_top"], GAUGE_IMAGES[family]["0"][1]
+        return (top, vh, family, family, spec["value_height"],
+                top + vh + spec["icon_gap"] if "icon" in spec else None)
     return (cy + GAUGE["hub"][0][0] + GAUGE["value"]["gap"], GAUGE_IMAGES["digits"]["0"][1],
             "gauge_digits", "gauge_digits_goal", GAUGE["value"]["height"], gauge_icon_top(cy))
 
@@ -504,7 +518,7 @@ def gauge_bar(parent, spec, size, center, number):
     lo, hi = spec["scale"]
     bar = GAUGE["bar"]
     fraction = f"clamp(({number} - {fmt(lo)}) / {fmt(hi - lo)}, 0, 1)"
-    radius = GAUGE["ticks"][0] + GAUGE["ticks"][1] / 2
+    radius = gauge_ring(spec)[0] + gauge_ring(spec)[1] / 2
     start = gauge_angle(spec, lo)
     # One color per stretch: ranges that exclude each other (the runtime
     # skips a Compare that was already true).
@@ -541,7 +555,22 @@ def gauge_face(parent, spec, size, center, cover=False, bar=None):
     ticks (see gauge_bar). The battery gauge's icon is the battery at that
     number (see battery_icon)."""
     cx, cy = center
-    if cover:
+    if cover and "value_height" in spec:
+        # Only the ring and the value: the box reaches past the ring, over
+        # the gauges next to it.
+        inner, length, _ = gauge_ring(spec)
+        d = 2 * (inner + length + 1)
+        disc = el(parent, "PartDraw", **box(cx, cy, d, d))
+        el(el(disc, "Ellipse", x=0, y=0, width=d, height=d), "Fill", color="#000000")
+        top, image_h = gauge_value_layout(spec, cy)[:2]
+        if "icon" in spec:
+            image_h += spec["icon_gap"] + GAUGE_IMAGES[spec["icon"]][1]
+        w = 2 * inner * math.sin(math.radians((360 - gauge_arc(spec)) / 2))
+        under = el(parent, "PartDraw", x=round(cx - w / 2), y=round(top) - 1, width=round(w),
+                   height=round(image_h) + 2)
+        el(el(under, "Rectangle", x=0, y=0, width=round(w), height=round(image_h) + 2), "Fill",
+           color="#000000")
+    elif cover:
         disc = el(parent, "PartDraw", **box(cx, cy, size, size))
         el(el(disc, "Ellipse", x=0, y=0, width=size, height=size), "Fill", color="#000000")
     dial = el(parent, "PartImage", **box(cx, cy, size, size))
@@ -589,8 +618,10 @@ def gauge_reading(parent, spec, size, center, pointer, value, available=None,
 
         if "unit_label" in spec:
             uw, uh = GAUGE_IMAGES[f"unit_{spec['name']}"]
-            unit = el(under, "PartImage", x=round(cx - uw / 2),
-                      y=round(top_y - BIG_VALUE["unit_gap"] - uh), width=uw, height=uh)
+            uy = cy - spec["unit_top"] if "unit_top" in spec else \
+                top_y - BIG_VALUE["unit_gap"] - uh
+            unit = el(under, "PartImage", x=round(cx - uw / 2), y=round(uy), width=uw,
+                      height=uh)
             el(unit, "Image", resource=f"unit_{spec['name']}")
         assert goal is None or available is None, "a goal with a fallback isn't drawn"
         if value is None:
@@ -631,7 +662,7 @@ def gauge_reading(parent, spec, size, center, pointer, value, available=None,
         # no size: the largest, as for "--".
         value_at(el(el(sized, "Default"), "Group", x=0, y=0, width=size, height=size))
 
-    if spec.get("big"):
+    if spec.get("big") or spec.get("center"):
         return
     # The pointer, its pivot at the gauge center, turned from the scale's
     # low end by its value.
@@ -1630,9 +1661,10 @@ def render_temperature_glyphs():
 #: on the right and a row of segments inside, one per 20%. In watch face
 #: units: the body's width and height, its outline's width and corner
 #: radius, the nub's width and height, the space between the outline and
-#: the segments, and the gaps between segments.
+#: the segments, and the gaps between segments; and the battery-time
+#: ring's small battery's size as a fraction of it.
 BATTERY = dict(body=(38.0, 18.0), line=2.2, radius=4.0, nub=(3.2, 7.2), pad=1.8,
-               segments=5, segment_gap=1.6)
+               segments=5, segment_gap=1.6, small=0.55)
 #: Below this percentage the battery icon is red (the hot temperature's
 #: red): the "_low" images.
 BATTERY_LOW = dict(limit=20, color=TEMPERATURE_COLORS["hot"])
@@ -1640,40 +1672,43 @@ BATTERY_LOW = dict(limit=20, color=TEMPERATURE_COLORS["hot"])
 BATTERY_IMAGES = {}
 
 
-def render_battery_icon(filled, low=False):
+def render_battery_icon(filled, low=False, scale=1.0, name=None):
     """The battery with `filled` of its segments lit (left first), drawn
     large, as a master image and at screen size: battery_<filled>.png, or
-    battery_low_<filled>.png in the low battery's red."""
+    battery_low_<filled>.png in the low battery's red; or, at `scale`
+    times BATTERY's size, <name>.png. Returns the master and the screen
+    image's size."""
     k = DRAW_SCALE
-    (bw, bh), line, (nw, nh) = BATTERY["body"], BATTERY["line"], BATTERY["nub"]
+    (bw, bh), line = (scale * v for v in BATTERY["body"]), scale * BATTERY["line"]
+    nw, nh = (scale * v for v in BATTERY["nub"])
     margin = 1.0
     w, h = math.ceil(bw + nw + 2 * margin), math.ceil(bh + 2 * margin)
     img = Image.new("RGBA", (w * k, h * k), (0, 0, 0, 0))
     draw = ImageDraw.Draw(img)
     color = rgb(BATTERY_LOW["color"] if low else ORANGE)
-    name = f"battery{'_low' if low else ''}_{filled}"
+    name = name or f"battery{'_low' if low else ''}_{filled}"
     x0, y0 = (w - bw - nw) / 2, (h - bh) / 2
     draw.rounded_rectangle([x0 * k, y0 * k, (x0 + bw) * k, (y0 + bh) * k],
-                           radius=BATTERY["radius"] * k, outline=color, width=round(line * k))
+                           radius=scale * BATTERY["radius"] * k, outline=color,
+                           width=round(line * k))
     # The nub, from under the outline's right side out, its outer corners round.
     ny = y0 + (bh - nh) / 2
     draw.rounded_rectangle([(x0 + bw - line) * k, ny * k, (x0 + bw + nw) * k, (ny + nh) * k],
                            radius=nw * 0.55 * k, fill=color, corners=(False, True, True, False))
     # The segments, evenly across the inside.
-    n, gap, pad = BATTERY["segments"], BATTERY["segment_gap"], BATTERY["pad"]
+    n, gap, pad = BATTERY["segments"], scale * BATTERY["segment_gap"], scale * BATTERY["pad"]
     ix, iy = x0 + line + pad, y0 + line + pad
     iw, ih = bw - 2 * (line + pad), bh - 2 * (line + pad)
     sw = (iw - gap * (n - 1)) / n
     for i in range(filled):
         sx = ix + i * (sw + gap)
         draw.rounded_rectangle([sx * k, iy * k, (sx + sw) * k, (iy + ih) * k],
-                               radius=0.8 * k, fill=color)
+                               radius=scale * 0.8 * k, fill=color)
     master = img.resize((w * MASTER_SCALE, h * MASTER_SCALE), Image.LANCZOS)
     MASTERS.mkdir(parents=True, exist_ok=True)
     master.save(MASTERS / f"{name}.png")
     master.resize((w * SCALE, h * SCALE), Image.LANCZOS).save(DRAWABLE / f"{name}.png")
-    BATTERY_IMAGES["icon"] = (w * SCALE, h * SCALE)
-    return master
+    return master, (w * SCALE, h * SCALE)
 
 
 def battery_segments(level):
@@ -1683,13 +1718,17 @@ def battery_segments(level):
 
 def render_battery():
     """The battery icons, in orange and in the low battery's red, each for
-    as many segments as a level in its color can light."""
+    as many segments as a level in its color can light; and the small one,
+    full (battery_small.png)."""
     limit = BATTERY_LOW["limit"]
     for n in range(battery_segments(limit), BATTERY["segments"] + 1):
-        render_battery_icon(n)
+        _, BATTERY_IMAGES["icon"] = render_battery_icon(n)
     for n in range(battery_segments(limit - 1) + 1):
         render_battery_icon(n, low=True)
     GAUGE_IMAGES["battery"] = BATTERY_IMAGES["icon"]
+    # The battery-time ring's small, full battery.
+    _, GAUGE_IMAGES["battery_small"] = render_battery_icon(
+        BATTERY["segments"], scale=BATTERY["small"], name="battery_small")
 
 
 # -------------------------------------------------------------------- gauges
@@ -1788,6 +1827,15 @@ GAUGE_FONT = dict(file=ROOT / "tools" / "fonts" / "Oswald-Variable.ttf",
 #:   below BATTERY_LOW's limit, and the
 #:   battery icon below, a segment lit per 20% (red when low). From the
 #:   watch itself: no complication.
+#: - battery_time, a ring around the watch's hub (`center`, its own
+#:   smaller `ring`): the battery's hours left, the bar full at 60 h, a
+#:   tick every 3 h, white, red below 8 h; the hours in the ring's gap
+#:   below the hub, in its own digits (`value_top`, `value_height`), and
+#:   "hours" small inside the ring's top (`unit_top`: its top's distance
+#:   above the center), and a small battery below the hours (`icon_gap`
+#:   below them); no pointer or hub of its own.
+#:   Wear OS gives watch faces no time left, so it comes from DataDial
+#:   Stats' complication, "--" without it.
 #: Google Health's steps on the watch, as DataDial uses them: today's
 #: steps toward the step goal, as a goal progress value.
 GOOGLE_HEALTH_STEPS = ("com.fitbit.FitbitMobile/"
@@ -1823,6 +1871,12 @@ def text_number(text):
 #: which this face doesn't read.)
 DATADIAL_ELEVATION = ("io.github.ls6777.datadial.stats/"
                       "io.github.ls6777.datadial.stats.ElevationSource")
+
+
+#: DataDial Stats' battery time left ("23h"), from the rate the battery
+#: has been draining.
+DATADIAL_BATTERY_TIME = ("io.github.ls6777.datadial.stats/"
+                         "io.github.ls6777.datadial.stats.BatteryTimeSource")
 
 
 def elevation_number(text):
@@ -1912,10 +1966,31 @@ BATTERY_GAUGE = dict(
     value="[BATTERY_PERCENT]", icon="battery",
     review=dict(pointer=80, value="80"),
 )
+BATTERY_TIME_GAUGE = dict(
+    name="battery_time", center=True, ring=(40.0, 4.4, 1.8), value_top=25.0,
+    value_height=28.0, unit_label="hours", unit_top=35.0, icon="battery_small",
+    icon_gap=3.0,
+    scale=(0, 60), arc=288.0, ticks=list(range(0, 61, 3)), labels=[],
+    bar_colors=((8 / 60, BATTERY_LOW["color"]), (None, VALUE_COLOR)),
+    pointer="clamp([BATTERY_HOURS], 0, 60)",
+    complication=dict(
+        slot=4, source="[BATTERY_HOURS]", provider=DATADIAL_BATTERY_TIME,
+        provider_type="SHORT_TEXT",
+        types={
+            # The hours: the text ("23h") without its "h" ("hours" is at
+            # the ring's top: unit_label), through clamp() for the number.
+            "SHORT_TEXT": dict(
+                number="clamp(subText([COMPLICATION.TEXT], 0, "
+                       "textLength([COMPLICATION.TEXT]) - 1), 0, 9999)",
+                value="subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 1)"),
+        },
+        test="SHORT_TEXT", sample={"[COMPLICATION.TEXT]": '"23h"'}),
+    review=dict(pointer=23, value="23"),
+)
 #: The gauges, in the order their complication slots were added: the
 #: runtime matches a watch's saved slot choices by their order, so a new
 #: slot goes last (the battery has none).
-GAUGES = (CALORIE_GAUGE, ELEVATION_GAUGE, STEPS_GAUGE, BATTERY_GAUGE)
+GAUGES = (CALORIE_GAUGE, ELEVATION_GAUGE, STEPS_GAUGE, BATTERY_GAUGE, BATTERY_TIME_GAUGE)
 #: The gap between a gauge's value and its icon, in watch face units.
 GAUGE_ICON_GAP = 7.0
 #: The date above the day of the week ("WED"), just above the 6, white in
@@ -2066,10 +2141,18 @@ def render_gauge_text(text, height, color=VALUE_COLOR, trailing=False, weight=No
     return img
 
 
+def gauge_ring(gauge):
+    """A gauge's tick ring: (inner radius, length, width), its own `ring`
+    or GAUGE's `ticks`."""
+    return gauge.get("ring", GAUGE["ticks"])
+
+
 def gauge_center(gauge):
-    """A gauge's center on the face: `distance` out along its angle, then
-    `shift` toward the face's middle row (the top ones down, the bottom
-    ones up)."""
+    """A gauge's center on the face: the dial's center for a `center`
+    gauge; otherwise `distance` out along its angle, then `shift` toward
+    the face's middle row (the top ones down, the bottom ones up)."""
+    if gauge.get("center"):
+        return C, C
     x, y = polar(gauge["angle"], GAUGE["distance"])
     return x, y + (GAUGE["shift"] if y < C else -GAUGE["shift"])
 
@@ -2089,9 +2172,15 @@ def render_gauge_dial(gauge):
     """A gauge's tick marks and labels, and its redline if it has one: one
     image the size of the gauge, <name>_dial.png. Returns the master and
     its size in units."""
-    inner, length, width = GAUGE["ticks"]
+    inner, length, width = gauge_ring(gauge)
     red = GAUGE["redline"]
     size = math.ceil(2 * (inner + length + 1))
+    if "value_height" in gauge:
+        # Room for a value below the ring (the gauge's box is its dial's).
+        vh = GAUGE_IMAGES[f"{gauge['name']}_digits"]["0"][1] / SCALE
+        if "icon" in gauge:
+            vh += gauge["icon_gap"] + GAUGE_IMAGES[gauge["icon"]][1] / SCALE
+        size = max(size, math.ceil(2 * (gauge["value_top"] + vh + 2)))
     k = DRAW_SCALE
     img = Image.new("RGBA", (size * k,) * 2, (0, 0, 0, 0))
     draw = ImageDraw.Draw(img)
@@ -2361,7 +2450,13 @@ def render_gauges():
     digits = render_gauge_digits()
     icons = {n: render_svg_icon(n) for n in SVG_ICONS}
     icons["battery"] = Image.open(MASTERS / "battery_4.png")
+    icons["battery_small"] = Image.open(MASTERS / "battery_small.png")
     for gauge in GAUGES:
+        if "value_height" in gauge:
+            sizes = GAUGE_IMAGES[f"{gauge['name']}_digits"] = {}
+            for ch, name in BIG_CHARS.items():
+                _, sizes[ch] = render_value_glyph(ch, gauge["value_height"], VALUE_COLOR,
+                                                  f"{gauge['name']}_digit_{name}")
         if "unit_label" in gauge:
             _, GAUGE_IMAGES[f"unit_{gauge['name']}"] = render_value_glyph(
                 gauge["unit_label"], BIG_VALUE["unit"], VALUE_COLOR, f"unit_{gauge['name']}",
@@ -2391,14 +2486,18 @@ def render_gauges():
             icon = icons[gauge["icon"]]
             sheet.alpha_composite(icon, (round(cx - icon.width / 2), round(icon_top * k)))
         # The value, then the pointer over it and the hub, as on the watch.
-        shown = [digits[f"big{tier}{d}" if big else d] for d in gauge["review"]["value"]]
+        if "value_height" in gauge:
+            shown = [Image.open(MASTERS / f"{gauge['name']}_digit_{BIG_CHARS[d]}.png")
+                     for d in gauge["review"]["value"]]
+        else:
+            shown = [digits[f"big{tier}{d}" if big else d] for d in gauge["review"]["value"]]
         trailing = GAUGE_FONT["tracking"] * height * k
         x = round(cx - (sum(d.width for d in shown) - trailing) / 2)
         y = round(value_top * k)
         for d in shown:
             sheet.alpha_composite(d, (x, y))
             x += d.width
-        if big:
+        if big or gauge.get("center"):
             sheet.convert("RGB").save(MASTERS / f"{gauge['name']}_gauge.png")
             continue
         layer = Image.new("RGBA", sheet.size, (0, 0, 0, 0))
@@ -2426,9 +2525,12 @@ def render_images():
     render_second_hand()
 
 
-#: The test build's time (hour, minute, second), also the picker preview's: the
-#: hands down the lower left and right, between the gauges' readings.
-TEST_TIME = (8, 20, 22)
+#: The test build's time (hour, minute, second), also the picker preview's:
+#: the hands clear of the readings, the hour hand between the calories and
+#: the UV index, the minute hand between the heart rate and the elevation,
+#: and the seconds hand along it (the battery-time ring's label and hours,
+#: above and below the hub, leave no room nearer 12 or 6).
+TEST_TIME = (8, 18, 18)
 #: The test build's weather, in place of the watch's (the emulator often
 #: has none): the WEATHER data sources' values, unit 2 being Fahrenheit.
 TEST_WEATHER = dict(IS_AVAILABLE=1, IS_DAY=1, CONDITION=1, TEMPERATURE=72,
