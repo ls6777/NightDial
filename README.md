@@ -83,7 +83,7 @@ size. Edit the script, not the generated files.
 |---|---|
 | `tools/generate.py` | Writes `res/raw/watchface.xml` and the images in `res/drawable/` |
 | `tools/fonts/` | Varela Round for the hour numerals, and Oswald for the gauges and readings (both SIL Open Font License) |
-| `build.sh` | Generate, build, install, test build, runtime log |
+| `build.sh` | Generate, check, build, install, test build, release, runtime log |
 | `watchface/src/main/AndroidManifest.xml` | Package, Watch Face Format version 4, no code |
 | `watchface/src/main/res/raw/watchface.xml` | The watch face (generated) |
 | `watchface/src/main/res/xml/watch_face_info.xml` | Preview image and picker settings |
@@ -100,12 +100,48 @@ Python 3 with Pillow.
 ./build.sh          # generate and build the debug APK
 ./build.sh run      # also install it on the watch or emulator and make it the active face
 ./build.sh test     # the same with the time frozen and sample weather, UV, battery, date, month, heart rate, steps, calories, elevation and battery time, to check the layout
-./build.sh release  # release bundle (.aab) for Google Play (set up release signing first)
+./build.sh release  # signed release APK (for GitHub releases) and bundle (.aab, for Google Play)
 ./build.sh log      # the watch face runtime's log: XML and expression errors show up here
 ```
 
 `./build.sh test` writes the normal XML back when it's done, so the frozen time never stays
 in the source. Run `./build.sh run` afterwards to put the live face back on the watch.
+
+Every build runs Google's Watch Face Format checks, and stops if either fails:
+
+- **Validator:** checks `watchface.xml` against the format version in the manifest.
+- **Memory footprint:** checks the APK against the limits Google Play's review uses (10 MB in
+  always-on mode, 100 MB awake).
+
+`build.sh` downloads both tools (`wff-validator.jar` and `memory-footprint.jar`, from
+[google/watchface](https://github.com/google/watchface/releases)) to `build/tools/` the first
+time. Delete that folder to get the latest versions.
+
+### Release signing
+
+`./build.sh release` needs your release key and won't fall back to the debug key. Create the
+key once, and keep the keystore and its passwords out of this repo:
+
+```sh
+keytool -genkeypair -keystore ~/keys/nightdial-release.jks -alias nightdial \
+    -keyalg RSA -keysize 4096 -validity 10000
+```
+
+(`keytool` is in Android Studio's `jbr/bin`.) Then add to `~/.gradle/gradle.properties`:
+
+```properties
+nightdial.keystore=C:/Users/<you>/keys/nightdial-release.jks
+nightdial.keystorePassword=...
+nightdial.keyAlias=nightdial
+nightdial.keyPassword=...
+```
+
+The environment variables `NIGHTDIAL_KEYSTORE`, `NIGHTDIAL_KEYSTORE_PASSWORD`,
+`NIGHTDIAL_KEY_ALIAS` and `NIGHTDIAL_KEY_PASSWORD` work too. Back up the keystore: updates
+must be signed with the same key, or users have to uninstall the face to install them.
+
+Versions 1.0.0 to 3.1.1 on GitHub were signed with the debug key, so updating from one of
+those to a release signed with the real key needs an uninstall first.
 
 The project also opens in Android Studio, which checks the watch face XML as you edit it.
 

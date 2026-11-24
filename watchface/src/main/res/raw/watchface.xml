@@ -809,7 +809,8 @@
                         <PartText x="0" y="-1" width="110" height="36">
                             <Text align="CENTER">
                                 <BitmapFont family="weather_temperature" size="34">
-                                    <Template>--°</Template>
+                                    <Template>%s<Parameter expression="&quot;--°&quot;" />
+                                    </Template>
                                 </BitmapFont>
                             </Text>
                         </PartText>
@@ -1086,7 +1087,7 @@
                         <Expression name="size2">abs((textLength([COMPLICATION.TEXT]) &gt; 4 ? clamp(subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 4), 0, 999999) * 1000 + clamp(subText([COMPLICATION.TEXT], textLength([COMPLICATION.TEXT]) - 3, textLength([COMPLICATION.TEXT])), 0, 999999) : clamp([COMPLICATION.TEXT], 0, 999999))) &gt;= 10000</Expression>
                     </Expressions>
                     <Compare expression="size0">
-                        <Group x="0" y="0" width="123" height="123">
+                        <Group name="caloriesSize0" x="0" y="0" width="123" height="123">
                             <Condition>
                                 <Expressions>
                                     <Expression name="available">textLength([COMPLICATION.TEXT]) &gt; 3</Expression>
@@ -1115,7 +1116,7 @@
                         </Group>
                     </Compare>
                     <Compare expression="size1">
-                        <Group x="0" y="0" width="123" height="123">
+                        <Group name="caloriesSize1" x="0" y="0" width="123" height="123">
                             <Condition>
                                 <Expressions>
                                     <Expression name="available">textLength([COMPLICATION.TEXT]) &gt; 3</Expression>
@@ -1144,7 +1145,7 @@
                         </Group>
                     </Compare>
                     <Compare expression="size2">
-                        <Group x="0" y="0" width="123" height="123">
+                        <Group name="caloriesSize2" x="0" y="0" width="123" height="123">
                             <Condition>
                                 <Expressions>
                                     <Expression name="available">textLength([COMPLICATION.TEXT]) &gt; 3</Expression>
@@ -1173,7 +1174,7 @@
                         </Group>
                     </Compare>
                     <Default>
-                        <Group x="0" y="0" width="123" height="123">
+                        <Group name="caloriesSizeDefault" x="0" y="0" width="123" height="123">
                             <Condition>
                                 <Expressions>
                                     <Expression name="available">textLength([COMPLICATION.TEXT]) &gt; 3</Expression>
@@ -1253,7 +1254,7 @@
                         <Expression name="size2">abs([COMPLICATION.RANGED_VALUE_VALUE]) &gt;= 10000</Expression>
                     </Expressions>
                     <Compare expression="size0">
-                        <Group x="0" y="0" width="123" height="123">
+                        <Group name="caloriesSize0" x="0" y="0" width="123" height="123">
                             <PartText x="2" y="38" width="123" height="47">
                                 <Text align="CENTER">
                                     <BitmapFont family="gauge_big0_digits" size="45">
@@ -1265,7 +1266,7 @@
                         </Group>
                     </Compare>
                     <Compare expression="size1">
-                        <Group x="0" y="0" width="123" height="123">
+                        <Group name="caloriesSize1" x="0" y="0" width="123" height="123">
                             <PartText x="1" y="42" width="123" height="38">
                                 <Text align="CENTER">
                                     <BitmapFont family="gauge_big1_digits" size="36">
@@ -1277,7 +1278,7 @@
                         </Group>
                     </Compare>
                     <Compare expression="size2">
-                        <Group x="0" y="0" width="123" height="123">
+                        <Group name="caloriesSize2" x="0" y="0" width="123" height="123">
                             <PartText x="1" y="45" width="123" height="32">
                                 <Text align="CENTER">
                                     <BitmapFont family="gauge_big2_digits" size="30">
@@ -1289,7 +1290,7 @@
                         </Group>
                     </Compare>
                     <Default>
-                        <Group x="0" y="0" width="123" height="123">
+                        <Group name="caloriesSizeDefault" x="0" y="0" width="123" height="123">
                             <PartText x="2" y="38" width="123" height="47">
                                 <Text align="CENTER">
                                     <BitmapFont family="gauge_big0_digits" size="45">
@@ -1352,7 +1353,7 @@
                         <Expression name="size2">abs([COMPLICATION.GOAL_PROGRESS_VALUE]) &gt;= 10000</Expression>
                     </Expressions>
                     <Compare expression="size0">
-                        <Group x="0" y="0" width="123" height="123">
+                        <Group name="caloriesSize0" x="0" y="0" width="123" height="123">
                             <PartText x="2" y="38" width="123" height="47">
                                 <Text align="CENTER">
                                     <BitmapFont family="gauge_big0_digits" size="45">
@@ -1364,7 +1365,7 @@
                         </Group>
                     </Compare>
                     <Compare expression="size1">
-                        <Group x="0" y="0" width="123" height="123">
+                        <Group name="caloriesSize1" x="0" y="0" width="123" height="123">
                             <PartText x="1" y="42" width="123" height="38">
                                 <Text align="CENTER">
                                     <BitmapFont family="gauge_big1_digits" size="36">
@@ -1376,7 +1377,7 @@
                         </Group>
                     </Compare>
                     <Compare expression="size2">
-                        <Group x="0" y="0" width="123" height="123">
+                        <Group name="caloriesSize2" x="0" y="0" width="123" height="123">
                             <PartText x="1" y="45" width="123" height="32">
                                 <Text align="CENTER">
                                     <BitmapFont family="gauge_big2_digits" size="30">
@@ -1388,7 +1389,7 @@
                         </Group>
                     </Compare>
                     <Default>
-                        <Group x="0" y="0" width="123" height="123">
+                        <Group name="caloriesSizeDefault" x="0" y="0" width="123" height="123">
                             <PartText x="2" y="38" width="123" height="47">
                                 <Text align="CENTER">
                                     <BitmapFont family="gauge_big0_digits" size="45">
@@ -1461,7 +1462,7 @@
                         <Expression name="size2">abs((textLength([COMPLICATION.TEXT]) &gt; 2 ? clamp(subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 2), -99999, 999999) : 0)) &gt;= 10000</Expression>
                     </Expressions>
                     <Compare expression="size0">
-                        <Group x="0" y="0" width="123" height="123">
+                        <Group name="elevationSize0" x="0" y="0" width="123" height="123">
                             <PartImage x="57" y="22" width="9" height="13">
                                 <Image resource="unit_elevation" />
                             </PartImage>
@@ -1493,7 +1494,7 @@
                         </Group>
                     </Compare>
                     <Compare expression="size1">
-                        <Group x="0" y="0" width="123" height="123">
+                        <Group name="elevationSize1" x="0" y="0" width="123" height="123">
                             <PartImage x="57" y="26" width="9" height="13">
                                 <Image resource="unit_elevation" />
                             </PartImage>
@@ -1525,7 +1526,7 @@
                         </Group>
                     </Compare>
                     <Compare expression="size2">
-                        <Group x="0" y="0" width="123" height="123">
+                        <Group name="elevationSize2" x="0" y="0" width="123" height="123">
                             <PartImage x="57" y="29" width="9" height="13">
                                 <Image resource="unit_elevation" />
                             </PartImage>
@@ -1557,7 +1558,7 @@
                         </Group>
                     </Compare>
                     <Default>
-                        <Group x="0" y="0" width="123" height="123">
+                        <Group name="elevationSizeDefault" x="0" y="0" width="123" height="123">
                             <PartImage x="57" y="22" width="9" height="13">
                                 <Image resource="unit_elevation" />
                             </PartImage>
@@ -1675,7 +1676,7 @@
                         <Expression name="size2">abs([COMPLICATION.GOAL_PROGRESS_VALUE]) &gt;= 10000</Expression>
                     </Expressions>
                     <Compare expression="size0">
-                        <Group x="0" y="0" width="123" height="123">
+                        <Group name="stepsSize0" x="0" y="0" width="123" height="123">
                             <Condition>
                                 <Expressions>
                                     <Expression name="goalMet">[COMPLICATION.GOAL_PROGRESS_TARGET_VALUE] &gt; 0 &amp;&amp; [COMPLICATION.GOAL_PROGRESS_VALUE] &gt;= [COMPLICATION.GOAL_PROGRESS_TARGET_VALUE]</Expression>
@@ -1704,7 +1705,7 @@
                         </Group>
                     </Compare>
                     <Compare expression="size1">
-                        <Group x="0" y="0" width="123" height="123">
+                        <Group name="stepsSize1" x="0" y="0" width="123" height="123">
                             <Condition>
                                 <Expressions>
                                     <Expression name="goalMet">[COMPLICATION.GOAL_PROGRESS_TARGET_VALUE] &gt; 0 &amp;&amp; [COMPLICATION.GOAL_PROGRESS_VALUE] &gt;= [COMPLICATION.GOAL_PROGRESS_TARGET_VALUE]</Expression>
@@ -1733,7 +1734,7 @@
                         </Group>
                     </Compare>
                     <Compare expression="size2">
-                        <Group x="0" y="0" width="123" height="123">
+                        <Group name="stepsSize2" x="0" y="0" width="123" height="123">
                             <Condition>
                                 <Expressions>
                                     <Expression name="goalMet">[COMPLICATION.GOAL_PROGRESS_TARGET_VALUE] &gt; 0 &amp;&amp; [COMPLICATION.GOAL_PROGRESS_VALUE] &gt;= [COMPLICATION.GOAL_PROGRESS_TARGET_VALUE]</Expression>
@@ -1762,7 +1763,7 @@
                         </Group>
                     </Compare>
                     <Default>
-                        <Group x="0" y="0" width="123" height="123">
+                        <Group name="stepsSizeDefault" x="0" y="0" width="123" height="123">
                             <Condition>
                                 <Expressions>
                                     <Expression name="goalMet">[COMPLICATION.GOAL_PROGRESS_TARGET_VALUE] &gt; 0 &amp;&amp; [COMPLICATION.GOAL_PROGRESS_VALUE] &gt;= [COMPLICATION.GOAL_PROGRESS_TARGET_VALUE]</Expression>
@@ -1842,7 +1843,7 @@
                         <Expression name="size2">abs([COMPLICATION.RANGED_VALUE_VALUE]) &gt;= 10000</Expression>
                     </Expressions>
                     <Compare expression="size0">
-                        <Group x="0" y="0" width="123" height="123">
+                        <Group name="stepsSize0" x="0" y="0" width="123" height="123">
                             <Condition>
                                 <Expressions>
                                     <Expression name="goalMet">[COMPLICATION.RANGED_VALUE_MAX] &gt; 0 &amp;&amp; [COMPLICATION.RANGED_VALUE_VALUE] &gt;= [COMPLICATION.RANGED_VALUE_MAX]</Expression>
@@ -1871,7 +1872,7 @@
                         </Group>
                     </Compare>
                     <Compare expression="size1">
-                        <Group x="0" y="0" width="123" height="123">
+                        <Group name="stepsSize1" x="0" y="0" width="123" height="123">
                             <Condition>
                                 <Expressions>
                                     <Expression name="goalMet">[COMPLICATION.RANGED_VALUE_MAX] &gt; 0 &amp;&amp; [COMPLICATION.RANGED_VALUE_VALUE] &gt;= [COMPLICATION.RANGED_VALUE_MAX]</Expression>
@@ -1900,7 +1901,7 @@
                         </Group>
                     </Compare>
                     <Compare expression="size2">
-                        <Group x="0" y="0" width="123" height="123">
+                        <Group name="stepsSize2" x="0" y="0" width="123" height="123">
                             <Condition>
                                 <Expressions>
                                     <Expression name="goalMet">[COMPLICATION.RANGED_VALUE_MAX] &gt; 0 &amp;&amp; [COMPLICATION.RANGED_VALUE_VALUE] &gt;= [COMPLICATION.RANGED_VALUE_MAX]</Expression>
@@ -1929,7 +1930,7 @@
                         </Group>
                     </Compare>
                     <Default>
-                        <Group x="0" y="0" width="123" height="123">
+                        <Group name="stepsSizeDefault" x="0" y="0" width="123" height="123">
                             <Condition>
                                 <Expressions>
                                     <Expression name="goalMet">[COMPLICATION.RANGED_VALUE_MAX] &gt; 0 &amp;&amp; [COMPLICATION.RANGED_VALUE_VALUE] &gt;= [COMPLICATION.RANGED_VALUE_MAX]</Expression>
@@ -2009,7 +2010,7 @@
                         <Expression name="size2">abs((textLength([COMPLICATION.TEXT]) &gt; 4 ? clamp(subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 4), 0, 999999) * 1000 + clamp(subText([COMPLICATION.TEXT], textLength([COMPLICATION.TEXT]) - 3, textLength([COMPLICATION.TEXT])), 0, 999999) : clamp([COMPLICATION.TEXT], 0, 999999))) &gt;= 10000</Expression>
                     </Expressions>
                     <Compare expression="size0">
-                        <Group x="0" y="0" width="123" height="123">
+                        <Group name="stepsSize0" x="0" y="0" width="123" height="123">
                             <Condition>
                                 <Expressions>
                                     <Expression name="available">textLength([COMPLICATION.TEXT]) &gt; 3</Expression>
@@ -2038,7 +2039,7 @@
                         </Group>
                     </Compare>
                     <Compare expression="size1">
-                        <Group x="0" y="0" width="123" height="123">
+                        <Group name="stepsSize1" x="0" y="0" width="123" height="123">
                             <Condition>
                                 <Expressions>
                                     <Expression name="available">textLength([COMPLICATION.TEXT]) &gt; 3</Expression>
@@ -2067,7 +2068,7 @@
                         </Group>
                     </Compare>
                     <Compare expression="size2">
-                        <Group x="0" y="0" width="123" height="123">
+                        <Group name="stepsSize2" x="0" y="0" width="123" height="123">
                             <Condition>
                                 <Expressions>
                                     <Expression name="available">textLength([COMPLICATION.TEXT]) &gt; 3</Expression>
@@ -2096,7 +2097,7 @@
                         </Group>
                     </Compare>
                     <Default>
-                        <Group x="0" y="0" width="123" height="123">
+                        <Group name="stepsSizeDefault" x="0" y="0" width="123" height="123">
                             <Condition>
                                 <Expressions>
                                     <Expression name="available">textLength([COMPLICATION.TEXT]) &gt; 3</Expression>
@@ -2228,7 +2229,7 @@
                     <Expression name="size2">abs([BATTERY_PERCENT]) &gt;= 10000</Expression>
                 </Expressions>
                 <Compare expression="size0">
-                    <Group x="0" y="0" width="123" height="123">
+                    <Group name="batterySize0" x="0" y="0" width="123" height="123">
                         <PartImage x="55" y="22" width="12" height="13">
                             <Image resource="unit_battery" />
                         </PartImage>
@@ -2243,7 +2244,7 @@
                     </Group>
                 </Compare>
                 <Compare expression="size1">
-                    <Group x="0" y="0" width="123" height="123">
+                    <Group name="batterySize1" x="0" y="0" width="123" height="123">
                         <PartImage x="55" y="27" width="12" height="13">
                             <Image resource="unit_battery" />
                         </PartImage>
@@ -2258,7 +2259,7 @@
                     </Group>
                 </Compare>
                 <Compare expression="size2">
-                    <Group x="0" y="0" width="123" height="123">
+                    <Group name="batterySize2" x="0" y="0" width="123" height="123">
                         <PartImage x="55" y="30" width="12" height="13">
                             <Image resource="unit_battery" />
                         </PartImage>
@@ -2273,7 +2274,7 @@
                     </Group>
                 </Compare>
                 <Default>
-                    <Group x="0" y="0" width="123" height="123">
+                    <Group name="batterySizeDefault" x="0" y="0" width="123" height="123">
                         <PartImage x="55" y="22" width="12" height="13">
                             <Image resource="unit_battery" />
                         </PartImage>

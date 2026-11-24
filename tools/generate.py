@@ -646,11 +646,12 @@ def gauge_reading(parent, spec, size, center, pointer, value, available=None,
             el(exprs, "Expression", name=f"size{tier}").text = " && ".join(parts)
         for tier in range(len(BIG_VALUE["sizes"])):
             branch = el(el(sized, "Compare", expression=f"size{tier}"), "Group",
-                        x=0, y=0, width=size, height=size)
+                        name=f"{spec['name']}Size{tier}", x=0, y=0, width=size, height=size)
             value_at(branch, tier)
         # A number that isn't one (text such as "--" read as nothing) matches
         # no size: the largest, as for "--".
-        value_at(el(el(sized, "Default"), "Group", x=0, y=0, width=size, height=size))
+        value_at(el(el(sized, "Default"), "Group", name=f"{spec['name']}SizeDefault",
+                    x=0, y=0, width=size, height=size))
 
     if spec.get("big") or spec.get("center"):
         return
@@ -913,7 +914,7 @@ def weather(scene, sample=None):
     t = bitmap_text_part(none, layout["temp_y"], text_w, TEMPERATURE_GLYPHS["0"][1],
                          x=layout["text_x"])
     template(el(t, "BitmapFont", family="weather_temperature",
-                size=TEMPERATURE_GLYPHS["0"][1]), "--°")
+                size=TEMPERATURE_GLYPHS["0"][1]), "%s", '"--°"')
 
     # The icon: the day or night set, by the condition's value.
     day = el(content, "Condition")
