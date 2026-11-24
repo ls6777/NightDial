@@ -62,7 +62,7 @@ always-on mode.*
 - **Battery time:** a smaller ring in the middle of the face, laid out like the other
   gauges: the hours of battery left in the middle, "hours" above them and a small battery
   low in the ring's opening. The bar is full at 60 hours, white, red below 8 hours. The
-  hours come from DataDial Stats (DataDial 1.1.0 or later), which learns how this watch's
+  hours come from DataDial Stats (DataDial 1.1.1 or later), which learns how this watch's
   battery drains from its own use: by hour of the day, by battery level (batteries don't
   drain evenly) and by what the watch is doing now, getting better the longer it runs. While
   charging, or in its first hour or so unplugged, "--".
