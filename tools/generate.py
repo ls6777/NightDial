@@ -1797,8 +1797,8 @@ GAUGE_FONT = dict(file=ROOT / "tools" / "fonts" / "Oswald-Variable.ttf",
 #:   battery icon below, a segment lit per 20% (red when low). From the
 #:   watch itself: no complication.
 #: - battery_time, a ring in the middle of the face (`center`, its own
-#:   smaller `ring`): the battery's hours left, the bar full at 60 h, a
-#:   tick every 3 h, white, red below 8 h; like the big-number gauges, the
+#:   smaller `ring`): the battery's hours left, the bar full at 100 h, a
+#:   tick every 5 h, white, red below 8 h; like the big-number gauges, the
 #:   hours centered in the ring, in its own digits (`value_height`), with
 #:   "hours" small above them and a small battery below them (`icon_gap`
 #:   below them); no pointer or hub.
@@ -1937,9 +1937,9 @@ BATTERY_GAUGE = dict(
 BATTERY_TIME_GAUGE = dict(
     name="battery_time", center=True, ring=(40.0, 4.4, 1.8),
     value_height=28.0, unit_label="hours", icon="battery_small", icon_gap=12.0,
-    scale=(0, 60), arc=288.0, ticks=list(range(0, 61, 3)), labels=[],
-    bar_colors=((8 / 60, BATTERY_LOW["color"]), (None, VALUE_COLOR)),
-    pointer="clamp([BATTERY_HOURS], 0, 60)",
+    scale=(0, 100), arc=288.0, ticks=list(range(0, 101, 5)), labels=[],
+    bar_colors=((8 / 100, BATTERY_LOW["color"]), (None, VALUE_COLOR)),
+    pointer="clamp([BATTERY_HOURS], 0, 100)",
     complication=dict(
         slot=4, source="[BATTERY_HOURS]", provider=DATADIAL_BATTERY_TIME,
         provider_type="SHORT_TEXT",

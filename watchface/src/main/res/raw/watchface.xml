@@ -2330,14 +2330,14 @@
                 </PartImage>
                 <Condition>
                     <Expressions>
-                        <Expression name="bar0">clamp((clamp(subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 1), 0, 9999) - 0) / 60, 0, 1) &lt; 0.13</Expression>
-                        <Expression name="bar1">clamp((clamp(subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 1), 0, 9999) - 0) / 60, 0, 1) &gt;= 0.13</Expression>
+                        <Expression name="bar0">clamp((clamp(subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 1), 0, 9999) - 0) / 100, 0, 1) &lt; 0.08</Expression>
+                        <Expression name="bar1">clamp((clamp(subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 1), 0, 9999) - 0) / 100, 0, 1) &gt;= 0.08</Expression>
                     </Expressions>
                     <Compare expression="bar0">
                         <PartDraw x="0" y="0" width="91" height="91">
                             <Arc centerX="45" centerY="45" width="84.4" height="84.4" startAngle="-144" endAngle="-144" direction="CLOCKWISE">
                                 <Stroke color="#FF3B30" thickness="2.5" cap="BUTT" />
-                                <Transform target="endAngle" value="-144 + clamp((clamp(subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 1), 0, 9999) - 0) / 60, 0, 1) * 288" />
+                                <Transform target="endAngle" value="-144 + clamp((clamp(subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 1), 0, 9999) - 0) / 100, 0, 1) * 288" />
                             </Arc>
                         </PartDraw>
                     </Compare>
@@ -2345,7 +2345,7 @@
                         <PartDraw x="0" y="0" width="91" height="91">
                             <Arc centerX="45" centerY="45" width="84.4" height="84.4" startAngle="-144" endAngle="-144" direction="CLOCKWISE">
                                 <Stroke color="#FFFFFF" thickness="2.5" cap="BUTT" />
-                                <Transform target="endAngle" value="-144 + clamp((clamp(subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 1), 0, 9999) - 0) / 60, 0, 1) * 288" />
+                                <Transform target="endAngle" value="-144 + clamp((clamp(subText([COMPLICATION.TEXT], 0, textLength([COMPLICATION.TEXT]) - 1), 0, 9999) - 0) / 100, 0, 1) * 288" />
                             </Arc>
                         </PartDraw>
                     </Compare>

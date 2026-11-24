@@ -61,11 +61,11 @@ always-on mode.*
     every 20% (rounded up), red below 20%.
 - **Battery time:** a smaller ring in the middle of the face, laid out like the other
   gauges: the hours of battery left in the middle, "hours" above them and a small battery
-  low in the ring's opening. The bar is full at 60 hours, white, red below 8 hours. The
+  low in the ring's opening. The bar is full at 100 hours, a tick every 5 hours, white, red below 8 hours. The
   hours come from DataDial Stats (DataDial 1.1.1 or later), which learns how this watch's
   battery drains from its own use: by hour of the day, by battery level (batteries don't
   drain evenly) and by what the watch is doing now, getting better the longer it runs. While
-  charging, or in its first hour or so unplugged, "--".
+  charging, or in its first hour or two unplugged after it starts learning, "--".
 - **Month:** a light gray band on the ring over the current month's numeral (1 for January
   to 12 for December), from the minute dot before it to the one after, with "Month" in
   black along it.

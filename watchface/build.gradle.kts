@@ -25,8 +25,8 @@ android {
         applicationId = "io.github.ls6777.nightdial"
         minSdk = 36
         targetSdk = 36
-        versionCode = 6
-        versionName = "4.0.0"
+        versionCode = 7
+        versionName = "4.1.0"
     }
 
     signingConfigs {
